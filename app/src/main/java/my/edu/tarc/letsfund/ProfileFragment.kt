@@ -139,7 +139,7 @@ class ProfileFragment : Fragment(), MenuProvider {
                 File(this.context?.filesDir, filename))
         try{
             var storageRef = Firebase.
-            storage("gs://contact-ad814.appspot.com").reference
+            storage("gs://contact-c7ad7.appspot.com").reference
             val userRef = sharedPreferences.getString(
                 getString(R.string.phone),"")
             if(userRef.isNullOrEmpty()){
