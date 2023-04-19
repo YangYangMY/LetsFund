@@ -60,9 +60,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.fab.setOnClickListener { view ->
-            //findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.action_FirstFragment_to_SecondFragment)
-            findNavController(R.id.nav_wallet).navigate(R.id.action_nav_first_to_nav_wallet)
-
+            findNavController(R.id.nav_host_fragment_content_main).navigate(R.id.action_FirstFragment_to_SecondFragment)
         }
 
         //back press

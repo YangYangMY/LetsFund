@@ -13,9 +13,6 @@
         <action
             android:id="@+id/action_FirstFragment_to_SecondFragment"
             app:destination="@id/nav_second" />
-        <action
-            android:id="@+id/action_nav_first_to_nav_wallet"
-            app:destination="@id/nav_wallet" />
     </fragment>
     <fragment
         android:id="@+id/nav_second"
@@ -30,8 +27,4 @@
         android:id="@+id/nav_settings"
         android:name="my.edu.tarc.letsfund.ProfileFragment"
         tools:layout="@layout/fragment_profile" />
-    <fragment
-        android:id="@+id/nav_wallet"
-        android:name="my.edu.tarc.letsfund.ui.lender.WalletFragment"
-        tools:layout="@layout/fragment_wallet" />
 </navigation>
