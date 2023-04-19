@@ -37,4 +37,9 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="wallet">Wallet</string>
+    <string name="Profile">Profile</string>
+    <string name="Home">Home</string>
+    <string name="Lend">Lend</string>
+    <string name="History">History</string>
 </resources>

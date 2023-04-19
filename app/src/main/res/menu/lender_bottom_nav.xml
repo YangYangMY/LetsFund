@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="Dashbord"
-        android:id="@+id/dashbord"
-        android:icon="@drawable/baseline_cloud_download_24"/>
+        android:id="@+id/action_home"
+        android:icon="@drawable/baseline_home_24"
+        android:title="@string/Home" />
     <item
-        android:title="Users"
-        android:id="@+id/users"
-        android:icon="@drawable/baseline_cloud_download_24"/>
+        android:id="@+id/action_wallet"
+        android:icon="@drawable/baseline_cloud_download_24"
+        android:title="@string/wallet" />
     <item
-        android:title="Profile"
-        android:id="@+id/profile"
-        android:icon="@drawable/common_full_open_on_phone"/>
+        android:id="@+id/action_lend"
+        android:title="@string/Lend" />
+    <item
+        android:id="@+id/action_history"
+        android:title="@string/History" />
+    <item
+        android:id="@+id/action_profile"
+        android:icon="@drawable/common_full_open_on_phone"
+        android:title="@string/Profile" />
 </menu>
