@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "247362342361",
-    "firebase_url": "https://contact-179a9-default-rtdb.asia-southeast1.firebasedatabase.app",
-    "project_id": "contact-179a9",
-    "storage_bucket": "contact-179a9.appspot.com"
+    "project_number": "195275906720",
+    "firebase_url": "https://letsfund-d60e0-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "letsfund-d60e0",
+    "storage_bucket": "letsfund-d60e0.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:247362342361:android:bfeb8617eda5fc90e89dc8",
+        "mobilesdk_app_id": "1:195275906720:android:8306c4925e03dac1d833c5",
         "android_client_info": {
           "package_name": "my.edu.tarc.letsfund"
         }
       },
       "oauth_client": [
         {
-          "client_id": "247362342361-4o7pq8m7ehn24im9ptljf0jnaosm0i1i.apps.googleusercontent.com",
+          "client_id": "195275906720-4jebm3o7d8hrd3egafttugfpluckmree.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyByyitlMjNhbc6BmtbIsk7BuqVlKAVJzJw"
+          "current_key": "AIzaSyCDWuCMxhl--6lKQsx6nljLm8bTJQlQHuk"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "247362342361-4o7pq8m7ehn24im9ptljf0jnaosm0i1i.apps.googleusercontent.com",
+              "client_id": "195275906720-4jebm3o7d8hrd3egafttugfpluckmree.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

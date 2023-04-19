@@ -98,7 +98,7 @@ class FirstFragment : Fragment(), MenuProvider, RecordClickListener {
                         Toast.LENGTH_SHORT).show()
                 }else{
                     val database = Firebase.database(
-                        "https://contact-179a9-default-rtdb.asia-southeast1.firebasedatabase.app/")
+                        "https://letsfund-d60e0-default-rtdb.asia-southeast1.firebasedatabase.app/")
                         .reference
                     myContactViewModel.contactList.value!!.forEach {
                         database.child(userRef).child(it.phone).setValue(it)

@@ -36,7 +36,7 @@ class ContactRepository(private val contactDao: ContactDao){
     suspend fun uploadContacts(id: String){
         //TODO: Sync local contact to the Cloud Database
         if (allContacts.isInitialized) {
-            val database = Firebase.database("https://contact-c7ad7-default-rtdb.asia-southeast1.firebasedatabase.app/").reference
+            val database = Firebase.database("https://letsfund-d60e0-default-rtdb.asia-southeast1.firebasedatabase.app/").reference
 
             if (!allContacts.value!!.isEmpty()) {
                 allContacts.value!!.forEach {
