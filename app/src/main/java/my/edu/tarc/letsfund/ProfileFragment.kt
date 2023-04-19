@@ -1,4 +1,4 @@
-package my.edu.tarc.contact
+package my.edu.tarc.letsfund
 
 import android.content.Context
 import android.content.SharedPreferences
@@ -18,12 +18,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import my.edu.tarc.contact.databinding.FragmentProfileBinding
+import my.edu.tarc.letsfund.databinding.FragmentProfileBinding
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.OutputStream
-import java.lang.Exception
 
 
 class ProfileFragment : Fragment(), MenuProvider {

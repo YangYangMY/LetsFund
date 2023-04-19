@@ -1,4 +1,4 @@
-package my.edu.tarc.contact
+package my.edu.tarc.letsfund
 
 import org.junit.Test
 

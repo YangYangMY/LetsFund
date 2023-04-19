@@ -1,13 +1,11 @@
-package my.tarc.mycontact
+package my.edu.tarc.letsfund
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ExpandableListView.OnChildClickListener
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
-import my.edu.tarc.contact.R
+import my.edu.tarc.letsfund.R
 
 class ContactAdapter (private val recordClickListener: RecordClickListener): RecyclerView.Adapter<ContactAdapter.ViewHolder>() {
     //Cached copy of contacts

@@ -1,4 +1,4 @@
-package my.tarc.mycontact
+package my.edu.tarc.letsfund
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

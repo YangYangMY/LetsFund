@@ -9,7 +9,7 @@ android {
     compileSdk 33
 
     defaultConfig {
-        applicationId "my.edu.tarc.contact"
+        applicationId 'my.edu.tarc.letsfund'
         minSdk 21
         targetSdk 33
         versionCode 1

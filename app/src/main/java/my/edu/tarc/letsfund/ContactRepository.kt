@@ -1,7 +1,9 @@
-package my.tarc.mycontact
+package my.edu.tarc.letsfund
 
 import androidx.annotation.WorkerThread
 import androidx.lifecycle.LiveData
+import my.edu.tarc.letsfund.Contact
+import my.edu.tarc.letsfund.ContactDao
 
 class ContactRepository(private val contactDao: ContactDao){
     //Room execute all queries on a separate thread

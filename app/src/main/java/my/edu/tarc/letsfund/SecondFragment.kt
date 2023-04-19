@@ -1,4 +1,4 @@
-package my.edu.tarc.contact
+package my.edu.tarc.letsfund
 
 import android.app.AlertDialog
 import android.os.Bundle
@@ -9,11 +9,10 @@ import androidx.core.view.MenuHost
 import androidx.core.view.MenuProvider
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import my.edu.tarc.contact.databinding.FragmentSecondBinding
-import my.tarc.mycontact.Contact
-import my.tarc.mycontact.ContactViewModel
+import my.edu.tarc.letsfund.databinding.FragmentSecondBinding
+import my.edu.tarc.letsfund.Contact
+import my.edu.tarc.letsfund.ContactViewModel
 
 /**
  * A simple [Fragment] subclass as the second destination in the navigation.

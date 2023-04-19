@@ -1,7 +1,6 @@
-package my.edu.tarc.contact
+package my.edu.tarc.letsfund
 
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -19,12 +18,12 @@ import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import my.edu.tarc.contact.databinding.FragmentFirstBinding
-import my.edu.tarc.mycontact.WebDB
-import my.tarc.mycontact.Contact
-import my.tarc.mycontact.ContactAdapter
-import my.tarc.mycontact.ContactViewModel
-import my.tarc.mycontact.RecordClickListener
+import my.edu.tarc.letsfund.databinding.FragmentFirstBinding
+import my.edu.tarc.letsfund.WebDB
+import my.edu.tarc.letsfund.Contact
+import my.edu.tarc.letsfund.ContactAdapter
+import my.edu.tarc.letsfund.ContactViewModel
+import my.edu.tarc.letsfund.RecordClickListener
 import org.json.JSONArray
 import org.json.JSONObject
 import java.net.UnknownHostException

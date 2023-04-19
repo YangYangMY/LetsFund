@@ -1,4 +1,4 @@
-package my.edu.tarc.contact
+package my.edu.tarc.letsfund
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
@@ -13,8 +13,8 @@ import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.coroutines.NonCancellable.cancel
-import my.edu.tarc.contact.databinding.ActivityMainBinding
-import my.tarc.mycontact.ContactViewModel
+import my.edu.tarc.letsfund.databinding.ActivityMainBinding
+import my.edu.tarc.letsfund.ContactViewModel
 import java.lang.System.exit
 
 class MainActivity : AppCompatActivity() {

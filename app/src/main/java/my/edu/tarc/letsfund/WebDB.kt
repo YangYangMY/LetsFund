@@ -1,4 +1,4 @@
-package my.edu.tarc.mycontact
+package my.edu.tarc.letsfund
 
 import android.content.Context
 import android.graphics.Bitmap

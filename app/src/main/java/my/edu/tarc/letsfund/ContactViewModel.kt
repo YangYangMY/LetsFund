@@ -1,10 +1,11 @@
-package my.tarc.mycontact
+package my.edu.tarc.letsfund
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
+import my.edu.tarc.letsfund.ContactRepository
 
 class ContactViewModel (application: Application): AndroidViewModel(application) {
     //LiveData gives us updated contacts when they change

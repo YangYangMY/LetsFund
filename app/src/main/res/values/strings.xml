@@ -19,7 +19,7 @@
     <string name="contact_deleted">Contact Deleted</string>
     <string name="delete_record">Delete Record?</string>
     <string name="edit">Edit</string>
-    <string name="url_server">https://letsfund.000webhostapp.com/</string>
+    <string name="url_server">https://letsfund.000webhostapp.com/api/</string>
     <string name="url_read">user/read.php</string>
     <string name="url_create">user/create.php</string>
     <string name="download">download</string>

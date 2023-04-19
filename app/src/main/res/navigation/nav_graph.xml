@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_first"
-        android:name="my.edu.tarc.contact.FirstFragment"
+        android:name="my.edu.tarc.letsfund.FirstFragment"
         tools:layout="@layout/fragment_first">
 
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/nav_second"
-        android:name="my.edu.tarc.contact.SecondFragment"
+        android:name="my.edu.tarc.letsfund.SecondFragment"
         tools:layout="@layout/fragment_second">
 
         <action
@@ -25,6 +25,6 @@
     </fragment>
     <fragment
         android:id="@+id/nav_settings"
-        android:name="my.edu.tarc.contact.ProfileFragment"
+        android:name="my.edu.tarc.letsfund.ProfileFragment"
         tools:layout="@layout/fragment_profile" />
 </navigation>
