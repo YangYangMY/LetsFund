@@ -1,4 +1,4 @@
-package my.edu.tarc.letsfund.ui.lender.home
+package my.edu.tarc.letsfund.ui.borrower.borrowerprofile
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import my.edu.tarc.letsfund.databinding.FragmentHomeBinding
+import my.edu.tarc.letsfund.databinding.FragmentBorrowerprofileBinding
 
-class HomeFragment : Fragment() {
+class BorrowerProfileFragment : Fragment() {
 
-    private var _binding: FragmentHomeBinding? = null
+    private var _binding: FragmentBorrowerprofileBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -22,14 +22,14 @@ class HomeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+        val borrowerProfileViewModel =
+            ViewModelProvider(this).get(BorrowerProfileViewModel::class.java)
 
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        _binding = FragmentBorrowerprofileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
+        val textView: TextView = binding.textProfile
+        borrowerProfileViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
         return root

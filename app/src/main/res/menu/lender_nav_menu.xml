@@ -2,17 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_home"
+        android:id="@+id/navigation_lenderhome"
         android:icon="@drawable/ic_home_black_24dp"
         android:title="@string/title_home" />
 
     <item
-        android:id="@+id/navigation_wallet"
+        android:id="@+id/navigation_repayment"
         android:icon="@drawable/baseline_wallet_24"
         android:title="@string/wallet" />
 
     <item
-        android:id="@+id/navigation_lend"
+        android:id="@+id/navigation_applyloan"
         android:icon="@drawable/baseline_handshake_24"
         android:title="@string/Lend" />
     <item
@@ -20,8 +20,8 @@
         android:icon="@drawable/baseline_history_24"
         android:title="@string/History" />
     <item
-        android:id="@+id/navigation_profile"
+        android:id="@+id/navigation_lenderprofile"
         android:icon="@drawable/baseline_supervised_user_circle_24"
-        android:title="@string/Profile" />
+        android:title="@string/LenderProfile" />
 
 </menu>

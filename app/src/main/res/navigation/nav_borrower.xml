@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_borrower"
+    app:startDestination="@id/navigation_borrowerhome">
+
+    <fragment
+        android:id="@+id/navigation_applyloan"
+        android:name="my.edu.tarc.letsfund.ui.borrower.applyloan.ApplyLoanFragment"
+        android:label="@string/ApplyLoan"
+        tools:layout="@layout/fragment_applyloan" />
+    <fragment
+        android:id="@+id/navigation_repayment"
+        android:name="my.edu.tarc.letsfund.ui.borrower.repayment.RepaymentFragment"
+        android:label="@string/Repayment"
+        tools:layout="@layout/fragment_repayment" />
+    <fragment
+        android:id="@+id/navigation_borrowerhome"
+        android:name="my.edu.tarc.letsfund.ui.borrower.borrowerhome.BorrowerHomeFragment"
+        android:label="@string/BorrowerHome"
+        tools:layout="@layout/fragment_borrowerhome" />
+    <fragment
+        android:id="@+id/navigation_borrowerprofile"
+        android:name="my.edu.tarc.letsfund.ui.borrower.borrowerprofile.BorrowerProfileFragment"
+        android:label="@string/BorrowerProfile"
+        tools:layout="@layout/fragment_borrowerprofile" />
+</navigation>

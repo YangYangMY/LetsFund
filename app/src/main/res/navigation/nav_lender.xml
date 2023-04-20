@@ -3,33 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/navigation_home">
+    app:startDestination="@id/navigation_lenderhome">
 
     <fragment
-        android:id="@+id/navigation_home"
-        android:name="my.edu.tarc.letsfund.ui.lender.home.HomeFragment"
-        android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
-
-    <fragment
-        android:id="@+id/navigation_wallet"
+        android:id="@+id/navigation_repayment"
         android:name="my.edu.tarc.letsfund.ui.lender.wallet.WalletFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_wallet" />
 
-    <fragment
-        android:id="@+id/navigation_profile"
-        android:name="my.edu.tarc.letsfund.ui.lender.lenderprofile.LenderProfileFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_lenderprofile" />
     <fragment
         android:id="@+id/navigation_history"
         android:name="my.edu.tarc.letsfund.ui.lender.history.HistoryFragment"
         android:label="@string/History"
         tools:layout="@layout/fragment_history" />
     <fragment
-        android:id="@+id/navigation_lend"
+        android:id="@+id/navigation_applyloan"
         android:name="my.edu.tarc.letsfund.ui.lender.lend.LendFragment"
         android:label="@string/Lend"
         tools:layout="@layout/fragment_lend" />
+    <fragment
+        android:id="@+id/navigation_lenderhome"
+        android:name="my.edu.tarc.letsfund.ui.lender.lenderhome.LenderHomeFragment"
+        android:label="@string/Home"
+        tools:layout="@layout/fragment_lenderhome" />
+    <fragment
+        android:id="@+id/navigation_lenderprofile"
+        android:name="my.edu.tarc.letsfund.ui.lender.lenderprofile.LenderProfileFragment"
+        android:label="@string/LenderProfile"
+        tools:layout="@layout/fragment_lenderprofile" />
 </navigation>
