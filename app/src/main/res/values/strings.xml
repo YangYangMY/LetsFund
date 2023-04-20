@@ -46,4 +46,10 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="title_activity_borrower">BorrowerActivity</string>
+    <string name="ApplyLoan">Apply Loan</string>
+    <string name="Repayment">Repayment</string>
+    <string name="BorrowerHome">Borrower Home</string>
+    <string name="LenderProfile">Profile</string>
+    <string name="BorrowerProfile">Profile</string>
 </resources>
