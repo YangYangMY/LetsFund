@@ -2,6 +2,7 @@
 
     <style name="Widget.Theme.Contact.ButtonBar.Fullscreen" parent="">
         <item name="android:background">@color/black_overlay</item>
-        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>
+        <item name="android:buttonBarStyle">?android:attr/buttonBarStyle</item>\
+        <item name="android:windowBackground">@color/official_green</item>
     </style>
 </resources>

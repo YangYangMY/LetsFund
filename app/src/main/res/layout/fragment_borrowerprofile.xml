@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:outlineProvider="background"
     tools:context=".ui.borrower.borrowerprofile.BorrowerProfileFragment">
 
     <TextView
@@ -56,186 +57,88 @@
         app:layout_constraintTop_toBottomOf="@+id/username"
         tools:ignore="TextContrastCheck" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/editProfile"
-        android:layout_width="340dp"
-        android:layout_height="0dp"
+    <Button
+        android:id="@+id/btn_editProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:textAlignment="textEnd"
-        app:cardCornerRadius="10dp"
+        android:width="320dp"
+        android:height="60dp"
+        android:backgroundTint="#FFFFFF"
+        android:drawableStart="@drawable/baseline_mode_edit_outline_24"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="@string/edit_profile"
+        android:textAlignment="textStart"
+        android:textColor="#599D42"
+        app:cornerRadius="10dp"
+        app:icon="@drawable/baseline_mode_edit_outline_24"
+        app:iconPadding="24dp"
+        app:iconTint="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/borrower">
+        app:layout_constraintTop_toBottomOf="@+id/borrower"
+        tools:ignore="TextContrastCheck" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/editProfile_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/montserrat_medium"
-                android:text="@string/edit_profile"
-                android:textColor="#599D42"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView8"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                tools:ignore="TextContrastCheck" />
-
-            <ImageView
-                android:id="@+id/imageView8"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/baseline_mode_edit_outline_24"
-                tools:ignore="ContentDescription" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/changePw"
-        android:layout_width="340dp"
+    <Button
+        android:id="@+id/btn_changePassword"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:cardCornerRadius="10dp"
+        android:width="320dp"
+        android:height="60dp"
+        android:backgroundTint="#FFFFFF"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="@string/change_password"
+        android:textAlignment="textStart"
+        android:textColor="#599D42"
+        app:cornerRadius="10dp"
+        app:icon="@drawable/baseline_lock_24"
+        app:iconPadding="24dp"
+        app:iconTint="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editProfile">
+        app:layout_constraintTop_toBottomOf="@+id/btn_editProfile"
+        tools:ignore="TextContrastCheck" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/changePw_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/montserrat_medium"
-                android:text="@string/change_password"
-                android:textColor="#599D42"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView14"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                tools:ignore="TextContrastCheck" />
-
-            <ImageView
-                android:id="@+id/imageView14"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/baseline_lock_24"
-                tools:ignore="ContentDescription" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/customerService"
-        android:layout_width="340dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="16dp"
-        app:cardCornerRadius="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/changePw">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/imageView13"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/baseline_question_answer_24"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:id="@+id/customerService_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/montserrat_medium"
-                android:text="@string/customer_service"
-                android:textColor="#599D42"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView13"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="TextContrastCheck" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/logout"
-        android:layout_width="340dp"
+    <Button
+        android:id="@+id/btn_customerService"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        app:cardCornerRadius="10dp"
+        android:width="320dp"
+        android:height="60dp"
+        android:backgroundTint="#FFFFFF"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="@string/customer_service"
+        android:textAlignment="textStart"
+        android:textColor="#599D42"
+        app:cornerRadius="10dp"
+        app:icon="@drawable/baseline_question_answer_24"
+        app:iconPadding="24dp"
+        app:iconTint="#000000"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/customerService">
+        app:layout_constraintTop_toBottomOf="@+id/btn_changePassword"
+        tools:ignore="TextContrastCheck" />
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/imageView15"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/baseline_logout_24"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:id="@+id/logout_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:fontFamily="@font/montserrat_medium"
-                android:text="@string/logout"
-                android:textColor="#599D42"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView15"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="TextContrastCheck" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:width="320dp"
+        android:height="60dp"
+        android:backgroundTint="#FFFFFF"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="@string/logout"
+        android:textAlignment="textStart"
+        android:textColor="#599D42"
+        app:cornerRadius="10dp"
+        app:icon="@drawable/baseline_logout_24"
+        app:iconPadding="24dp"
+        app:iconTint="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_customerService" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
