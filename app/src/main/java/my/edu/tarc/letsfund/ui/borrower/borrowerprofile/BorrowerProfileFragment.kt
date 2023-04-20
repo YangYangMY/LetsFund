@@ -28,7 +28,7 @@ class BorrowerProfileFragment : Fragment() {
         _binding = FragmentBorrowerprofileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textProfile
+        val textView: TextView = binding.profile
         borrowerProfileViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
