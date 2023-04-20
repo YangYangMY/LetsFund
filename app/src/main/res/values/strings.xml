@@ -52,4 +52,12 @@
     <string name="BorrowerHome">Borrower Home</string>
     <string name="LenderProfile">Profile</string>
     <string name="BorrowerProfile">Profile</string>
+    <string name="profile">Profile</string>
+    <string name="username">Username</string>
+    <string name="borrower">Borrower</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="change_password">Change Password</string>
+    <string name="customer_service">Customer Service</string>
+    <string name="logout">Logout</string>
+    <string name="profile_photo">Profile Photo</string>
 </resources>

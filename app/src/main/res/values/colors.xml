@@ -14,4 +14,5 @@
     <color name="black_overlay">#66000000</color>
     <color name="light_green">#599D42</color>
     <color name="light_green_500">#3AA216</color>
+    <color name="official_green">#76B85F</color>
 </resources>

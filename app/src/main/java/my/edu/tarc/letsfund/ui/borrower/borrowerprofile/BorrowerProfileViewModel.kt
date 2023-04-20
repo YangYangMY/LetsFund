@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class BorrowerProfileViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is Borrower Profile Fragment"
+        value = "Profile"
     }
     val text: LiveData<String> = _text
 }

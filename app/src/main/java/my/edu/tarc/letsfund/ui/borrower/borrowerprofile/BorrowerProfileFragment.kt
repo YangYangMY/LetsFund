@@ -1,5 +1,6 @@
 package my.edu.tarc.letsfund.ui.borrower.borrowerprofile
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,8 +9,12 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import my.edu.tarc.letsfund.databinding.FragmentBorrowerprofileBinding
+import my.edu.tarc.letsfund.ui.login.LoginActivity
+
+
 
 class BorrowerProfileFragment : Fragment() {
+
 
     private var _binding: FragmentBorrowerprofileBinding? = null
 
@@ -28,7 +33,7 @@ class BorrowerProfileFragment : Fragment() {
         _binding = FragmentBorrowerprofileBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textProfile
+        val textView: TextView = binding.profile
         borrowerProfileViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
@@ -39,4 +44,8 @@ class BorrowerProfileFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+
+
+
 }
