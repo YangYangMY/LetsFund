@@ -7,5 +7,6 @@ data class Users(
     var gender: String? = null,
     var phone: String? = null,
     var email: String? = null,
-    var role: String? = null
+    var role: String? = null,
+    var walletAmount : Double? = null
 )
