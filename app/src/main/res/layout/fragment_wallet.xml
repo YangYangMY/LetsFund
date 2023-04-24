@@ -8,29 +8,14 @@
 
 
     <TextView
-        android:id="@+id/text_wallet"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.354" />
-
-    <TextView
         android:id="@+id/wallet_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="35dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="35dp"
         android:fontFamily="@font/montserrat_bold"
-        android:text="@string/wallet"
+        android:text="@string/LetsFin"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="34sp"
@@ -42,13 +27,15 @@
     <androidx.compose.ui.platform.ComposeView
         android:id="@+id/walletbox"
         android:layout_width="match_parent"
-        android:layout_height="70dp"
+        android:layout_height="150dp"
         android:layout_marginStart="35dp"
         android:layout_marginTop="24dp"
         android:layout_marginEnd="35dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wallet_title" />
+        app:layout_constraintTop_toBottomOf="@+id/wallet_title" >
+
+    </androidx.compose.ui.platform.ComposeView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
