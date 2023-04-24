@@ -24,5 +24,15 @@
         android:id="@+id/navigation_borrowerprofile"
         android:name="my.edu.tarc.letsfund.ui.borrower.borrowerprofile.BorrowerProfileFragment"
         android:label="@string/BorrowerProfile"
-        tools:layout="@layout/fragment_borrowerprofile" />
+        tools:layout="@layout/fragment_borrowerprofile" >
+        <action
+            android:id="@+id/action_navigation_borrowerprofile_to_navigation_editprofile"
+            app:destination="@id/navigation_editprofile"
+            app:popUpTo="@id/navigation_borrowerprofile" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_editprofile"
+        android:name="my.edu.tarc.letsfund.ui.authentication.profile.EditProfileFragment"
+        android:label="@string/title_edit_profile"
+        tools:layout="@layout/fragment_edit_profile" />
 </navigation>

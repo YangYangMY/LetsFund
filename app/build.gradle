@@ -28,9 +28,24 @@ android {
         sourceCompatibility JavaVersion.VERSION_17
         targetCompatibility JavaVersion.VERSION_17
     }
+
     kotlinOptions {
         jvmTarget = '17'
     }
+
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
+
+    kapt {
+        javacOptions {
+            option("-source", "17")
+            option("-target", "17")
+        }
+    }
+
     buildFeatures {
         viewBinding true
     }
@@ -52,6 +67,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx:20.2.0'
     implementation 'androidx.annotation:annotation:1.6.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
+    implementation 'com.google.firebase:firebase-auth:21.1.0'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.5'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
