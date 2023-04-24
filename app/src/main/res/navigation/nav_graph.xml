@@ -25,6 +25,6 @@
     </fragment>
     <fragment
         android:id="@+id/nav_settings"
-        android:name="my.edu.tarc.letsfund.ProfileFragment"
-        tools:layout="@layout/fragment_profile" />
+        android:name="my.edu.tarc.letsfund.ProfileDemoFragment"
+        tools:layout="@layout/fragment_profile_demo" />
 </navigation>

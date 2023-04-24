@@ -55,9 +55,35 @@
     <string name="profile">Profile</string>
     <string name="username">Username</string>
     <string name="borrower">Borrower</string>
+    <string name="lender">Lender</string>
     <string name="edit_profile">Edit Profile</string>
     <string name="change_password">Change Password</string>
     <string name="customer_service">Customer Service</string>
     <string name="logout">Logout</string>
     <string name="profile_photo">Profile Photo</string>
+
+
+    <!-- Strings related to user authentication -->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="signIn">Sign in</string>
+    <string name="signUp">Sign Up</string>
+    <string name="title_signUp">Create an Account</string>
+    <string name="title_login">Welcome Back</string>
+    <string name="nav_signUp">Dont have an account? Click here</string>
+    <string name="nav_login">Have an existing account? Click here</string>
+    <string name="required">Required</string>
+    <string name="title_register">Register as</string>
+    <string name="continues">Continue</string>
+    <string name="dob">Date of Birth</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="gender">Gender</string>
+    <string name="first_name">First Name</string>
+    <string name="last_name">Last Name</string>
+    <string name="reset">Reset</string>
+    <string name="title_edit_profile">Edit Profile</string>
+
+
+
 </resources>

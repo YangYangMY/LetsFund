@@ -15,4 +15,11 @@
     <color name="light_green">#599D42</color>
     <color name="light_green_500">#3AA216</color>
     <color name="official_green">#76B85F</color>
+
+    <color name="dark_green">#599D42</color>
+    <color name="light_green2">#B6DFA8</color>
+    <color name="light_orange">#F6BD60</color>
+    <color name="grey">#808080</color>
+    <color name="dark_blue">#00008B</color>
+    <color name="dark_grey">#7C7C7C</color>
 </resources>
