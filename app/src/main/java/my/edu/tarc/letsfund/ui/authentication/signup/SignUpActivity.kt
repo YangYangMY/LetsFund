@@ -87,7 +87,7 @@ class SignUpActivity : AppCompatActivity() {
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
                 if(it.isSuccessful) {
                     val databaseRef = database.reference.child("users").child(auth.currentUser!!.uid)
-                    val users: Users = Users(firstName, lastName, dob, gender, phone, email, "", 0.00)
+                    val users: Users = Users(firstName, lastName, dob, gender, phone, email, "")
 
                     databaseRef.setValue(users).addOnCompleteListener {
                         if(it.isSuccessful) {

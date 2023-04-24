@@ -35,13 +35,13 @@
             
         <activity
             android:name=".ui.borrower.BorrowerActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/Theme.Contact.NoActionBar">
         </activity>
             
         <activity
             android:name=".ui.authentication.login.LoginActivity"
-            android:exported="false"
+            android:exported="true"
             android:theme="@style/Theme.Contact.NoActionBar">
 
         </activity>

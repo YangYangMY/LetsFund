@@ -14,10 +14,14 @@
         android:layout_marginStart="35dp"
         android:layout_marginTop="16dp"
         android:layout_marginEnd="35dp"
-        android:fontFamily="@font/montserrat_bold"
+        android:fontFamily="@font/montserrat"
+        android:shadowColor="#000000"
+        android:shadowDx="1.9"
+        android:shadowDy="1.7"
+        android:shadowRadius="2"
         android:text="@string/LetsFin"
         android:textAllCaps="false"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textSize="34sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,9 +37,70 @@
         android:layout_marginEnd="35dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/wallet_title" >
+        app:layout_constraintTop_toBottomOf="@+id/wallet_title"></androidx.compose.ui.platform.ComposeView>
+
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/TopUp"
+        android:layout_width="wrap_content"
+        android:layout_height="55dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/Withdraw"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/walletbox">
 
     </androidx.compose.ui.platform.ComposeView>
+
+    <androidx.compose.ui.platform.ComposeView
+        android:id="@+id/Withdraw"
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="32dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/TopUp"
+        app:layout_constraintTop_toBottomOf="@+id/walletbox">
+
+    </androidx.compose.ui.platform.ComposeView>
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="409dp"
+        android:layout_height="1dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginEnd="1dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TopUp" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="24dp"
+        android:fontFamily="@font/montserrat"
+        android:text="@string/WalletHistory"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/divider" />
+
+    <ScrollView
+        android:layout_width="409dp"
+        android:layout_height="479dp"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="411dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
