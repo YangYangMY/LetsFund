@@ -18,15 +18,15 @@ import androidx.lifecycle.Lifecycle
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
-import my.edu.tarc.letsfund.databinding.FragmentProfileBinding
+import my.edu.tarc.letsfund.databinding.FragmentProfileDemoBinding
 import java.io.File
 import java.io.FileNotFoundException
 import java.io.FileOutputStream
 import java.io.OutputStream
 
 
-class ProfileFragment : Fragment(), MenuProvider {
-    private var _binding: FragmentProfileBinding? = null
+class ProfileDemoFragment : Fragment(), MenuProvider {
+    private var _binding: FragmentProfileDemoBinding? = null
     private val binding get() = _binding!!
     private lateinit var sharedPreferences: SharedPreferences
     private val getPhoto = registerForActivityResult(ActivityResultContracts.GetContent()){ uri ->
@@ -41,7 +41,7 @@ class ProfileFragment : Fragment(), MenuProvider {
     ): View? {
         // Inflate the layout for this fragment
 
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        _binding = FragmentProfileDemoBinding.inflate(inflater, container, false)
 
         //Initialise Shared Preference
         sharedPreferences = requireActivity().getPreferences(Context.MODE_PRIVATE)

@@ -8,8 +8,9 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.databinding.FragmentBorrowerprofileBinding
-import my.edu.tarc.letsfund.ui.login.LoginActivity
 
 
 
@@ -38,6 +39,16 @@ class BorrowerProfileFragment : Fragment() {
             textView.text = it
         }
         return root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // Click to edit the profile
+        binding.btnEditProfile.setOnClickListener{
+            findNavController().navigate(R.id.action_navigation_borrowerprofile_to_navigation_editprofile)
+        }
+
     }
 
     override fun onDestroyView() {
