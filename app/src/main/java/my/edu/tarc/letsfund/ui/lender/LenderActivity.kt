@@ -1,6 +1,7 @@
 package my.edu.tarc.letsfund.ui.lender
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -10,15 +11,17 @@ import androidx.navigation.ui.setupWithNavController
 import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.databinding.ActivityLenderBinding
 import androidx.appcompat.widget.Toolbar;
-
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 
 class LenderActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityLenderBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityLenderBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -30,4 +33,6 @@ class LenderActivity : AppCompatActivity() {
 
         navView.setupWithNavController(navController)
     }
+
+
 }
