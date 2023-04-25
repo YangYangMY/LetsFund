@@ -47,6 +47,7 @@ class LoginActivity : AppCompatActivity() {
 
     }
 
+
     private fun submitForm() {
 
         //Sign Up Progress Bar

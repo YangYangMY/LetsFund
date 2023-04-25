@@ -27,7 +27,7 @@
             android:layout_width="218dp"
             android:layout_height="114dp"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="88dp"
+            android:layout_marginTop="20dp"
             android:fontFamily="@font/montserrat_medium"
             android:text="@string/title_register"
             android:textColor="@color/dark_green"
@@ -42,13 +42,15 @@
             android:id="@+id/btnRole"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="80dp"
             android:width="340dp"
             android:backgroundTint="@color/dark_green"
             android:enabled="false"
             android:fontFamily="@font/montserrat_medium"
             android:text="@string/continues"
             app:cornerRadius="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/radioGroupRole" />
@@ -58,7 +60,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:gravity="center_horizontal"
             android:orientation="horizontal"
             android:padding="20dp"
@@ -68,20 +70,21 @@
 
             <RadioButton
                 android:id="@+id/radioButtonLender"
-                android:layout_width="160dp"
-                android:layout_height="180dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:background="@drawable/custom_radio_selector"
                 android:button="@color/black"
                 android:drawableTop="@drawable/lender"
                 android:fontFamily="@font/montserrat_medium"
                 android:text="@string/lender"
                 android:textAlignment="center"
-                android:textColor="@drawable/custom_radio_text" />
+                android:textColor="@drawable/custom_radio_text"
+                android:textSize="24dp" />
 
             <RadioButton
                 android:id="@+id/radioButtonBorrower"
-                android:layout_width="160dp"
-                android:layout_height="180dp"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
                 android:layout_marginStart="20dp"
                 android:background="@drawable/custom_radio_selector"
                 android:button="@color/black"
@@ -89,7 +92,8 @@
                 android:fontFamily="@font/montserrat_medium"
                 android:text="@string/borrower"
                 android:textAlignment="center"
-                android:textColor="@drawable/custom_radio_text" />
+                android:textColor="@drawable/custom_radio_text"
+                android:textSize="24dp" />
 
         </RadioGroup>
 
