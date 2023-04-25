@@ -83,6 +83,8 @@
     <string name="last_name">Last Name</string>
     <string name="reset">Reset</string>
     <string name="title_edit_profile">Edit Profile</string>
+    <string name="upload_error">Upload Failed</string>
+    <string name="upload_photo">Upload Photo</string>
     <string name="LetsFundWallet">LetsFundWallet</string>
     <string name="LetsFin">LetsFin</string>
     <string name="BackgroundImage">Background Image</string>
