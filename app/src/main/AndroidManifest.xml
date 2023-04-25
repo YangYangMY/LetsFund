@@ -12,13 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Contact"
         tools:targetApi="31">
-        <activity
-            android:name=".ui.authentication.signup.RoleActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Contact.NoActionBar" />
 
         <activity
-            android:name=".ui.authentication.signup.SignUpActivity"
+            android:name=".ui.authentication.signup.RoleActivity"
             android:exported="true"
             android:theme="@style/Theme.Contact.NoActionBar" />
 
@@ -26,7 +22,6 @@
             android:name=".ui.lender.LenderActivity"
             android:exported="true"
             android:theme="@style/Theme.Contact.NoActionBar">
-
         </activity>
 
         <activity
