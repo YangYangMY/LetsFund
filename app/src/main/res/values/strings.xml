@@ -85,6 +85,9 @@
     <string name="title_edit_profile">Edit Profile</string>
     <string name="upload_error">Upload Failed</string>
     <string name="upload_photo">Upload Photo</string>
-
+    <string name="LetsFundWallet">LetsFundWallet</string>
+    <string name="LetsFin">LetsFin</string>
+    <string name="BackgroundImage">Background Image</string>
+    <string name="WalletHistory">Recent transactions</string>
 
 </resources>
