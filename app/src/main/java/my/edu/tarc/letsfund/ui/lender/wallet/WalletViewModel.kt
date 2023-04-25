@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModel
 class WalletViewModel : ViewModel() {
 
     private val _text = MutableLiveData<String>().apply {
-        value = "This is wallet Fragment"
+        value = "500"
     }
     val text: LiveData<String> = _text
 }
