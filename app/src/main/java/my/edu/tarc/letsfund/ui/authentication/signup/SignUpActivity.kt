@@ -94,8 +94,7 @@ class SignUpActivity : AppCompatActivity() {
                         val databaseRef1 = database.reference.child("Wallet").child(auth.currentUser!!.uid)
                         val paymentHistory: LenderActivity.PaymentHistory = LenderActivity.PaymentHistory(null, null, null)
                         val wallet: LenderActivity.Wallet = LenderActivity.Wallet(0.00,paymentHistory)
-
-
+                    
                         databaseRef1.setValue(wallet).addOnCompleteListener {
                             databaseRef.setValue(users).addOnCompleteListener {
                                 if(it.isSuccessful) {

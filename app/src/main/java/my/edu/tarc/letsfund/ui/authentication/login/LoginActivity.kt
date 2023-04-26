@@ -89,13 +89,21 @@ class LoginActivity : AppCompatActivity() {
 
                     Toast.makeText(this, "Welcome, $userEmail", Toast.LENGTH_SHORT).show()
                     binding.loadingLogin.visibility = View.GONE
-                    if(getRole().equals("Lender")){
-                        val intent = Intent(this, LenderActivity::class.java)
-                        startActivity(intent)
-                    }else if (getRole().equals("Borrower")){
-                        val intent = Intent(this, BorrowerActivity::class.java)
-                        startActivity(intent)
+
+                    getRole { role ->
+                        if (role.equals("Lender")) {
+                            val intent = Intent(this, LenderActivity::class.java)
+                            startActivity(intent)
+                        }else if (role.equals("Borrower")) {
+                            val intent = Intent(this, BorrowerActivity::class.java)
+                            startActivity(intent)
+                        }else {
+                            Toast.makeText(this, "Something went wrong, try again", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this, LoginActivity::class.java)
+                            startActivity(intent)
+                        }
                     }
+
                 }else {
                     Toast.makeText(this, "Something went wrong, try again", Toast.LENGTH_SHORT).show()
                     binding.loadingLogin.visibility = View.GONE
@@ -168,25 +176,27 @@ class LoginActivity : AppCompatActivity() {
         binding.passwordContainer.helperText = ""
 
     }
-    private fun getRole() {
-         //initialise database
+    private fun getRole(callback: (String?) -> Unit) {
+
+        //initialise database
         auth = FirebaseAuth.getInstance()
         uid = auth.currentUser?.uid.toString()
         databaseRef = FirebaseDatabase.getInstance().getReference("users")
-        var currentUserRole = ""
-        var test = ""
-        databaseRef.child(uid).addValueEventListener(object: ValueEventListener {
+
+        databaseRef.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                user = snapshot.getValue(Users::class.java)!!
-                currentUserRole = user.role.toString()
-                Toast.makeText(this@LoginActivity, "Success to get User Profile data, "+ currentUserRole, Toast.LENGTH_SHORT).show()
+                val user = snapshot.getValue(Users::class.java)
+                val currentUserRole = user?.role
+                callback(currentUserRole)
+                Toast.makeText(this@LoginActivity, "Success to get User Profile data, $currentUserRole", Toast.LENGTH_SHORT).show()
+
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(this@LoginActivity, "Failed to get User Profile data", Toast.LENGTH_SHORT).show()
+                callback(null)
             }
-
-            })
+        })
     }
 
 
