@@ -91,7 +91,6 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this, "Welcome, $userEmail", Toast.LENGTH_SHORT).show()
                     binding.loadingLogin.visibility = View.GONE
                     getRole { role ->
-                        Toast.makeText(this@LoginActivity, "Success to get User Profile data, "+ role, Toast.LENGTH_SHORT).show()
                         if (role.equals("Lender")) {
                             val intent = Intent(this, LenderActivity::class.java)
                             startActivity(intent)
