@@ -15,6 +15,7 @@ import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.databinding.ActivitySignUpBinding
 import my.edu.tarc.letsfund.ui.authentication.Users
 import my.edu.tarc.letsfund.ui.authentication.login.LoginActivity
+import my.edu.tarc.letsfund.ui.lender.LenderActivity
 import java.util.*
 
 class SignUpActivity : AppCompatActivity() {
@@ -89,16 +90,24 @@ class SignUpActivity : AppCompatActivity() {
                     val databaseRef = database.reference.child("users").child(auth.currentUser!!.uid)
                     val users: Users = Users(firstName, lastName, dob, gender, phone, email, "")
 
-                    databaseRef.setValue(users).addOnCompleteListener {
-                        if(it.isSuccessful) {
-                            binding.loadingSignUp.visibility = View.GONE
-                            val intent = Intent(this, RoleActivity::class.java)
-                            startActivity(intent)
-                        }else {
-                            Toast.makeText(this, "Something went wrong, try again", Toast.LENGTH_SHORT).show()
-                            resetSignUpInput()
+                    //Create Wallet
+                        val databaseRef1 = database.reference.child("Wallet").child(auth.currentUser!!.uid)
+                        val paymentHistory: LenderActivity.PaymentHistory = LenderActivity.PaymentHistory(null, null, null)
+                        val wallet: LenderActivity.Wallet = LenderActivity.Wallet(0.00,paymentHistory)
+
+
+                        databaseRef1.setValue(wallet).addOnCompleteListener {
+                            databaseRef.setValue(users).addOnCompleteListener {
+                                if(it.isSuccessful) {
+                                    binding.loadingSignUp.visibility = View.GONE
+                                    val intent = Intent(this, RoleActivity::class.java)
+                                    startActivity(intent)
+                                }else {
+                                    Toast.makeText(this, "Something went wrong, try again", Toast.LENGTH_SHORT).show()
+                                    resetSignUpInput()
+                                }
+                            }
                         }
-                    }
                 }else {
                     Toast.makeText(this, "Something went wrong, try again", Toast.LENGTH_SHORT).show()
                     binding.loadingSignUp.visibility = View.GONE

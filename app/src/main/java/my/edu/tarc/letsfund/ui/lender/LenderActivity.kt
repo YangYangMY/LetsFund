@@ -20,6 +20,17 @@ import androidx.compose.runtime.Composable
 class LenderActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLenderBinding
 
+    // To Store Payment Details
+    data class PaymentHistory(
+        var transactionDate : String? = null,
+        var chosenMethod : String? = null,
+        var transactionAmount : Double? = null
+    )
+
+    data class Wallet(
+        var walletAmount : Double? = null,
+        var paymentHistory : PaymentHistory? = null
+    )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLenderBinding.inflate(layoutInflater)

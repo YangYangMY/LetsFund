@@ -7,6 +7,17 @@
     tools:context=".ui.lender.wallet.WalletFragment">
 
 
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-290dp"
+        android:contentDescription="@string/BackgroundImage"
+        android:src="@drawable/greengeometric"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/wallet_title"
         android:layout_width="wrap_content"
@@ -43,7 +54,7 @@
         android:id="@+id/TopUp"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toStartOf="@+id/Withdraw"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +67,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/TopUp"
         app:layout_constraintTop_toBottomOf="@+id/walletbox">
@@ -91,15 +102,26 @@
         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <ScrollView
-        android:layout_width="409dp"
-        android:layout_height="479dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="411dp">
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        tools:visibility="visible">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/wallet_recycleview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/wallet_record" />
+        </LinearLayout>
     </ScrollView>
 
 
