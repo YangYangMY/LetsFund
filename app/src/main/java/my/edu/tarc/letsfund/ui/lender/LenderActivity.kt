@@ -1,6 +1,7 @@
 package my.edu.tarc.letsfund.ui.lender
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.compose.setContent
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
@@ -16,20 +17,25 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import my.edu.tarc.letsfund.ui.authentication.Users
 
 class LenderActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLenderBinding
 
     // To Store Payment Details
     data class PaymentHistory(
-        var transactionDate : String? = null,
         var chosenMethod : String? = null,
         var transactionAmount : Double? = null
     )
 
     data class Wallet(
         var walletAmount : Double? = null,
-        var paymentHistory : PaymentHistory? = null
     )
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

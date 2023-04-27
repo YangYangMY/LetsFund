@@ -8,15 +8,16 @@
 
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/imageView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="-290dp"
+        android:layout_marginTop="-30dp"
+        android:adjustViewBounds="true"
         android:contentDescription="@string/BackgroundImage"
-        android:src="@drawable/greengeometric"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/greengeometric" />
 
     <TextView
         android:id="@+id/wallet_title"
@@ -27,9 +28,9 @@
         android:layout_marginEnd="35dp"
         android:fontFamily="@font/montserrat"
         android:shadowColor="#000000"
-        android:shadowDx="1.9"
-        android:shadowDy="1.7"
-        android:shadowRadius="2"
+        android:shadowDx="7"
+        android:shadowDy="7"
+        android:shadowRadius="5"
         android:text="@string/LetsFin"
         android:textAllCaps="false"
         android:textColor="@color/white"
@@ -102,14 +103,14 @@
         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4"
-        tools:visibility="visible">
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -117,7 +118,6 @@
             android:orientation="vertical">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/wallet_recycleview"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 tools:listitem="@layout/wallet_record" />
