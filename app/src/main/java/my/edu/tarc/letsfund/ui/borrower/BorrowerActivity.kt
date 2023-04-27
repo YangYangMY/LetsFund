@@ -12,6 +12,15 @@ import my.edu.tarc.letsfund.databinding.ActivityBorrowerBinding
 
 class BorrowerActivity : AppCompatActivity() {
 
+    data class Borrow(
+        var borrowerName : String? = null,
+        var loanAmount : Double? = null,
+        var location : String? = null,
+        var description : String? = null,
+        var fundStatus : String? = null,
+        var repaymentDate : String? = null,
+        var repaymentStatus : String? = null
+    )
 
     private lateinit var binding: ActivityBorrowerBinding
 
