@@ -28,10 +28,6 @@ class BorrowerHomeFragment : Fragment() {
         _binding = FragmentBorrowerhomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-        borrowerHomeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
         return root
     }
 
