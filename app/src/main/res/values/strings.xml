@@ -101,5 +101,11 @@
     <string name="payment">Payment</string>
     <string name="letsfund">LetsFund</string>
     <string name="an_overview_of_the_application_process">An overview of the application process</string>
+    <string name="complete_the_form">Complete The Form</string>
+    <string name="take_5_10_minutes_to_fill_up_the_details">Take 5-10 minutes to fill up the details.</string>
+    <string name="await_funding">Await Funding</string>
+    <string name="get_support_from_lenders_in_our_platform">Get support from lenders in our platform.</string>
+    <string name="await_disbursement">Await Disbursement</string>
+    <string name="funds_will_be_deposited_into_your_bank_account">Funds will be deposited into your bank account.</string>
 
 </resources>
