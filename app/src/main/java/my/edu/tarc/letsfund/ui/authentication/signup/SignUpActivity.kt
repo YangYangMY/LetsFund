@@ -92,7 +92,8 @@ class SignUpActivity : AppCompatActivity() {
 
                     //Create Wallet
                         val databaseRef1 = database.reference.child("Wallet").child(auth.currentUser!!.uid)
-                        val paymentHistory: LenderActivity.PaymentHistory = LenderActivity.PaymentHistory(null, null, null)
+                        val paymentHistory: LenderActivity.PaymentHistory = LenderActivity.PaymentHistory(null, null)
+                    
                         val wallet: LenderActivity.Wallet = LenderActivity.Wallet(0.00)
 
 
