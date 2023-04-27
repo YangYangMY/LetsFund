@@ -89,5 +89,15 @@
     <string name="LetsFin">LetsFin</string>
     <string name="BackgroundImage">Background Image</string>
     <string name="WalletHistory">Recent transactions</string>
+    <string name="visa_card_number">****   ****   ****   9982</string>
+    <string name="visa_card_valid">Valid THRU</string>
+    <string name="visa_card_date">08/19</string>
+    <string name="visaCardDetails">VISA CARD DETAILS</string>
+    <string name="card_holder">Card Holder</string>
+    <string name="card_number">Card Number</string>
+    <string name="exp_date">Expire Date</string>
+    <string name="cvv">CVV</string>
+    <string name="pay">Pay</string>
+    <string name="payment">Payment</string>
 
 </resources>

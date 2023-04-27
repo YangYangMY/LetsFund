@@ -12,18 +12,6 @@ import my.edu.tarc.letsfund.databinding.ActivityBorrowerBinding
 
 class BorrowerActivity : AppCompatActivity() {
 
-    // To Store Payment Details
-    data class PaymentHistory(
-        var transactionDate : String? = null,
-        var chosenMethod : String? = null,
-        var transactionAmount : Double? = null
-    )
-
-    data class Wallet(
-        var walletAmount : Double? = null,
-        var paymentHistory : PaymentHistory? = null
-    )
-
 
     private lateinit var binding: ActivityBorrowerBinding
 

@@ -20,6 +20,7 @@ import com.google.firebase.ktx.Firebase
 import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.databinding.ActivityRoleBinding
 import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
+import my.edu.tarc.letsfund.ui.lender.LenderActivity
 
 class RoleActivity : AppCompatActivity() {
 
@@ -77,8 +78,14 @@ class RoleActivity : AppCompatActivity() {
             binding.loadingRole.visibility = View.GONE
             Toast.makeText(this, "Welcome, $userEmail", Toast.LENGTH_SHORT).show()
 
-            val intent = Intent(this, BorrowerActivity::class.java)
-            startActivity(intent)
+            if(role == "Lender"){
+                val intent = Intent(this, LenderActivity::class.java)
+                startActivity(intent)
+            }else if (role == "Borrower"){
+                val intent = Intent(this, BorrowerActivity::class.java)
+                startActivity(intent)
+            }
+
 
 
         }.addOnFailureListener{

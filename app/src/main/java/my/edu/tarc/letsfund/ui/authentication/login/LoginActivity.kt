@@ -1,23 +1,36 @@
 package my.edu.tarc.letsfund.ui.authentication.login
 
 import android.content.Intent
+import android.icu.text.RelativeDateTimeFormatter.RelativeDateTimeUnit
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.database.ktx.values
+import com.google.firebase.ktx.Firebase
 import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.databinding.ActivityLoginBinding
+import my.edu.tarc.letsfund.ui.authentication.Users
 import my.edu.tarc.letsfund.ui.authentication.signup.SignUpActivity
 import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
+import my.edu.tarc.letsfund.ui.lender.LenderActivity
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
+    private lateinit var user: Users
+    private lateinit var uid: String
+    private lateinit var databaseRef : DatabaseReference
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,12 +84,21 @@ class LoginActivity : AppCompatActivity() {
 
             val userEmail = FirebaseAuth.getInstance().currentUser?.email
 
+
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                 if(it.isSuccessful) {
+
                     Toast.makeText(this, "Welcome, $userEmail", Toast.LENGTH_SHORT).show()
                     binding.loadingLogin.visibility = View.GONE
-                    val intent = Intent(this, BorrowerActivity::class.java)
-                    startActivity(intent)
+                    getRole { role ->
+                        if (role.equals("Lender")) {
+                            val intent = Intent(this, LenderActivity::class.java)
+                            startActivity(intent)
+                        } else if (role.equals("Borrower")) {
+                            val intent = Intent(this, BorrowerActivity::class.java)
+                            startActivity(intent)
+                        }
+                    }
                 }else {
                     Toast.makeText(this, "Something went wrong, try again", Toast.LENGTH_SHORT).show()
                     binding.loadingLogin.visibility = View.GONE
@@ -149,6 +171,27 @@ class LoginActivity : AppCompatActivity() {
         binding.passwordContainer.helperText = ""
 
     }
+    private fun getRole(callback: (String?) -> Unit) {
+
+        //initialise database
+        auth = FirebaseAuth.getInstance()
+        uid = auth.currentUser?.uid.toString()
+        databaseRef = FirebaseDatabase.getInstance().getReference("users")
+
+        databaseRef.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val user = snapshot.getValue(Users::class.java)
+                val currentUserRole = user?.role
+                callback(currentUserRole)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@LoginActivity, "Failed to get User Profile data", Toast.LENGTH_SHORT).show()
+                callback(null)
+            }
+        })
+    }
+
 
     override fun onBackPressed() {
         moveTaskToBack(true)

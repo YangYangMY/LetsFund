@@ -7,6 +7,18 @@
     tools:context=".ui.lender.wallet.WalletFragment">
 
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="-30dp"
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/BackgroundImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/greengeometric" />
+
     <TextView
         android:id="@+id/wallet_title"
         android:layout_width="wrap_content"
@@ -16,9 +28,9 @@
         android:layout_marginEnd="35dp"
         android:fontFamily="@font/montserrat"
         android:shadowColor="#000000"
-        android:shadowDx="1.9"
-        android:shadowDy="1.7"
-        android:shadowRadius="2"
+        android:shadowDx="7"
+        android:shadowDy="7"
+        android:shadowRadius="5"
         android:text="@string/LetsFin"
         android:textAllCaps="false"
         android:textColor="@color/white"
@@ -43,7 +55,7 @@
         android:id="@+id/TopUp"
         android:layout_width="wrap_content"
         android:layout_height="55dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintEnd_toStartOf="@+id/Withdraw"
         app:layout_constraintStart_toStartOf="parent"
@@ -56,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="64dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/TopUp"
         app:layout_constraintTop_toBottomOf="@+id/walletbox">
@@ -91,15 +103,25 @@
         app:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <ScrollView
-        android:layout_width="409dp"
-        android:layout_height="479dp"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="411dp">
+        android:id="@+id/scrollView2"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView4">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" />
+            android:orientation="vertical">
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/wallet_record" />
+        </LinearLayout>
     </ScrollView>
 
 
