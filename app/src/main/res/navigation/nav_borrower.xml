@@ -29,10 +29,19 @@
             android:id="@+id/action_navigation_borrowerprofile_to_navigation_editprofile"
             app:destination="@id/navigation_editprofile"
             app:popUpTo="@id/navigation_borrowerprofile" />
+        <action
+            android:id="@+id/action_navigation_borrowerprofile_to_navigation_cardpayment"
+            app:destination="@id/navigation_cardpayment"
+            app:popUpTo="@id/navigation_borrowerprofile" />
     </fragment>
     <fragment
         android:id="@+id/navigation_editprofile"
         android:name="my.edu.tarc.letsfund.ui.authentication.profile.EditProfileFragment"
         android:label="@string/title_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/navigation_cardpayment"
+        android:name="my.edu.tarc.letsfund.ui.lender.wallet.CardPaymentFragment"
+        android:label="@string/title_edit_profile"
+        tools:layout="@layout/fragment_card_payment" />
 </navigation>

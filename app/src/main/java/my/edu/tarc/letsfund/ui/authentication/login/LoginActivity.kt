@@ -1,6 +1,7 @@
 package my.edu.tarc.letsfund.ui.authentication.login
 
 import android.content.Intent
+import android.icu.text.RelativeDateTimeFormatter.RelativeDateTimeUnit
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
@@ -82,28 +83,23 @@ class LoginActivity : AppCompatActivity() {
         if (validEmail && validPassword) {
 
             val userEmail = FirebaseAuth.getInstance().currentUser?.email
-            var role = ""
+
 
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                 if(it.isSuccessful) {
 
                     Toast.makeText(this, "Welcome, $userEmail", Toast.LENGTH_SHORT).show()
                     binding.loadingLogin.visibility = View.GONE
-
                     getRole { role ->
+                        Toast.makeText(this@LoginActivity, "Success to get User Profile data, "+ role, Toast.LENGTH_SHORT).show()
                         if (role.equals("Lender")) {
                             val intent = Intent(this, LenderActivity::class.java)
                             startActivity(intent)
-                        }else if (role.equals("Borrower")) {
+                        } else if (role.equals("Borrower")) {
                             val intent = Intent(this, BorrowerActivity::class.java)
-                            startActivity(intent)
-                        }else {
-                            Toast.makeText(this, "Something went wrong, try again", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this, LoginActivity::class.java)
                             startActivity(intent)
                         }
                     }
-
                 }else {
                     Toast.makeText(this, "Something went wrong, try again", Toast.LENGTH_SHORT).show()
                     binding.loadingLogin.visibility = View.GONE
@@ -188,8 +184,6 @@ class LoginActivity : AppCompatActivity() {
                 val user = snapshot.getValue(Users::class.java)
                 val currentUserRole = user?.role
                 callback(currentUserRole)
-                Toast.makeText(this@LoginActivity, "Success to get User Profile data, $currentUserRole", Toast.LENGTH_SHORT).show()
-
             }
 
             override fun onCancelled(error: DatabaseError) {

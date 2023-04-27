@@ -87,6 +87,11 @@ class BorrowerProfileFragment : Fragment() {
             findNavController().navigate(R.id.action_navigation_borrowerprofile_to_navigation_editprofile)
         }
 
+        // Click to do card payment (Testing purpose) ***
+        binding.btnCustomerService.setOnClickListener{
+            findNavController().navigate(R.id.action_navigation_borrowerprofile_to_navigation_cardpayment)
+        }
+
         binding.btnLogout.setOnClickListener{
             FirebaseAuth.getInstance().signOut()
             Toast.makeText(context, "You have logged out", Toast.LENGTH_SHORT).show()
