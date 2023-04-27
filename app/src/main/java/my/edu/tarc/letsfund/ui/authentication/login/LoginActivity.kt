@@ -189,8 +189,8 @@ class LoginActivity : AppCompatActivity() {
                 Toast.makeText(this@LoginActivity, "Failed to get User Profile data", Toast.LENGTH_SHORT).show()
                 callback(null)
             }
-            })
-        }
+        })
+    }
 
 
     override fun onBackPressed() {
