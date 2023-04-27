@@ -99,5 +99,7 @@
     <string name="cvv">CVV</string>
     <string name="pay">Pay</string>
     <string name="payment">Payment</string>
+    <string name="letsfund">LetsFund</string>
+    <string name="an_overview_of_the_application_process">An overview of the application process</string>
 
 </resources>

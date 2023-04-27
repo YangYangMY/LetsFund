@@ -35,8 +35,6 @@ class BorrowerActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_activity_borrower)
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
-
-
         navView.setupWithNavController(navController)
     }
 }
