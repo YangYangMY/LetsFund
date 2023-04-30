@@ -10,8 +10,8 @@ android {
 
     defaultConfig {
         applicationId 'my.edu.tarc.letsfund'
-        minSdk 21
-        targetSdk 33
+        minSdk 24
+        targetSdk 28
         versionCode 1
         versionName "1.0"
 
@@ -104,4 +104,9 @@ dependencies {
 
     //Card View
     implementation "androidx.cardview:cardview:1.0.0"
+
+    //Visa Card Payment
+    implementation "com.braintreepayments:card-form:5.4.0"
+
+
 }

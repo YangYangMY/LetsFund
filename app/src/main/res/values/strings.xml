@@ -99,5 +99,6 @@
     <string name="cvv">CVV</string>
     <string name="pay">Pay</string>
     <string name="payment">Payment</string>
+    <string name="card_sample">Card Sample</string>
 
 </resources>
