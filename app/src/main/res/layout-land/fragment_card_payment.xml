@@ -35,7 +35,7 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/visaCardSample"
-            android:layout_width="match_parent"
+            android:layout_width="300dp"
             android:layout_height="150dp"
             android:layout_marginStart="24dp"
             android:layout_marginEnd="24dp"
@@ -178,18 +178,19 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cardExpDateContainer"
-            android:layout_width="175dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
             app:helperText=""
             app:helperTextTextColor="@android:color/holo_red_dark"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cardNumberContainer">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextCardExpDate"
-                android:layout_width="175dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/montserrat"
                 android:hint="@string/exp_date"
@@ -200,21 +201,21 @@
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/cvvContainer"
-            android:layout_width="175dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="20dp"
             android:layout_marginTop="10dp"
-            app:helperText=""
             app:counterEnabled="true"
             app:counterMaxLength="3"
-            app:passwordToggleEnabled="true"
+            app:helperText=""
             app:helperTextTextColor="@android:color/holo_red_dark"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/cardNumberContainer">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editTextCVV"
-                android:layout_width="175dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/montserrat"
                 android:hint="@string/cvv"
@@ -227,10 +228,10 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnReset"
-            android:layout_width="170dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="50dp"
             android:layout_marginBottom="100dp"
             android:width="340dp"
             android:backgroundTint="@color/dark_grey"
@@ -238,14 +239,15 @@
             android:text="@string/reset"
             app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/guideline"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cvvContainer" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnPay"
-            android:layout_width="170dp"
+            android:id="@+id/btnSave"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="50dp"
             android:layout_marginEnd="20dp"
             android:layout_marginBottom="100dp"
             android:width="340dp"
@@ -255,7 +257,10 @@
             app:cornerRadius="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/guideline"
             app:layout_constraintTop_toBottomOf="@+id/cvvContainer" />
+
+
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

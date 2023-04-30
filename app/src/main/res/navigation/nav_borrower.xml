@@ -41,7 +41,7 @@
         tools:layout="@layout/fragment_edit_profile" />
     <fragment
         android:id="@+id/navigation_cardpayment"
-        android:name="my.edu.tarc.letsfund.ui.lender.wallet.CardPaymentFragment"
+        android:name="my.edu.tarc.letsfund.ui.payment.CardPaymentFragment"
         android:label="@string/title_edit_profile"
         tools:layout="@layout/fragment_card_payment" />
 </navigation>

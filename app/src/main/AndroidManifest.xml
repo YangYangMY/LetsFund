@@ -20,32 +20,32 @@
 
 
         <activity
+            android:name=".ui.authentication.signup.SignUpActivity"
+            android:exported="false"
+            android:theme="@style/Theme.Contact.NoActionBar" />
+            
+        <activity
+            android:name=".ui.lender.LenderActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Contact.NoActionBar">
+        </activity>
+            
+        <activity
             android:name=".ui.borrower.BorrowerActivity"
             android:exported="true"
             android:theme="@style/Theme.Contact.NoActionBar">
         </activity>
-
+            
         <activity
             android:name=".ui.authentication.login.LoginActivity"
             android:exported="true"
             android:theme="@style/Theme.Contact.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".ui.authentication.signup.SignUpActivity"
-            android:exported="false"
-            android:theme="@style/Theme.Contact.NoActionBar" />
-
-        <activity
-            android:name=".ui.lender.LenderActivity"
-            android:exported="true"
-            android:theme="@style/Theme.Contact.NoActionBar">
-        </activity>
-
 
         <meta-data
             android:name="preloaded_fonts"
