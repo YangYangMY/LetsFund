@@ -43,6 +43,7 @@ android {
         jvmTarget = '17'
     }
     namespace 'my.edu.tarc.letsfund'
+    buildToolsVersion '33.0.2'
 }
 
 dependencies {
