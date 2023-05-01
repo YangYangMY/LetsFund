@@ -25,12 +25,18 @@ import my.edu.tarc.letsfund.ui.lender.LenderActivity
 
 class LoginActivity : AppCompatActivity() {
 
+    //Initialize Binding
     private lateinit var binding: ActivityLoginBinding
+
+    //Initialize Firebase
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
+    private lateinit var databaseRef : DatabaseReference
+
+    //Initialize Authentication User
     private lateinit var user: Users
     private lateinit var uid: String
-    private lateinit var databaseRef : DatabaseReference
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

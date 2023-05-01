@@ -24,7 +24,10 @@ import my.edu.tarc.letsfund.ui.lender.LenderActivity
 
 class RoleActivity : AppCompatActivity() {
 
+    //Initialize Binding
     private lateinit var binding: ActivityRoleBinding
+
+    //Initialize Firebase
     private lateinit var auth: FirebaseAuth
     private lateinit var databaseRef: DatabaseReference
 

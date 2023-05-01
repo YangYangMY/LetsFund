@@ -1,18 +1,10 @@
 package my.edu.tarc.letsfund.ui.authentication.profile
 
 import android.app.DatePickerDialog
-import android.content.Context
-import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -20,21 +12,9 @@ import androidx.navigation.fragment.findNavController
 import my.edu.tarc.letsfund.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
-import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.ktx.storage
 import my.edu.tarc.letsfund.databinding.FragmentEditProfileBinding
 import my.edu.tarc.letsfund.ui.authentication.Users
-import java.io.File
-import java.io.FileNotFoundException
-import java.io.FileOutputStream
-import java.io.OutputStream
 import java.util.*
-import android.content.SharedPreferences
-import androidx.activity.result.ActivityResultCallback
-import androidx.activity.result.contract.ActivityResultContracts
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageReference
-import my.edu.tarc.letsfund.ui.authentication.login.LoginActivity
 
 class EditProfileFragment : Fragment() {
 
@@ -42,21 +22,12 @@ class EditProfileFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var databaseRef: DatabaseReference
     private lateinit var database: FirebaseDatabase
-    private lateinit var storageReference: StorageReference
-    private lateinit var uri: Uri
-
     private lateinit var user: Users
     private lateinit var uid: String
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-
-    private val getPhoto = registerForActivityResult(ActivityResultContracts.GetContent()){ uri ->
-        if(uri != null){
-            binding.imageProfile.setImageURI(uri)
-        }
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -75,18 +46,11 @@ class EditProfileFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         uid = auth.currentUser?.uid.toString()
         databaseRef = FirebaseDatabase.getInstance().getReference("users")
-
+        database = FirebaseDatabase.getInstance()
 
         //If the current user ID is valid, retrieve the data
         if(uid.isNotEmpty()) {
             getUserData()
-        }
-
-        //Display Profile Photo
-        readProfilePhoto()
-
-        binding.imageProfile.setOnClickListener {
-            getPhoto.launch("image/*")
         }
 
         //Setting up DatePicker for Date Of Birth
@@ -104,6 +68,7 @@ class EditProfileFragment : Fragment() {
         binding.btnSave.setOnClickListener {
             submitForm()
         }
+
 
     }
 
@@ -137,8 +102,7 @@ class EditProfileFragment : Fragment() {
             "lastname" to lastName,
             "dob" to dob,
             "gender" to gender,
-            "phone" to phone,
-
+            "phone" to phone
         )
 
         //Edit Profile Authentication
@@ -146,10 +110,11 @@ class EditProfileFragment : Fragment() {
 
             databaseRef.child(auth.currentUser!!.uid).updateChildren(user).addOnSuccessListener {
 
+                val userEmail = FirebaseAuth.getInstance().currentUser?.email
+
                 binding.loadingProfile.visibility = View.GONE
                 Toast.makeText(context, "Your profile is updated", Toast.LENGTH_SHORT).show()
-                saveProfilePicture(binding.imageProfile)
-                uploadProfilePicture()
+
 
             }.addOnFailureListener{
 
@@ -157,16 +122,11 @@ class EditProfileFragment : Fragment() {
                 Toast.makeText(context, "Failed to update profile. Try again!" + auth.currentUser, Toast.LENGTH_SHORT).show()
 
             }
-
-        }else {
-            binding.loadingProfile.visibility = View.GONE
-            Toast.makeText(context, "Failed to update profile. Try again!" + auth.currentUser, Toast.LENGTH_SHORT).show()
         }
 
     }
 
     private fun getUserData() {
-
         databaseRef.child(uid).addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 user = snapshot.getValue(Users::class.java)!!
@@ -182,61 +142,6 @@ class EditProfileFragment : Fragment() {
             }
 
         })
-    }
-
-    private fun saveProfilePicture(view: View) {
-
-        val filename = "profile.png"
-        val file = File(this.context?.filesDir, filename)
-        val image = view as ImageView
-
-        val bd = image.drawable as BitmapDrawable
-        val bitmap = bd.bitmap
-        val outputStream: OutputStream
-
-        try{
-            outputStream = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.PNG, 50, outputStream)
-            outputStream.flush()
-            outputStream.close()
-        }catch (e: FileNotFoundException){
-            e.printStackTrace()
-        }
-    }
-
-
-    private fun uploadProfilePicture() {
-
-        val filename = "profile.png"
-        val file = Uri.fromFile(File(this.context?.filesDir, filename))
-        //uri = Uri.parse("android.resource://${R.drawable.profile}")
-
-        storageReference = FirebaseStorage.getInstance().getReference("Profile/"+auth.currentUser?.uid)
-
-        storageReference.putFile(file).addOnSuccessListener {
-
-
-        }.addOnFailureListener {
-
-
-        }
-
-    }
-
-    private fun readProfilePhoto() {
-
-        val storageRef = FirebaseStorage.getInstance().reference.child("Profile/$uid")
-
-        val localFile = File.createTempFile("tempImage", "png")
-        storageRef.getFile(localFile).addOnSuccessListener {
-
-            val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
-            binding.imageProfile.setImageBitmap(bitmap)
-
-        }.addOnFailureListener {
-
-            binding.imageProfile.setImageResource(R.drawable.profile)
-        }
     }
 
     private fun focusListener() {
