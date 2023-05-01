@@ -51,5 +51,9 @@ class LenderActivity : AppCompatActivity() {
         navView.setupWithNavController(navController)
     }
 
+    override fun onBackPressed() {
+        moveTaskToBack(true)
+    }
+
 
 }

@@ -109,6 +109,7 @@
     <string name="get_support_from_lenders_in_our_platform">Get support from lenders in our platform.</string>
     <string name="await_disbursement">Await Disbursement</string>
     <string name="funds_will_be_deposited_into_your_bank_account">Funds will be deposited into your bank account.</string>
+    <string name="submit">Submit</string>
 
 
 </resources>

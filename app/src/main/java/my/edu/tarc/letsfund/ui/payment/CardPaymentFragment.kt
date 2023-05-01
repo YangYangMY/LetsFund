@@ -8,18 +8,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
 import my.edu.tarc.letsfund.databinding.FragmentCardPaymentBinding
+import my.edu.tarc.letsfund.ui.authentication.Users
 import java.util.Calendar
 
 
 class CardPaymentFragment : Fragment() {
 
+    //Initialize Binding
     private var _binding: FragmentCardPaymentBinding? = null
     private val binding get() = _binding!!
 
+    //Initialize Calendar
     private var current = ""
     private val mmyyyy = "MMYYYY"
     private val cal: Calendar = Calendar.getInstance()
+
+    //Initialise Database
+    private lateinit var uid: String
+    private lateinit var databaseRef : DatabaseReference
+    private lateinit var auth: FirebaseAuth
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -105,6 +117,12 @@ class CardPaymentFragment : Fragment() {
 
     private fun submitForm() {
 
+        //initialise database
+        auth = FirebaseAuth.getInstance()
+        uid = auth.currentUser?.uid.toString()
+
+        databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
+
         //Output of helperText
         binding.cardHolderNameContainer.helperText = validCardHolderName()
         binding.cardNumberContainer.helperText = validCardNumber()
@@ -117,10 +135,21 @@ class CardPaymentFragment : Fragment() {
         val validCardExpDate = binding.cardExpDateContainer.helperText == null
         val validCardCVV = binding.cvvContainer.helperText == null
 
+        val wallet = mapOf<String, String>(
+            "walletAmount" to "100"
+        )
+
         if (validCardHolder && validCardNumber && validCardExpDate && validCardCVV) {
-            Toast.makeText(context, "Payment Successfully", Toast.LENGTH_SHORT).show()
+
+            databaseRef.child(uid).updateChildren(wallet).addOnSuccessListener {
+                Toast.makeText(context, "Your wallet is updated", Toast.LENGTH_SHORT).show()
+
+            }.addOnFailureListener{
+                Toast.makeText(context, "Payment Failed. Try again!", Toast.LENGTH_SHORT).show()
+            }
+
         }else {
-            Toast.makeText(context, "Payment Failed. Please try again", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Payment Failed. Try again!", Toast.LENGTH_SHORT).show()
         }
 
     }

@@ -37,4 +37,8 @@ class BorrowerActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         navView.setupWithNavController(navController)
     }
+
+    override fun onBackPressed() {
+        moveTaskToBack(true)
+    }
 }

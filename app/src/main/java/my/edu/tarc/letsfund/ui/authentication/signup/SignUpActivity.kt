@@ -20,7 +20,10 @@ import java.util.*
 
 class SignUpActivity : AppCompatActivity() {
 
+    //Initialize Binding
     private lateinit var binding: ActivitySignUpBinding
+
+    //Initialize Firebase
     private lateinit var auth: FirebaseAuth
     private lateinit var database: FirebaseDatabase
 
