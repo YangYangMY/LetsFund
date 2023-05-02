@@ -29,6 +29,18 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 
+        <Button
+            android:id="@+id/btnPrevious"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="15dp"
+            app:cornerRadius="30dp"
+            app:icon="@drawable/baseline_arrow_back_24"
+            app:iconGravity="textTop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/textViewEditProfileTitle"
             android:layout_width="wrap_content"
@@ -227,18 +239,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewEditProfileTitle"
             app:srcCompat="@drawable/baseline_account_circle_24" />
-
-        <Button
-            android:id="@+id/btnPrevious"
-            android:layout_width="45dp"
-            android:layout_height="45dp"
-            android:layout_marginStart="15dp"
-            android:layout_marginTop="15dp"
-            app:cornerRadius="30dp"
-            app:icon="@drawable/baseline_arrow_back_24"
-            app:iconGravity="textTop"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

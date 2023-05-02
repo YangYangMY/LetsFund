@@ -107,7 +107,7 @@ class BorrowerProfileFragment : Fragment() {
 
         // Dialog to enter email for reset password
         val builder = AlertDialog.Builder(context)
-        builder.setTitle("Enter Data")
+        builder.setTitle("Enter Email to reset Password")
 
         // Inflate the custom_dialog view
         val view = layoutInflater.inflate(R.layout.custom_dialog, null)
