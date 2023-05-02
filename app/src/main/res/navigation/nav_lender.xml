@@ -47,14 +47,11 @@
         android:id="@+id/navigation_editprofile"
         android:name="my.edu.tarc.letsfund.ui.authentication.profile.EditProfileFragment"
         android:label="@string/title_edit_profile"
-        tools:layout="@layout/fragment_edit_profile" >
-        <action
-            android:id="@+id/action_navigation_lender_editprofile_self"
-            app:destination="@id/navigation_editprofile" />
-    </fragment>
+        tools:layout="@layout/fragment_edit_profile" />
     <fragment
         android:id="@+id/navigation_cardpayment"
         android:name="my.edu.tarc.letsfund.ui.payment.CardPaymentFragment"
-        android:label="@string/title_edit_profile"
+        android:label="@string/payment"
         tools:layout="@layout/fragment_card_payment" />
+
 </navigation>

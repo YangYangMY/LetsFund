@@ -1,5 +1,6 @@
 package my.edu.tarc.letsfund.ui.lender.wallet
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -39,7 +40,10 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import my.edu.tarc.letsfund.R
+import my.edu.tarc.letsfund.ui.authentication.profile.EditProfileActivity
+import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
 import my.edu.tarc.letsfund.ui.lender.LenderActivity
+import my.edu.tarc.letsfund.ui.payment.CardPaymentActivity
 
 class WalletFragment : Fragment() {
     private lateinit var composeView: ComposeView
@@ -99,6 +103,8 @@ class WalletFragment : Fragment() {
                 onClick = {
 
                     findNavController().navigate(R.id.action_navigation_repayment_to_navigation_cardpayment)
+                    //val intent = Intent(context, CardPaymentActivity::class.java)
+                    //startActivity(intent)
 
                 },
                 contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
@@ -114,6 +120,7 @@ class WalletFragment : Fragment() {
                 Text("Top Up",  color = Color.White)
             }
         }
+
 
         composeView = binding.Withdraw
         composeView.setContent {
@@ -155,6 +162,23 @@ class WalletFragment : Fragment() {
                 callback(null)
             }
         })
+    }
+
+    private fun readWalletAmount(callback: (Double?) -> Unit) {
+
+        //initialise database
+        auth = FirebaseAuth.getInstance()
+        uid = auth.currentUser?.uid.toString()
+        databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
+
+        databaseRef.child(uid).get().addOnSuccessListener {
+            if (it.exists()) {
+                val amount = it.child("walletAmount").value
+                callback(amount as Double?)
+            }
+        }
+        callback(null)
+
     }
 
     override fun onDestroyView() {

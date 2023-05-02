@@ -26,11 +26,6 @@
         android:label="@string/BorrowerProfile"
         tools:layout="@layout/fragment_borrowerprofile" >
         <action
-            android:id="@+id/action_navigation_borrowerprofile_to_navigation_editprofile_activity"
-            app:destination="@id/navigation_editprofile_activity"
-            app:popUpTo="@id/navigation_borrowerprofile"
-            app:popUpToInclusive="true" />
-        <action
             android:id="@+id/action_navigation_borrowerprofile_to_navigation_editprofile"
             app:destination="@id/navigation_editprofile"
             app:popUpTo="@id/navigation_borrowerprofile"
@@ -41,11 +36,5 @@
         android:name="my.edu.tarc.letsfund.ui.authentication.profile.EditProfileFragment"
         android:label="@string/title_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
-
-    <activity
-        android:id="@+id/navigation_editprofile_activity"
-        android:name="my.edu.tarc.letsfund.ui.authentication.profile.EditProfileActivity"
-        android:label="@string/title_edit_profile"
-        tools:layout="@layout/activity_edit_profile" />
 
 </navigation>

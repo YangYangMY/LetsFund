@@ -199,27 +199,6 @@ class EditProfileActivity : AppCompatActivity() {
         })
     }
 
-    private fun getRole(callback: (String?) -> Unit) {
-
-        //initialise database
-        auth = FirebaseAuth.getInstance()
-        uid = auth.currentUser?.uid.toString()
-        databaseRef = FirebaseDatabase.getInstance().getReference("users")
-
-        databaseRef.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val user = snapshot.getValue(Users::class.java)
-                val currentUserRole = user?.role
-                callback(currentUserRole)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@EditProfileActivity, "Failed to get User Profile data", Toast.LENGTH_SHORT).show()
-                callback(null)
-            }
-        })
-    }
-
 
     @SuppressLint("UseCompatLoadingForDrawables")
     private fun uploadProfilePicture() {
@@ -353,6 +332,26 @@ class EditProfileActivity : AppCompatActivity() {
         return null
     }
 
+    private fun getRole(callback: (String?) -> Unit) {
+
+        //initialise database
+        auth = FirebaseAuth.getInstance()
+        uid = auth.currentUser?.uid.toString()
+        databaseRef = FirebaseDatabase.getInstance().getReference("users")
+
+        databaseRef.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val user = snapshot.getValue(Users::class.java)
+                val currentUserRole = user?.role
+                callback(currentUserRole)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(this@EditProfileActivity, "Failed to get User Profile data", Toast.LENGTH_SHORT).show()
+                callback(null)
+            }
+        })
+    }
 
     override fun onBackPressed() {
 

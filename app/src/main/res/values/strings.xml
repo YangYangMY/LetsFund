@@ -10,6 +10,7 @@
     <string name="exit_message">Are you sure you want to exit?</string>
     <string name="exit">Exit</string>
     <string name="cancel">Cancel</string>
+    <string name="ok">OK</string>
     <string name="contact_saved">Contact Saved</string>
     <string name="no_record">No record</string>
     <string name="error_profile">Please enter phone number</string>
