@@ -52,6 +52,12 @@
         android:id="@+id/navigation_cardpayment"
         android:name="my.edu.tarc.letsfund.ui.payment.CardPaymentFragment"
         android:label="@string/payment"
-        tools:layout="@layout/fragment_card_payment" />
+        tools:layout="@layout/fragment_card_payment" >
+        <action
+            android:id="@+id/action_navigation_cardpayment_to_navigation_repayment"
+            app:destination="@id/navigation_repayment"
+            app:popUpTo="@id/navigation_cardpayment"
+            app:popUpToInclusive="true" />
+    </fragment>
 
 </navigation>

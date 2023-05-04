@@ -63,13 +63,13 @@ class SignUpActivity : AppCompatActivity() {
         binding.loadingSignUp.bringToFront()
 
         //Output of sign up input
-        val firstName = binding.editTextFirstName.text.toString()
-        val lastName = binding.editTextLastName.text.toString()
-        val gender = genderSelected().toString()
-        val dob = binding.editTextDob.text.toString()
-        val phone = binding.editTextPhone.text.toString()
-        val email = binding.editTextEmail.text.toString()
-        val password = binding.editTextPassword.text.toString()
+        var firstName: String? = binding.editTextFirstName.text.toString()
+        var lastName: String? = binding.editTextLastName.text.toString()
+        var gender: String? = genderSelected().toString()
+        var dob: String? = binding.editTextDob.text.toString()
+        var phone: String? = binding.editTextPhone.text.toString()
+        var email: String? = binding.editTextEmail.text.toString()
+        var password: String? = binding.editTextPassword.text.toString()
 
         //Output of helperText
         binding.firstNameContainer.helperText = validFirstName()
@@ -88,17 +88,16 @@ class SignUpActivity : AppCompatActivity() {
         //Sign Up Authentication
         if (validFirstName && validLastName && validPhone && validEmail && validPassword) {
 
-            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener {
+            auth.createUserWithEmailAndPassword(email.toString(), password.toString()).addOnCompleteListener {
                 if(it.isSuccessful) {
                     val databaseRef = database.reference.child("users").child(auth.currentUser!!.uid)
-                    val users: Users = Users(firstName, lastName, dob, gender, phone, email, "")
+                    val users: Users = Users(firstName, lastName, dob, gender, phone, email, null)
 
                     //Create Wallet
                         val databaseRef1 = database.reference.child("Wallet").child(auth.currentUser!!.uid)
                         val paymentHistory: LenderActivity.PaymentHistory = LenderActivity.PaymentHistory(null, null)
                     
                         val wallet: LenderActivity.Wallet = LenderActivity.Wallet(0.00)
-
 
                         databaseRef1.setValue(wallet).addOnCompleteListener {
                             databaseRef.setValue(users).addOnCompleteListener {
@@ -107,18 +106,18 @@ class SignUpActivity : AppCompatActivity() {
                                     val intent = Intent(this, RoleActivity::class.java)
                                     startActivity(intent)
                                 }else {
-                                    Toast.makeText(this, "Something went wrong, try again", Toast.LENGTH_SHORT).show()
+                                    Toast.makeText(this, "The database is failed, please try again", Toast.LENGTH_SHORT).show()
                                     resetSignUpInput()
                                 }
                             }
                         }
                 }else {
-                    Toast.makeText(this, "Something went wrong, try again", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "The database is failed, please try again", Toast.LENGTH_SHORT).show()
                     binding.loadingSignUp.visibility = View.GONE
                 }
             }
         }else {
-            Toast.makeText(this, "Something went wrong, try again", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please enter valid input", Toast.LENGTH_SHORT).show()
             binding.loadingSignUp.visibility = View.GONE
         }
 

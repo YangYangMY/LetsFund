@@ -148,8 +148,9 @@ class CardPaymentActivity : AppCompatActivity() {
         val validCardExpDate = binding.cardExpDateContainer.helperText == null
         val validCardCVV = binding.cvvContainer.helperText == null
 
-        val wallet = mapOf<String, String>(
-            "walletAmount" to "100"
+        var amount : Double? = 100.00
+        val wallet = mapOf<String, Double?>(
+            "walletAmount" to amount
         )
 
         if (validCardHolder && validCardNumber && validCardExpDate && validCardCVV) {
@@ -159,8 +160,8 @@ class CardPaymentActivity : AppCompatActivity() {
                 builder = AlertDialog.Builder(this)
 
                 builder.setTitle("Payment Message")
-                    .setMessage("Payment is Successful. Your wallet amount is updated.")
-                    .setPositiveButton(getString(R.string.exit),{_,_ ->
+                    .setMessage("Your payment is successful, your wallet amount is updated")
+                    .setPositiveButton(getString(R.string.ok),{_,_ ->
                         finish()
                         val intent = Intent(this, LenderActivity::class.java)
                         startActivity(intent)
@@ -169,11 +170,12 @@ class CardPaymentActivity : AppCompatActivity() {
                 builder.create().show()
 
             }.addOnFailureListener{
-                Toast.makeText(this, "Payment Failed. Try again!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Your payment is failed, please try again", Toast.LENGTH_SHORT).show()
             }
 
+
         }else {
-            Toast.makeText(this, "Payment Failed. Try again!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please enter valid input", Toast.LENGTH_SHORT).show()
         }
 
     }

@@ -68,6 +68,7 @@ class BorrowerProfileFragment : Fragment() {
         borrowerProfileViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
+
         return root
     }
 
@@ -79,10 +80,9 @@ class BorrowerProfileFragment : Fragment() {
         uid = auth.currentUser?.uid.toString()
         databaseRef = FirebaseDatabase.getInstance().getReference("users")
 
-
-        //If the current user ID is valid, retrieve the data
-        if(uid.isNotEmpty()) {
-            getUserData()
+        //Display email info
+        getUserEmail { email ->
+            binding.textViewEmail.text = email
         }
 
         //Display Profile Photo
@@ -91,9 +91,9 @@ class BorrowerProfileFragment : Fragment() {
         // Click to edit the profile
         binding.btnEditProfile.setOnClickListener{
 
-            val intent = Intent(context, EditProfileActivity::class.java)
-            startActivity(intent)
-            //findNavController().navigate(R.id.action_navigation_borrowerprofile_to_navigation_editprofile)
+            //val intent = Intent(context, EditProfileActivity::class.java)
+            //startActivity(intent)
+            findNavController().navigate(R.id.action_navigation_borrowerprofile_to_navigation_editprofile)
 
         }
 
@@ -142,7 +142,7 @@ class BorrowerProfileFragment : Fragment() {
                     Toast.makeText(context, "Please check your email", Toast.LENGTH_SHORT).show()
                     dialog.dismiss()
                 }.addOnFailureListener {
-                    Toast.makeText(context, "This email is invalid. Try again", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "This email is invalid, please try again", Toast.LENGTH_SHORT).show()
                 }
 
             }
@@ -151,21 +151,19 @@ class BorrowerProfileFragment : Fragment() {
 
     }
 
-    private fun getUserData() {
+    private fun getUserEmail(callback: (String?) -> Unit) {
 
-        databaseRef.child(uid).addValueEventListener(object: ValueEventListener {
+        databaseRef.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                user = snapshot.getValue(Users::class.java)!!
-                binding.textViewEmail.setText(user.email)
-                binding.textViewRole.setText(user.role)
+                val user = snapshot.getValue(Users::class.java)
+                val email = user?.email
+                callback(email)
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(context, "Failed to get User Profile data", Toast.LENGTH_SHORT).show()
-                binding.textViewEmail.setText("Email")
-                binding.textViewRole.setText("Role")
+                Toast.makeText(context, "Failed to get user email", Toast.LENGTH_SHORT).show()
+                callback(null)
             }
-
         })
     }
 
@@ -211,8 +209,5 @@ class BorrowerProfileFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
-
-
-
 
 }
