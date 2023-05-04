@@ -11,7 +11,6 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -28,7 +27,6 @@ import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.databinding.FragmentBorrowerprofileBinding
 import my.edu.tarc.letsfund.ui.authentication.Users
 import my.edu.tarc.letsfund.ui.authentication.login.LoginActivity
-import my.edu.tarc.letsfund.ui.authentication.profile.EditProfileActivity
 import java.io.File
 
 
@@ -110,7 +108,7 @@ class BorrowerProfileFragment : Fragment() {
         builder.setTitle("Enter Email to reset Password")
 
         // Inflate the custom_dialog view
-        val view = layoutInflater.inflate(R.layout.custom_dialog, null)
+        val view = layoutInflater.inflate(R.layout.dialog_resetpassword, null)
         emailContainer = view.findViewById(R.id.emailContainerForResetPassword)
         email = view.findViewById(R.id.editTextEmailForResetPassword)
         val submit = view.findViewById<Button>(R.id.btnSubmit)

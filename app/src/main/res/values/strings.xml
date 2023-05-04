@@ -111,6 +111,8 @@
     <string name="await_disbursement">Await Disbursement</string>
     <string name="funds_will_be_deposited_into_your_bank_account">Funds will be deposited into your bank account.</string>
     <string name="submit">Submit</string>
+    <string name="ten">10</string>
+    <string name="enter_amount">Enter Amount</string>
 
 
 </resources>

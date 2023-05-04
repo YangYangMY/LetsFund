@@ -1,22 +1,30 @@
 package my.edu.tarc.letsfund.ui.payment
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.databinding.FragmentCardPaymentBinding
-import my.edu.tarc.letsfund.ui.authentication.Users
 import my.edu.tarc.letsfund.ui.lender.LenderActivity
 import java.util.Calendar
 
@@ -40,6 +48,10 @@ class CardPaymentFragment : Fragment() {
     //Initialise Builder Dialog
     private lateinit var builder : AlertDialog.Builder
 
+    //FOR CONTAINER TOP UP
+    private lateinit var topupContainer: TextInputLayout
+    private lateinit var topupAmount: TextInputEditText
+    private var finaltopupAmount : Double = 0.0
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -71,7 +83,41 @@ class CardPaymentFragment : Fragment() {
             resetCardInput()
         }
 
+
+        // Dialog to enter email for reset password
+        val builder = android.app.AlertDialog.Builder(context)
+        builder.setTitle("Enter Top Up Amount")
+
+        // Inflate the custom_dialog view
+        val viewTopUp = layoutInflater.inflate(R.layout.dialog_topup, null)
+        topupContainer = viewTopUp.findViewById(R.id.topupcontainer)
+        topupAmount = viewTopUp.findViewById(R.id.editTextTopUpAmount)
+        val submit = viewTopUp.findViewById<Button>(R.id.btnTopUpSubmit)
+
+        builder.setView(viewTopUp)
+        builder.setCancelable(false) // prevent user from clicking outside of the dialog
+        val dialog = builder.create()
+
+
+
+        dialog.show()
+
+        // Click to submit email to change the password
+        submit.setOnClickListener{
+
+            //Output of email input
+            val topupAmountText = topupAmount.text.toString()
+            if (topupAmountText.isNotEmpty()) {
+                finaltopupAmount = topupAmountText.toDouble()
+            }
+            if ( finaltopupAmount <= 0) {
+                Toast.makeText(context, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show()
+            }else{
+                dialog.dismiss()
+            }
+        }
     }
+
 
     private val textWatcher: TextWatcher = object : TextWatcher {
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -123,6 +169,7 @@ class CardPaymentFragment : Fragment() {
         override fun afterTextChanged(s: Editable) {}
     }
 
+
     private fun submitForm() {
 
         //initialise database
@@ -143,10 +190,13 @@ class CardPaymentFragment : Fragment() {
         val validCardExpDate = binding.cardExpDateContainer.helperText == null
         val validCardCVV = binding.cvvContainer.helperText == null
 
-        var amount : Double? = 100.00
-        val wallet = mapOf<String, Double?>(
-            "walletAmount" to amount
-        )
+        //Retrieve current wallet amount
+        getWalletAmount { currentamount ->
+
+            var amount: Double? = currentamount?.plus(finaltopupAmount)
+            val wallet = mapOf<String, Double?>(
+                "walletAmount" to amount
+            )
 
         if (validCardHolder && validCardNumber && validCardExpDate && validCardCVV) {
 
@@ -156,9 +206,9 @@ class CardPaymentFragment : Fragment() {
 
                 builder.setTitle("Payment Message")
                     .setMessage("Your payment is successful, your wallet amount is updated")
-                    .setPositiveButton(getString(R.string.ok),{_,_ ->
+                    .setPositiveButton(getString(R.string.ok)) { _, _ ->
                         findNavController().navigate(R.id.action_navigation_cardpayment_to_navigation_repayment)
-                    })
+                    }
 
                 builder.create().show()
 
@@ -170,9 +220,9 @@ class CardPaymentFragment : Fragment() {
 
                 builder.setTitle("Payment Message")
                     .setMessage("Your payment is failed, please try again")
-                    .setPositiveButton(getString(R.string.ok),{_,_ ->
+                    .setPositiveButton(getString(R.string.ok)) { _, _ ->
                         findNavController().navigate(R.id.action_navigation_cardpayment_to_navigation_repayment)
-                    })
+                    }
 
                 builder.create().show()
 
@@ -181,7 +231,27 @@ class CardPaymentFragment : Fragment() {
         }else {
             Toast.makeText(context, "Please enter valid input", Toast.LENGTH_SHORT).show()
         }
+        }
+    }
+    private fun getWalletAmount(callback: (Double?) -> Unit) {
 
+        //initialise database
+        auth = FirebaseAuth.getInstance()
+        uid = auth.currentUser?.uid.toString()
+        databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
+
+        databaseRef.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val wallet = snapshot.getValue(LenderActivity.Wallet::class.java)
+                val amount = wallet?.walletAmount
+                callback(amount)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "Failed to get Wallet data", Toast.LENGTH_SHORT).show()
+                callback(null)
+            }
+        })
     }
 
     private fun focusListener() {

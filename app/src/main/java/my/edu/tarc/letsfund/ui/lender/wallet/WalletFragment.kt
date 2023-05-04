@@ -143,6 +143,12 @@ class WalletFragment : Fragment() {
         return root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+    }
+
+
     private fun getWalletAmount(callback: (Double?) -> Unit) {
 
         //initialise database
@@ -164,22 +170,6 @@ class WalletFragment : Fragment() {
         })
     }
 
-    private fun readWalletAmount(callback: (Double?) -> Unit) {
-
-        //initialise database
-        auth = FirebaseAuth.getInstance()
-        uid = auth.currentUser?.uid.toString()
-        databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
-
-        databaseRef.child(uid).get().addOnSuccessListener {
-            if (it.exists()) {
-                val amount = it.child("walletAmount").value
-                callback(amount as Double?)
-            }
-        }
-        callback(null)
-
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
