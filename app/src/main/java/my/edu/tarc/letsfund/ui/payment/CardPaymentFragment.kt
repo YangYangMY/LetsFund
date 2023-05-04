@@ -1,5 +1,6 @@
 package my.edu.tarc.letsfund.ui.payment
 
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -10,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +28,8 @@ import com.google.firebase.database.ValueEventListener
 import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.databinding.FragmentCardPaymentBinding
 import my.edu.tarc.letsfund.ui.lender.LenderActivity
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 
@@ -43,6 +47,7 @@ class CardPaymentFragment : Fragment() {
     //Initialise Database
     private lateinit var uid: String
     private lateinit var databaseRef : DatabaseReference
+    private lateinit var database: FirebaseDatabase
     private lateinit var auth: FirebaseAuth
 
     //Initialise Builder Dialog
@@ -56,12 +61,13 @@ class CardPaymentFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // Inflate the layout for this fragment
         _binding = FragmentCardPaymentBinding.inflate(inflater, container, false)
 
         return binding.root
     }
+
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -170,11 +176,19 @@ class CardPaymentFragment : Fragment() {
     }
 
 
+
     private fun submitForm() {
 
         //initialise database
         auth = FirebaseAuth.getInstance()
         uid = auth.currentUser?.uid.toString()
+
+        val today = LocalDate.now()
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val formattedDate = (today.format(formatter)).toString()
+
+        val databaseRefTopUp = database.reference.child("TransactionHistory").child(auth.currentUser!!.uid)
+        val topupTransaction: LenderActivity.PaymentHistory = LenderActivity.PaymentHistory("Top Up", finaltopupAmount)
 
         databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
 
@@ -199,16 +213,18 @@ class CardPaymentFragment : Fragment() {
             )
 
         if (validCardHolder && validCardNumber && validCardExpDate && validCardCVV) {
+            databaseRefTopUp.setValue(topupTransaction).addOnSuccessListener{
+                databaseRef.child(uid).updateChildren(wallet).addOnSuccessListener {
 
-            databaseRef.child(uid).updateChildren(wallet).addOnSuccessListener {
+                    builder = AlertDialog.Builder(requireContext())
 
-                builder = AlertDialog.Builder(requireContext())
+                    builder.setTitle("Payment Message")
+                        .setMessage("Your payment is successful, your wallet amount is updated")
+                        .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                            findNavController().navigate(R.id.action_navigation_cardpayment_to_navigation_repayment)
+                        }
+            }
 
-                builder.setTitle("Payment Message")
-                    .setMessage("Your payment is successful, your wallet amount is updated")
-                    .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                        findNavController().navigate(R.id.action_navigation_cardpayment_to_navigation_repayment)
-                    }
 
                 builder.create().show()
 
