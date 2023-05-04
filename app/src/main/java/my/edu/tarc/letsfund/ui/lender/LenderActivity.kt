@@ -30,8 +30,9 @@ class LenderActivity : AppCompatActivity() {
 
     // To Store Payment Details
     data class PaymentHistory(
-        var chosenMethod : String? = null,
-        var transactionAmount : Double? = null
+        var date: String? = null,
+        var method : String? = null,
+        var amount : Double? = null
     )
 
     data class Wallet(
