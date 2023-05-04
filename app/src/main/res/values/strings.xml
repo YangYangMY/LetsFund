@@ -113,6 +113,9 @@
     <string name="submit">Submit</string>
     <string name="ten">10</string>
     <string name="enter_amount">Enter Amount</string>
+    <string name="date">date</string>
+    <string name="method">method</string>
+    <string name="amount">amount</string>
 
 
 </resources>
