@@ -182,6 +182,7 @@ class CardPaymentFragment : Fragment() {
         //initialise database
         auth = FirebaseAuth.getInstance()
         uid = auth.currentUser?.uid.toString()
+        database = FirebaseDatabase.getInstance()
 
         val today = LocalDate.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
@@ -213,7 +214,7 @@ class CardPaymentFragment : Fragment() {
             )
 
         if (validCardHolder && validCardNumber && validCardExpDate && validCardCVV) {
-            databaseRefTopUp.setValue(topupTransaction).addOnSuccessListener{
+            databaseRefTopUp.setValue(topupTransaction).addOnCompleteListener{
                 databaseRef.child(uid).updateChildren(wallet).addOnSuccessListener {
 
                     builder = AlertDialog.Builder(requireContext())
@@ -223,10 +224,11 @@ class CardPaymentFragment : Fragment() {
                         .setPositiveButton(getString(R.string.ok)) { _, _ ->
                             findNavController().navigate(R.id.action_navigation_cardpayment_to_navigation_repayment)
                         }
+                    builder.create().show()
             }
 
 
-                builder.create().show()
+
 
 
             }.addOnFailureListener{
