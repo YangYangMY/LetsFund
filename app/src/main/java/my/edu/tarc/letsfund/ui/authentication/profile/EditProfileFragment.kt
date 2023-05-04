@@ -1,33 +1,59 @@
 package my.edu.tarc.letsfund.ui.authentication.profile
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import my.edu.tarc.letsfund.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import my.edu.tarc.letsfund.databinding.FragmentEditProfileBinding
 import my.edu.tarc.letsfund.ui.authentication.Users
+import my.edu.tarc.letsfund.ui.authentication.signup.RoleActivity
+import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
+import my.edu.tarc.letsfund.ui.lender.LenderActivity
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.OutputStream
 import java.util.*
 
 class EditProfileFragment : Fragment() {
 
     private var _binding: FragmentEditProfileBinding? = null
+
+    //Initialize Firebase
     private lateinit var auth: FirebaseAuth
     private lateinit var databaseRef: DatabaseReference
     private lateinit var database: FirebaseDatabase
+    private lateinit var storageReference: StorageReference
+
+    //Initialize Authentication User
     private lateinit var user: Users
     private lateinit var uid: String
-
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+
+
+    private val getPhoto = registerForActivityResult(ActivityResultContracts.GetContent()){ uri ->
+        if(uri != null){
+            binding.imageProfile.setImageURI(uri)
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,21 +62,27 @@ class EditProfileFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentEditProfileBinding.inflate(inflater, container, false)
 
+        //Initialise Firebase
+        auth = FirebaseAuth.getInstance()
+        uid = auth.currentUser?.uid.toString()
+        databaseRef = FirebaseDatabase.getInstance().getReference("users")
+
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //Initialise Firebase
-        auth = FirebaseAuth.getInstance()
-        uid = auth.currentUser?.uid.toString()
-        databaseRef = FirebaseDatabase.getInstance().getReference("users")
-        database = FirebaseDatabase.getInstance()
 
-        //If the current user ID is valid, retrieve the data
-        if(uid.isNotEmpty()) {
-            getUserData()
+        //Display User Existing Profile
+        getUserData()
+
+        //Display Profile Photo
+        readProfilePhoto()
+
+        //Select photo from gallery
+        binding.imageProfile.setOnClickListener {
+            getPhoto.launch("image/*")
         }
 
         //Setting up DatePicker for Date Of Birth
@@ -69,7 +101,6 @@ class EditProfileFragment : Fragment() {
             submitForm()
         }
 
-
     }
 
     private fun submitForm() {
@@ -79,11 +110,11 @@ class EditProfileFragment : Fragment() {
         binding.loadingProfile.bringToFront()
 
         //Output of sign up input
-        val firstName = binding.editTextFirstName.text.toString()
-        val lastName = binding.editTextLastName.text.toString()
-        val gender = genderSelected().toString()
-        val dob = binding.editTextDob.text.toString()
-        val phone = binding.editTextPhone.text.toString()
+        val firstName: String? = binding.editTextFirstName.text.toString()
+        val lastName: String? = binding.editTextLastName.text.toString()
+        val gender: String? = genderSelected().toString()
+        val dob: String? = binding.editTextDob.text.toString()
+        val phone: String? = binding.editTextPhone.text.toString()
 
         //Output of helperText
         binding.firstNameContainer.helperText = validFirstName()
@@ -95,9 +126,7 @@ class EditProfileFragment : Fragment() {
         val validLastName = binding.lastNameContainer.helperText == null
         val validPhone = binding.phoneContainer.helperText == null
 
-        databaseRef = FirebaseDatabase.getInstance().getReference("users")
-
-        val user = mapOf<String, String>(
+        val user = mapOf<String, String?>(
             "firstname" to firstName,
             "lastname" to lastName,
             "dob" to dob,
@@ -108,20 +137,32 @@ class EditProfileFragment : Fragment() {
         //Edit Profile Authentication
         if (validFirstName && validLastName && validPhone) {
 
-            databaseRef.child(auth.currentUser!!.uid).updateChildren(user).addOnSuccessListener {
-
-                val userEmail = FirebaseAuth.getInstance().currentUser?.email
+            databaseRef.child(uid).updateChildren(user).addOnSuccessListener {
 
                 binding.loadingProfile.visibility = View.GONE
                 Toast.makeText(context, "Your profile is updated", Toast.LENGTH_SHORT).show()
+                uploadProfilePicture()
 
+                getRole { role ->
+                    if (role.equals("Lender")) {
+                        val intent = Intent(context, LenderActivity::class.java)
+                        startActivity(intent)
+                    } else if (role.equals("Borrower")) {
+                        val intent = Intent(context, BorrowerActivity::class.java)
+                        startActivity(intent)
+                    }
+                }
 
             }.addOnFailureListener{
 
                 binding.loadingProfile.visibility = View.GONE
-                Toast.makeText(context, "Failed to update profile. Try again!" + auth.currentUser, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Database is failed. Please try again" + auth.currentUser, Toast.LENGTH_SHORT).show()
 
             }
+
+        } else {
+            binding.loadingProfile.visibility = View.GONE
+            Toast.makeText(context, "Please enter valid input" + auth.currentUser, Toast.LENGTH_SHORT).show()
         }
 
     }
@@ -130,6 +171,7 @@ class EditProfileFragment : Fragment() {
         databaseRef.child(uid).addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 user = snapshot.getValue(Users::class.java)!!
+
                 binding.editTextFirstName.setText(user.firstname)
                 binding.editTextLastName.setText(user.lastname)
                 binding.editTextDob.setText(user.dob)
@@ -138,11 +180,47 @@ class EditProfileFragment : Fragment() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(context, "Failed to get User Profile data", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Failed to get user profile data", Toast.LENGTH_SHORT).show()
             }
 
         })
     }
+
+
+    @SuppressLint("UseCompatLoadingForDrawables")
+    private fun uploadProfilePicture() {
+
+        val filename = "profile.png"
+        val file = Uri.fromFile(File(context?.filesDir, filename))
+
+        if (binding.imageProfile.drawable?.constantState != resources.getDrawable(R.drawable.baseline_account_circle_24)?.constantState) {
+            storageReference = FirebaseStorage.getInstance().getReference("Profile/"+auth.currentUser?.uid)
+
+            storageReference.putFile(file).addOnFailureListener {
+                Toast.makeText(context, "The photo file is invalid", Toast.LENGTH_SHORT).show()
+            }
+
+        }
+
+    }
+
+    private fun readProfilePhoto() {
+
+        storageReference = FirebaseStorage.getInstance().reference.child("Profile/$uid")
+
+        val localFile = File.createTempFile("tempImage", "png")
+
+        storageReference.getFile(localFile).addOnSuccessListener {
+
+            val bitmap = BitmapFactory.decodeFile(localFile.absolutePath)
+            binding.imageProfile.setImageBitmap(bitmap)
+
+        }.addOnFailureListener {
+            binding.imageProfile.setImageResource(R.drawable.baseline_account_circle_24)
+        }
+
+    }
+
 
     private fun focusListener() {
 
@@ -241,6 +319,27 @@ class EditProfileFragment : Fragment() {
             return "Must be 10 Digits"
         }
         return null
+    }
+
+    private fun getRole(callback: (String?) -> Unit) {
+
+        //initialise database
+        auth = FirebaseAuth.getInstance()
+        uid = auth.currentUser?.uid.toString()
+        databaseRef = FirebaseDatabase.getInstance().getReference("users")
+
+        databaseRef.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val user = snapshot.getValue(Users::class.java)
+                val currentUserRole = user?.role
+                callback(currentUserRole)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "Failed to get User Profile data", Toast.LENGTH_SHORT).show()
+                callback(null)
+            }
+        })
     }
 
     override fun onDestroyView() {

@@ -88,11 +88,10 @@ class LoginActivity : AppCompatActivity() {
         //Login Authentication
         if (validEmail && validPassword) {
 
-            val userEmail = FirebaseAuth.getInstance().currentUser?.email
-
-
             auth.signInWithEmailAndPassword(email, password).addOnCompleteListener {
                 if(it.isSuccessful) {
+
+                    val userEmail = FirebaseAuth.getInstance().currentUser?.email
 
                     Toast.makeText(this, "Welcome, $userEmail", Toast.LENGTH_SHORT).show()
                     binding.loadingLogin.visibility = View.GONE
@@ -106,13 +105,13 @@ class LoginActivity : AppCompatActivity() {
                         }
                     }
                 }else {
-                    Toast.makeText(this, "Something went wrong, try again", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "The database is failed, please try again", Toast.LENGTH_SHORT).show()
                     binding.loadingLogin.visibility = View.GONE
                     resetLoginInput()
                 }
             }
         }else {
-            Toast.makeText(this, "Something went wrong, try again", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please enter valid input", Toast.LENGTH_SHORT).show()
             binding.loadingLogin.visibility = View.GONE
         }
 

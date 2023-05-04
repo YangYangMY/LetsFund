@@ -132,11 +132,11 @@ class EditProfileActivity : AppCompatActivity() {
         binding.loadingProfile.bringToFront()
 
         //Output of sign up input
-        val firstName = binding.editTextFirstName.text.toString()
-        val lastName = binding.editTextLastName.text.toString()
-        val gender = genderSelected().toString()
-        val dob = binding.editTextDob.text.toString()
-        val phone = binding.editTextPhone.text.toString()
+        var firstName: String? = binding.editTextFirstName.text.toString()
+        var lastName: String? = binding.editTextLastName.text.toString()
+        var gender: String? = genderSelected().toString()
+        var dob: String? = binding.editTextDob.text.toString()
+        var phone: String? = binding.editTextPhone.text.toString()
 
         //Output of helperText
         binding.firstNameContainer.helperText = validFirstName()
@@ -148,7 +148,7 @@ class EditProfileActivity : AppCompatActivity() {
         val validLastName = binding.lastNameContainer.helperText == null
         val validPhone = binding.phoneContainer.helperText == null
 
-        val user = mapOf<String, String>(
+        val user = mapOf<String, String?>(
             "firstname" to firstName,
             "lastname" to lastName,
             "dob" to dob,
@@ -168,14 +168,14 @@ class EditProfileActivity : AppCompatActivity() {
             }.addOnFailureListener{
 
                 binding.loadingProfile.visibility = View.GONE
-                Toast.makeText(this, "Failed to update profile. Try again!" + auth.currentUser, Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Database is failed. Please try again" + auth.currentUser, Toast.LENGTH_SHORT).show()
 
             }
 
 
         }else {
             binding.loadingProfile.visibility = View.GONE
-            Toast.makeText(this, "Failed to update profile. Try again!" + auth.currentUser, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Please enter valid input" + auth.currentUser, Toast.LENGTH_SHORT).show()
         }
 
     }
@@ -193,7 +193,7 @@ class EditProfileActivity : AppCompatActivity() {
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@EditProfileActivity, "Failed to get User Profile data", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@EditProfileActivity, "Failed to get user profile data", Toast.LENGTH_SHORT).show()
             }
 
         })

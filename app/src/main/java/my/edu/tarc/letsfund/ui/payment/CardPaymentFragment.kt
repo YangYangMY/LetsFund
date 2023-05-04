@@ -1,5 +1,6 @@
 package my.edu.tarc.letsfund.ui.payment
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -8,11 +9,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.databinding.FragmentCardPaymentBinding
 import my.edu.tarc.letsfund.ui.authentication.Users
+import my.edu.tarc.letsfund.ui.lender.LenderActivity
 import java.util.Calendar
 
 
@@ -31,6 +36,9 @@ class CardPaymentFragment : Fragment() {
     private lateinit var uid: String
     private lateinit var databaseRef : DatabaseReference
     private lateinit var auth: FirebaseAuth
+
+    //Initialise Builder Dialog
+    private lateinit var builder : AlertDialog.Builder
 
 
     override fun onCreateView(
@@ -135,21 +143,43 @@ class CardPaymentFragment : Fragment() {
         val validCardExpDate = binding.cardExpDateContainer.helperText == null
         val validCardCVV = binding.cvvContainer.helperText == null
 
-        val wallet = mapOf<String, String>(
-            "walletAmount" to "100"
+        var amount : Double? = 100.00
+        val wallet = mapOf<String, Double?>(
+            "walletAmount" to amount
         )
 
         if (validCardHolder && validCardNumber && validCardExpDate && validCardCVV) {
 
             databaseRef.child(uid).updateChildren(wallet).addOnSuccessListener {
-                Toast.makeText(context, "Your wallet is updated", Toast.LENGTH_SHORT).show()
+
+                builder = AlertDialog.Builder(requireContext())
+
+                builder.setTitle("Payment Message")
+                    .setMessage("Your payment is successful, your wallet amount is updated")
+                    .setPositiveButton(getString(R.string.ok),{_,_ ->
+                        findNavController().navigate(R.id.action_navigation_cardpayment_to_navigation_repayment)
+                    })
+
+                builder.create().show()
+
 
             }.addOnFailureListener{
-                Toast.makeText(context, "Payment Failed. Try again!", Toast.LENGTH_SHORT).show()
+
+                //Toast.makeText(context, "Payment is failed, please try again", Toast.LENGTH_SHORT).show()
+                builder = AlertDialog.Builder(requireContext())
+
+                builder.setTitle("Payment Message")
+                    .setMessage("Your payment is failed, please try again")
+                    .setPositiveButton(getString(R.string.ok),{_,_ ->
+                        findNavController().navigate(R.id.action_navigation_cardpayment_to_navigation_repayment)
+                    })
+
+                builder.create().show()
+
             }
 
         }else {
-            Toast.makeText(context, "Payment Failed. Try again!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Please enter valid input", Toast.LENGTH_SHORT).show()
         }
 
     }

@@ -94,7 +94,7 @@ class RoleActivity : AppCompatActivity() {
         }.addOnFailureListener{
 
             binding.loadingRole.visibility = View.GONE
-            Toast.makeText(this, "Failed to sign up. Try again!" + auth.currentUser, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Failed to sign up, please try again" + auth.currentUser, Toast.LENGTH_SHORT).show()
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
 
