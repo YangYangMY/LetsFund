@@ -256,7 +256,7 @@ android:fillViewport="true">
         app:layout_constraintTop_toBottomOf="@+id/cvvContainer" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnPay"
+        android:id="@+id/btnCardPay"
         android:layout_width="170dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"

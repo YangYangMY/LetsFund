@@ -109,7 +109,7 @@ class WalletFragment : Fragment() {
             Button(
                 onClick = {
 
-                    findNavController().navigate(R.id.action_navigation_repayment_to_navigation_cardpayment)
+                    findNavController().navigate(R.id.action_navigation_wallet_to_navigation_cardpayment)
                     //val intent = Intent(context, CardPaymentActivity::class.java)
                     //startActivity(intent)
 
@@ -132,7 +132,9 @@ class WalletFragment : Fragment() {
         composeView = binding.Withdraw
         composeView.setContent {
             Button(
-                onClick = { /* Do something! */ },
+                onClick = {
+                    findNavController().navigate(R.id.action_navigation_wallet_to_navigation_withdraw)
+                },
                 contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
                 colors = ButtonDefaults.outlinedButtonColors(light_green)
             ) {

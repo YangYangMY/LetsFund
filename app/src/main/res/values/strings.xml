@@ -116,6 +116,9 @@
     <string name="date">date</string>
     <string name="method">method</string>
     <string name="amount">amount</string>
+    <string name="Withdraw">Withdraw</string>
+    <string name="BankDetials">Bank Details</string>
+    <string name="DuitNow">DuitNow</string>
 
 
 </resources>

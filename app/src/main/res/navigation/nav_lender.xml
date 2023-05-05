@@ -6,14 +6,19 @@
     app:startDestination="@id/navigation_lenderhome">
 
     <fragment
-        android:id="@+id/navigation_repayment"
+        android:id="@+id/navigation_wallet"
         android:name="my.edu.tarc.letsfund.ui.lender.wallet.WalletFragment"
         android:label="@string/title_dashboard"
         tools:layout="@layout/fragment_wallet" >
         <action
-            android:id="@+id/action_navigation_repayment_to_navigation_cardpayment"
+            android:id="@+id/action_navigation_wallet_to_navigation_cardpayment"
             app:destination="@id/navigation_cardpayment"
-            app:popUpTo="@id/navigation_repayment"
+            app:popUpTo="@id/navigation_wallet"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_navigation_wallet_to_navigation_withdraw"
+            app:destination="@id/navigation_withdraw"
+            app:popUpTo="@id/navigation_wallet"
             app:popUpToInclusive="true" />
     </fragment>
 
@@ -55,9 +60,14 @@
         tools:layout="@layout/fragment_card_payment" >
         <action
             android:id="@+id/action_navigation_cardpayment_to_navigation_repayment"
-            app:destination="@id/navigation_repayment"
+            app:destination="@id/navigation_wallet"
             app:popUpTo="@id/navigation_cardpayment"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_withdraw"
+        android:name="my.edu.tarc.letsfund.ui.lender.withdraw.WithdrawFragment"
+        android:label="fragment_withdraw"
+        tools:layout="@layout/fragment_withdraw" />
 
 </navigation>
