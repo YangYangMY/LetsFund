@@ -81,7 +81,7 @@ class CardPaymentFragment : Fragment() {
 
 
         //Proceed Payment
-        binding.btnPay?.setOnClickListener {
+        binding.btnCardPay?.setOnClickListener {
             submitForm()
         }
 
@@ -106,7 +106,15 @@ class CardPaymentFragment : Fragment() {
         val dialog = builder.create()
 
 
-
+        binding.visaCardSample.visibility = View.GONE
+        binding.btnReset.visibility = View.GONE
+        binding.btnCardPay?.visibility = View.GONE
+        binding.cvvContainer.visibility = View.GONE
+        binding.cardExpDateContainer.visibility = View.GONE
+        binding.cardNumberContainer.visibility = View.GONE
+        binding.textViewCardDetailsTitle.visibility = View.GONE
+        binding.visaCardSampleTitle.visibility = View.GONE
+        binding.cardHolderNameContainer.visibility = View.GONE
         dialog.show()
 
         // Click to submit email to change the password
@@ -121,6 +129,15 @@ class CardPaymentFragment : Fragment() {
                 Toast.makeText(context, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show()
             }else{
                 dialog.dismiss()
+                binding.visaCardSample.visibility = View.VISIBLE
+                binding.btnReset.visibility = View.VISIBLE
+                binding.btnCardPay?.visibility = View.VISIBLE
+                binding.cvvContainer.visibility = View.VISIBLE
+                binding.cardExpDateContainer.visibility = View.VISIBLE
+                binding.cardNumberContainer.visibility = View.VISIBLE
+                binding.textViewCardDetailsTitle.visibility = View.VISIBLE
+                binding.visaCardSampleTitle.visibility = View.VISIBLE
+                binding.cardHolderNameContainer.visibility = View.VISIBLE
             }
         }
     }

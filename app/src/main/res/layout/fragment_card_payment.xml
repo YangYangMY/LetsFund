@@ -59,15 +59,15 @@
                 android:layout_marginLeft="20dp"
                 android:src="@drawable/visa" />
 
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:layout_marginTop="70dp"
-                android:layout_centerInParent = "true"
-                android:letterSpacing="0.4"
-                android:text="@string/visa_card_number" />
+                <TextView
+                    android:id="@+id/textView6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginTop="70dp"
+                    android:letterSpacing="0.4"
+                    android:text="@string/visa_card_number" />
 
                 <TextView
                     android:id="@+id/textView7"
@@ -242,7 +242,7 @@
             app:layout_constraintTop_toBottomOf="@+id/cvvContainer" />
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnPay"
+            android:id="@+id/btnCardPay"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"

@@ -53,7 +53,7 @@ class CardPaymentActivity : AppCompatActivity() {
 
 
         //Proceed Payment
-        binding.btnPay?.setOnClickListener {
+        binding.btnCardPay?.setOnClickListener {
             submitForm()
         }
 
@@ -161,11 +161,11 @@ class CardPaymentActivity : AppCompatActivity() {
 
                 builder.setTitle("Payment Message")
                     .setMessage("Your payment is successful, your wallet amount is updated")
-                    .setPositiveButton(getString(R.string.ok),{_,_ ->
+                    .setPositiveButton(getString(R.string.ok)) { _, _ ->
                         finish()
                         val intent = Intent(this, LenderActivity::class.java)
                         startActivity(intent)
-                    })
+                    }
 
                 builder.create().show()
 
