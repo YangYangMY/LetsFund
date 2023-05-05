@@ -11,11 +11,6 @@
         android:label="@string/ApplyLoan"
         tools:layout="@layout/fragment_applyloan" />
     <fragment
-        android:id="@+id/navigation_repayment"
-        android:name="my.edu.tarc.letsfund.ui.borrower.repayment.RepaymentFragment"
-        android:label="@string/Repayment"
-        tools:layout="@layout/fragment_repayment" />
-    <fragment
         android:id="@+id/navigation_borrowerhome"
         android:name="my.edu.tarc.letsfund.ui.borrower.borrowerhome.BorrowerHomeFragment"
         android:label="@string/BorrowerHome"
@@ -36,5 +31,10 @@
         android:name="my.edu.tarc.letsfund.ui.authentication.profile.EditProfileFragment"
         android:label="@string/title_edit_profile"
         tools:layout="@layout/fragment_edit_profile" />
+    <fragment
+        android:id="@+id/navigation_repayment"
+        android:name="my.edu.tarc.letsfund.ui.borrower.repayment.RepaymentFragment"
+        android:label="fragment_repayment"
+        tools:layout="@layout/fragment_repayment" />
 
 </navigation>
