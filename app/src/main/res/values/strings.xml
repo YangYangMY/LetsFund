@@ -105,7 +105,7 @@
     <string name="letsfund">LetsFund</string>
     <string name="an_overview_of_the_application_process">An overview of the application process</string>
     <string name="complete_the_form">Complete The Form</string>
-    <string name="take_5_10_minutes_to_fill_up_the_details">Take 5-10 minutes to fill up the details.</string>
+    <string name="take_5_10_minutes_to_fill_up_the_details">Take 5–10 minutes to fill up the details.</string>
     <string name="await_funding">Await Funding</string>
     <string name="get_support_from_lenders_in_our_platform">Get support from lenders in our platform.</string>
     <string name="await_disbursement">Await Disbursement</string>
@@ -114,11 +114,27 @@
     <string name="ten">10</string>
     <string name="enter_amount">Enter Amount</string>
     <string name="date">date</string>
+
+    <!-- WITHDRAW  -->
     <string name="method">method</string>
     <string name="amount">amount</string>
     <string name="Withdraw">Withdraw</string>
     <string name="BankDetials">Bank Details</string>
     <string name="DuitNow">DuitNow</string>
-
+    <string name="bank">Bank</string>
+    <string name="bankaccount">Bank Account Number</string>
+    <string name="bankaccno">Account Number</string>
+    <string name="TransferTo">Transfer To</string>
+    <string name="mobile">Mobile Number</string>
+    <array name="bank">
+        <item>Select One</item>
+        <item>Public Bank</item>
+        <item>MayBank</item>
+    </array>
+    <array name="WithdrawOption">
+        <item>Select One</item>
+        <item>Phone Number</item>
+        <item>Bank</item>
+    </array>
 
 </resources>
