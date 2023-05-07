@@ -37,34 +37,51 @@ class WithdrawFragment : Fragment() {
                 id: Long
             ) {
                 if (position == 0){
+                    //Reset
                     binding.editTextMobileNum.visibility = View.INVISIBLE
                     binding.textViewMobileNo.visibility = View.INVISIBLE
-                    binding.btnWithdraw1.setTextColor(R.color.black)
-                    binding.btnWithdraw1.setBackgroundColor(R.color.white)
-                    binding.btnWithdraw1.isEnabled = false
-                    binding.btnWithdraw1.isClickable = false
+                    binding.textViewBank.visibility = View.INVISIBLE
+                    binding.spinnerBank.visibility = View.INVISIBLE
+                    binding.editTextBankAcc.visibility = View.INVISIBLE
+                    binding.textViewAccNo.visibility = View.INVISIBLE
+                    binding.btnWithdraw1.visibility = View.VISIBLE
+                    binding.btnWithdraw2.visibility = View.GONE
+                    binding.spinnerBank.setSelection(0)
+                    binding.editTextBankAcc.setText("")
+                    binding.editTextMobileNum.setText("")
                 }
                 else if (position == 1){
                     binding.editTextMobileNum.visibility = View.VISIBLE
                     binding.textViewMobileNo.visibility = View.VISIBLE
-                    binding.btnWithdraw1.isEnabled = true
-                    binding.btnWithdraw1.isClickable = true
-                    binding.btnWithdraw1.setTextColor(R.color.white)
-                    binding.btnWithdraw1.setBackgroundColor(R.color.light_green)
+                    binding.textViewBank.visibility = View.INVISIBLE
+                    binding.spinnerBank.visibility = View.INVISIBLE
+                   binding.editTextBankAcc.visibility = View.INVISIBLE
+                   binding.textViewAccNo.visibility = View.INVISIBLE
+                    binding.btnWithdraw1.visibility = View.GONE
+                    binding.btnWithdraw2.visibility = View.VISIBLE
+                    binding.spinnerBank.setSelection(0)
+                    binding.editTextBankAcc.setText("")
                 }
                 else if (position == 2){
                     binding.editTextMobileNum.visibility = View.INVISIBLE
                     binding.textViewMobileNo.visibility = View.INVISIBLE
-                    binding.btnWithdraw1.isEnabled = true
-                    binding.btnWithdraw1.isClickable = true
-                    binding.btnWithdraw1.setTextColor(R.color.white)
-                    binding.btnWithdraw1.setBackgroundColor(R.color.light_green)
+                    binding.textViewBank.visibility = View.VISIBLE
+                    binding.spinnerBank.visibility = View.VISIBLE
+                    binding.editTextBankAcc.visibility = View.VISIBLE
+                    binding.textViewBankAccountNo.visibility = View.VISIBLE
+                    binding.textViewAccNo.visibility = View.VISIBLE
+                    binding.btnWithdraw1.visibility = View.GONE
+                    binding.btnWithdraw2.visibility = View.VISIBLE
+                    binding.editTextMobileNum.setText("")
                 }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                binding.btnWithdraw1.isActivated = false
+                binding.btnWithdraw1.visibility = View.VISIBLE
+                binding.btnWithdraw2.visibility = View.GONE
             }
+
+
 
         }
 

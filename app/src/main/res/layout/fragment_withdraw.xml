@@ -128,6 +128,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinnerBank" />
 
+        <TextView
+            android:id="@+id/textViewErrorMobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:textColor="#FF1100"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextMobileNum"
+            app:layout_constraintStart_toEndOf="@+id/editTextMobileNum"
+            app:layout_constraintTop_toTopOf="@+id/editTextMobileNum" />
+
+        <TextView
+            android:id="@+id/textViewErrorBank"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:textColor="#FF1100"
+            app:layout_constraintBottom_toBottomOf="@+id/editTextBankAcc"
+            app:layout_constraintStart_toEndOf="@+id/editTextBankAcc"
+            app:layout_constraintTop_toTopOf="@+id/editTextBankAcc" />
+
         <Spinner
             android:id="@+id/spinnerBank"
             android:layout_width="wrap_content"
@@ -156,21 +178,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewAccNo" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnWithdraw1"
-            android:layout_width="170dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="90dp"
-            android:width="340dp"
-            android:backgroundTint="@color/dark_green"
-            android:fontFamily="@font/montserrat_medium"
-            android:text="@string/Withdraw"
-            app:cornerRadius="20dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.497"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/editTextBankAcc" />
-
         <EditText
             android:id="@+id/editTextMobileNum"
             android:layout_width="wrap_content"
@@ -185,6 +192,42 @@
             android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textViewMobileNo" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnWithdraw1"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
+            android:width="340dp"
+            android:backgroundTint="@color/dark_grey"
+            android:enabled="false"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@string/Withdraw"
+            android:textColor="@color/white"
+            android:visibility="invisible"
+            app:cornerRadius="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextBankAcc" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnWithdraw2"
+            android:layout_width="170dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="90dp"
+            android:width="340dp"
+            android:backgroundTint="@color/dark_green"
+            android:enabled="true"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@string/Withdraw"
+            android:textColor="@color/white"
+            android:visibility="gone"
+            app:cornerRadius="20dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.497"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextBankAcc" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
