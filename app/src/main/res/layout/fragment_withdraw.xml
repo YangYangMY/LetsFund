@@ -130,14 +130,25 @@
 
         <TextView
             android:id="@+id/textViewErrorMobile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="24dp"
+            android:layout_width="0dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
             android:fontFamily="@font/montserrat_medium"
             android:textColor="#FF1100"
-            app:layout_constraintBottom_toBottomOf="@+id/editTextMobileNum"
-            app:layout_constraintStart_toEndOf="@+id/editTextMobileNum"
-            app:layout_constraintTop_toTopOf="@+id/editTextMobileNum" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextMobileNum" />
+
+        <TextView
+            android:id="@+id/textViewErrorBankAcc"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:textColor="#FF1100"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextBankAcc" />
 
         <TextView
             android:id="@+id/textViewErrorBank"
@@ -146,9 +157,9 @@
             android:layout_marginStart="24dp"
             android:fontFamily="@font/montserrat_medium"
             android:textColor="#FF1100"
-            app:layout_constraintBottom_toBottomOf="@+id/editTextBankAcc"
-            app:layout_constraintStart_toEndOf="@+id/editTextBankAcc"
-            app:layout_constraintTop_toTopOf="@+id/editTextBankAcc" />
+            app:layout_constraintBottom_toBottomOf="@+id/spinnerBank"
+            app:layout_constraintStart_toEndOf="@+id/spinnerBank"
+            app:layout_constraintTop_toTopOf="@+id/spinnerBank" />
 
         <Spinner
             android:id="@+id/spinnerBank"
@@ -173,6 +184,7 @@
             android:fontFamily="@font/montserrat_medium"
             android:hint="@string/bankaccno"
             android:inputType="number"
+            android:maxLength="12"
             android:textColor="@color/black"
             android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
@@ -188,6 +200,7 @@
             android:fontFamily="@font/montserrat_medium"
             android:hint="@string/mobile"
             android:inputType="phone"
+            android:maxLength="10"
             android:textColor="@color/black"
             android:visibility="invisible"
             app:layout_constraintStart_toStartOf="parent"
