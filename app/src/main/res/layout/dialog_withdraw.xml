@@ -31,7 +31,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/montserrat"
                 android:hint="@string/enter_amount"
-                android:inputType="number"
+                android:inputType="number|numberDecimal"
                 android:lines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 

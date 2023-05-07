@@ -59,7 +59,7 @@
         android:label="@string/payment"
         tools:layout="@layout/fragment_card_payment" >
         <action
-            android:id="@+id/action_navigation_cardpayment_to_navigation_repayment"
+            android:id="@+id/action_navigation_cardpayment_to_navigation_wallet"
             app:destination="@id/navigation_wallet"
             app:popUpTo="@id/navigation_cardpayment"
             app:popUpToInclusive="true" />
@@ -68,6 +68,10 @@
         android:id="@+id/navigation_withdraw"
         android:name="my.edu.tarc.letsfund.ui.lender.withdraw.WithdrawFragment"
         android:label="fragment_withdraw"
-        tools:layout="@layout/fragment_withdraw" />
+        tools:layout="@layout/fragment_withdraw" >
+        <action
+            android:id="@+id/action_navigation_withdraw_to_navigation_wallet"
+            app:destination="@id/navigation_wallet" />
+    </fragment>
 
 </navigation>
