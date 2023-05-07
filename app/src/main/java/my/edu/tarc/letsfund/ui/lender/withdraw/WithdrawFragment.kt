@@ -8,33 +8,48 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Button
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.compose.ui.graphics.Color
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import kotlinx.coroutines.selects.select
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.databinding.FragmentWithdrawBinding
-import java.util.Calendar
+import my.edu.tarc.letsfund.ui.lender.LenderActivity
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
 class WithdrawFragment : Fragment() {
 
     private var _binding: FragmentWithdrawBinding? = null
     private val binding get() = _binding!!
     private var selectedWithdrawOptionCheck: Int = 0
-    private var amountWithdraw : Double? = 0.0
-    //Initialize Calendar
-    private var current = ""
-    private val mmyyyy = "MMYYYY"
-    private val cal: Calendar = Calendar.getInstance()
+
 
     //Initialise Database
     private lateinit var uid: String
     private lateinit var databaseRef : DatabaseReference
+    private lateinit var database: FirebaseDatabase
     private lateinit var auth: FirebaseAuth
 
     //Initialise Builder Dialog
     private lateinit var builder : AlertDialog.Builder
+
+    //FOR CONTAINER Withdraw
+    private lateinit var withdrawContainer: TextInputLayout
+    private lateinit var withdrawAmount: TextInputEditText
+    private var finalwithdrawAmount : Double = 0.0
+
+    //For Withdraw Function
+    private var WithdrawPass = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -47,6 +62,54 @@ class WithdrawFragment : Fragment() {
     ): View {
         _binding = FragmentWithdrawBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+
+        // Dialog to enter email for reset password
+        var builder = android.app.AlertDialog.Builder(context)
+        builder.setTitle("Enter Withdraw Amount")
+
+        // Inflate the custom_dialog view
+        val viewTopUp = layoutInflater.inflate(R.layout.dialog_withdraw, null)
+        withdrawContainer = viewTopUp.findViewById(R.id.withdrawcontainer)
+        withdrawAmount = viewTopUp.findViewById(R.id.editTextwithdrawAmount)
+        val submit = viewTopUp.findViewById<Button>(R.id.btnwithdrawSubmit)
+
+        binding.spinnerWithdrawOption.visibility = View.INVISIBLE
+        binding.textViewWithdrawOption.visibility = View.INVISIBLE
+        builder.setView(viewTopUp)
+        builder.setCancelable(false) // prevent user from clicking outside of the dialog
+        val dialog = builder.create()
+
+
+        dialog.show()
+
+        // Click to type withdrawal amount
+        submit.setOnClickListener{
+            var walletAmount: Double = 0.0
+            //Output of withdraw input
+            val withdrawAmountText = withdrawAmount.text.toString()
+            getWalletAmount{amount ->
+                if (amount != null) {
+                    walletAmount = amount
+                }
+
+            if (withdrawAmountText.isNotEmpty()) {
+                finalwithdrawAmount = withdrawAmountText.toDouble()
+            }
+            if(finalwithdrawAmount!! > walletAmount){
+                Toast.makeText(context, "Not enough Balance", Toast.LENGTH_SHORT).show()
+            }
+            else if ( finalwithdrawAmount!! <= 0) {
+                Toast.makeText(context, "Please Enter Valid Amount", Toast.LENGTH_SHORT).show()
+            }else{
+                dialog.dismiss()
+                binding.spinnerWithdrawOption.visibility = View.VISIBLE
+                binding.textViewWithdrawOption.visibility = View.VISIBLE
+            }
+            }
+        }
+
+
 
         binding.spinnerWithdrawOption.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             @SuppressLint("ResourceAsColor")
@@ -162,14 +225,65 @@ class WithdrawFragment : Fragment() {
                 if(binding.spinnerBank.selectedItemPosition == 1 || binding.spinnerBank.selectedItemPosition == 2){
                     binding.textViewErrorBankAcc.text = validBankAcc()
                 }
-
             }
+            if(WithdrawPass){
+                //initialise database
+                auth = FirebaseAuth.getInstance()
+                uid = auth.currentUser?.uid.toString()
+                database = FirebaseDatabase.getInstance()
 
+                val today = LocalDate.now()
+                val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+                val formattedDate = (today.format(formatter)).toString()
 
+                getTransactionNumber { transactionNumber ->
+                    if (transactionNumber != -1) {
+
+                        val historyid = transactionNumber.toString()
+                        val databaseRefwithdraw = database.reference.child("TransactionHistory")
+                            .child(auth.currentUser!!.uid).child(historyid)
+                        val WithdrawTransaction: LenderActivity.PaymentHistory =
+                            LenderActivity.PaymentHistory(formattedDate, "Withdraw", finalwithdrawAmount)
+
+                        databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
+
+                        //Retrieve current wallet amount
+                        getWalletAmount { currentamount ->
+                            val amount: Double? = currentamount?.minus(finalwithdrawAmount)
+                            val wallet = mapOf<String, Double?>(
+                                "walletAmount" to amount)
+
+                            databaseRefwithdraw.setValue(WithdrawTransaction).addOnCompleteListener {
+                                databaseRef.child(uid).updateChildren(wallet).addOnSuccessListener {
+                                    val builder1 = AlertDialog.Builder(requireContext())
+
+                                    builder1.setTitle("Withdraw Message")
+                                        .setMessage("Your withdraw is successful, your wallet amount is updated")
+                                        .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                                            findNavController().navigate(R.id.action_navigation_withdraw_to_navigation_wallet)
+                                        }
+                                    builder1.create().show()
+                                }
+                            }.addOnFailureListener{
+
+                            //Toast.makeText(context, "Payment is failed, please try again", Toast.LENGTH_SHORT).show()
+                                val builder2 = AlertDialog.Builder(requireContext())
+
+                                builder2.setTitle("Withdraw Message")
+                                .setMessage("Your withdraw is failed, please try again")
+                                .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                                    findNavController().navigate(R.id.action_navigation_withdraw_to_navigation_wallet)
+                                }
+
+                                builder2.create().show()
+                            }
+                        }
+                    }else{
+                        Toast.makeText(context, "Failed to access database, please try again", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
         }
-
-
-
         return root
     }
 
@@ -194,14 +308,18 @@ class WithdrawFragment : Fragment() {
     private fun validPhone(): String? {
         val phoneText = binding.editTextMobileNum.text.toString()
         if (phoneText.isEmpty()) {
+            WithdrawPass = false
             return "Required"
         }
         if (!phoneText.matches(".*[0-9].*".toRegex())) {
+            WithdrawPass = false
             return "Must be all Digits"
         }
         if(phoneText.length != 10) {
+            WithdrawPass = false
             return "Must be 10 Digits"
         }
+        WithdrawPass = true
         return null
     }
 
@@ -209,11 +327,46 @@ class WithdrawFragment : Fragment() {
         val selectOption = binding.spinnerBank.selectedItemPosition
 
         if(selectOption == 0){
+            WithdrawPass = false
             return "Please select a bank"
         }
-
+        WithdrawPass = true
         return null
     }
 
+    private fun getWalletAmount(callback: (Double?) -> Unit) {
+
+        //initialise database
+        auth = FirebaseAuth.getInstance()
+        uid = auth.currentUser?.uid.toString()
+        databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
+
+        databaseRef.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val wallet = snapshot.getValue(LenderActivity.Wallet::class.java)
+                val amount = wallet?.walletAmount
+                callback(amount)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "Failed to get Wallet data", Toast.LENGTH_SHORT).show()
+                callback(null)
+            }
+        })
+    }
+    private fun getTransactionNumber(onComplete: (Int) -> Unit) {
+        val databaseRefReadTransaction = FirebaseDatabase.getInstance().getReference("TransactionHistory").child(auth.currentUser!!.uid)
+        databaseRefReadTransaction.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val numberOfTransactions = snapshot.childrenCount.toInt()
+                val newTransactionNumber = if (numberOfTransactions > 0) numberOfTransactions + 1 else 1
+                onComplete(newTransactionNumber)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                onComplete(-1) // indicates an error occurred
+            }
+        })
+    }
 
 }
