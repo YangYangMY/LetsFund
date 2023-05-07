@@ -8,16 +8,33 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import androidx.appcompat.app.AlertDialog
 import androidx.compose.ui.graphics.Color
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.selects.select
 import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.databinding.FragmentWithdrawBinding
+import java.util.Calendar
 
 class WithdrawFragment : Fragment() {
 
     private var _binding: FragmentWithdrawBinding? = null
     private val binding get() = _binding!!
     private var selectedWithdrawOptionCheck: Int = 0
+    private var amountWithdraw : Double? = 0.0
+    //Initialize Calendar
+    private var current = ""
+    private val mmyyyy = "MMYYYY"
+    private val cal: Calendar = Calendar.getInstance()
+
+    //Initialise Database
+    private lateinit var uid: String
+    private lateinit var databaseRef : DatabaseReference
+    private lateinit var auth: FirebaseAuth
+
+    //Initialise Builder Dialog
+    private lateinit var builder : AlertDialog.Builder
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 

@@ -126,6 +126,7 @@
     <string name="bankaccno">Account Number</string>
     <string name="TransferTo">Transfer To</string>
     <string name="mobile">Mobile Number</string>
+    <string name="proceed">Proceed</string>
     <array name="bank">
         <item>Select One</item>
         <item>Public Bank</item>
