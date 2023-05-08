@@ -40,19 +40,15 @@
             android:text="@string/funding" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/TabItem"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/almost_funded"
-            tools:layout_editor_absoluteX="134dp"
-            tools:layout_editor_absoluteY="147dp" />
+            android:text="@string/almost_funded" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/ending_soon"
-            tools:layout_editor_absoluteX="278dp"
-            tools:layout_editor_absoluteY="159dp" />
+            android:text="@string/ending_soon" />
+
     </com.google.android.material.tabs.TabLayout>
 
     <ScrollView
