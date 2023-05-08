@@ -1,21 +1,15 @@
 package my.edu.tarc.letsfund.ui.payment
 
-import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Patterns
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -242,7 +236,7 @@ class CardPaymentFragment : Fragment() {
                                 builder.setTitle("Payment Message")
                                     .setMessage("Your payment is successful, your wallet amount is updated")
                                     .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                                        findNavController().navigate(R.id.action_navigation_cardpayment_to_navigation_repayment)
+                                        findNavController().navigate(R.id.action_navigation_cardpayment_to_navigation_wallet)
                                     }
                                 builder.create().show()
                             }
@@ -254,7 +248,7 @@ class CardPaymentFragment : Fragment() {
                             builder.setTitle("Payment Message")
                                 .setMessage("Your payment is failed, please try again")
                                 .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                                    findNavController().navigate(R.id.action_navigation_cardpayment_to_navigation_repayment)
+                                    findNavController().navigate(R.id.action_navigation_cardpayment_to_navigation_wallet)
                                 }
 
                             builder.create().show()

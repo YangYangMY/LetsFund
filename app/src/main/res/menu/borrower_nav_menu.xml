@@ -10,7 +10,7 @@
         android:icon="@drawable/baseline_request_page_24"
         android:title="@string/ApplyLoan" />
     <item
-        android:id="@+id/navigation_wallet"
+        android:id="@+id/navigation_repayment"
         android:icon="@drawable/baseline_payments_24"
         android:title="@string/Repayment" />
     <item
