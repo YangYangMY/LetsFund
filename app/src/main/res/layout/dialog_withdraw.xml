@@ -12,31 +12,31 @@
         android:padding="20dp">
 
         <ProgressBar
-            android:id="@+id/loadingtopup"
+            android:id="@+id/loadingwithdraw"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:visibility="gone" />
 
         <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/topupcontainer"
+            android:id="@+id/withdrawcontainer"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:helperText=""
             app:helperTextTextColor="@android:color/holo_red_dark">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/editTextTopUpAmount"
+                android:id="@+id/editTextwithdrawAmount"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:fontFamily="@font/montserrat"
                 android:hint="@string/enter_amount"
-                android:inputType="number"
+                android:inputType="number|numberDecimal"
                 android:lines="1" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnTopUpSubmit"
+            android:id="@+id/btnwithdrawSubmit"
             android:layout_width="170dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
