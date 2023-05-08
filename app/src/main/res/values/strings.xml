@@ -137,5 +137,13 @@
         <item>Phone Number</item>
         <item>Bank</item>
     </array>
+<<<<<<< HEAD
+=======
+     <!-- LEND  -->
+    <string name="funding">Funding</string>
+    <string name="almost_funded">Almost Funded</string>
+    <string name="ending_soon">Ending Soon</string>
+    <string name="buttonLend">Lend Now</string>
+>>>>>>> 85fb7571dddeff1a2307373a36895858f0792e8d
 
 </resources>
