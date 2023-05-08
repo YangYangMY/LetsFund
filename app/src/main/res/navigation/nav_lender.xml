@@ -60,13 +60,15 @@
         tools:layout="@layout/fragment_card_payment" >
         <action
             android:id="@+id/action_navigation_cardpayment_to_navigation_wallet"
-<<<<<<< HEAD
+
             app:destination="@id/navigation_wallet"
             app:popUpTo="@id/navigation_cardpayment"
             app:popUpToInclusive="true" />
-=======
+
             app:destination="@id/navigation_wallet" />
->>>>>>> 85fb7571dddeff1a2307373a36895858f0792e8d
+
+            app:destination="@id/navigation_wallet" />
+
     </fragment>
     <fragment
         android:id="@+id/navigation_withdraw"
