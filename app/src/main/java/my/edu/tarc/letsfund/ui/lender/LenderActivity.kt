@@ -38,6 +38,14 @@ class LenderActivity : AppCompatActivity() {
     data class Wallet(
         var walletAmount : Double? = null,
     )
+
+    data class FundList(
+        var fundAmount : Double? = null,
+        var description : String? = null,
+        var location : String? = null,
+        var borrowerName : String? = null
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLenderBinding.inflate(layoutInflater)
