@@ -20,9 +20,8 @@ class BorrowerActivity : AppCompatActivity() {
         var status : String? = null, //Borrowed, Repaid
     )
 
-    data class BorrowHistory(
+    data class RepaymentHistory(
         var date: String? = null,
-        var status: String? = null,
         var loanAmount: Double? = null,
     )
 
