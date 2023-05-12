@@ -144,6 +144,7 @@
     <string name="almost_funded">Almost Funded</string>
     <string name="ending_soon">Ending Soon</string>
     <string name="buttonLend">Lend Now</string>
+<<<<<<< Updated upstream
     <string-array name="fundAmount">
         <item>RM 25</item>
         <item>RM 50</item>
@@ -153,6 +154,9 @@
         <item>RM 175</item>
         <item>RM 200</item>
     </string-array>
+=======
+    <string name="letspay">LetsPay</string>
+>>>>>>> Stashed changes
 
 
 </resources>

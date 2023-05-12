@@ -88,14 +88,13 @@ class SignUpActivity : AppCompatActivity() {
         //Sign Up Authentication
         if (validFirstName && validLastName && validPhone && validEmail && validPassword) {
 
-            auth.createUserWithEmailAndPassword(email.toString(), password.toString()).addOnCompleteListener {
+            auth.createUserWithEmailAndPassword(email.toString(), password.toString()).addOnCompleteListener { it ->
                 if(it.isSuccessful) {
                     val databaseRef = database.reference.child("users").child(auth.currentUser!!.uid)
                     val users: Users = Users(firstName, lastName, dob, gender, phone, email, null)
 
                     //Create Wallet
                         val databaseRef1 = database.reference.child("Wallet").child(auth.currentUser!!.uid)
-                        val paymentHistory: LenderActivity.PaymentHistory = LenderActivity.PaymentHistory(null, null)
                     
                         val wallet: LenderActivity.Wallet = LenderActivity.Wallet(0.00)
 

@@ -22,16 +22,11 @@ class RepaymentFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val repaymentViewModel =
-            ViewModelProvider(this).get(RepaymentViewModel::class.java)
 
         _binding = FragmentRepaymentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textNotifications
-        repaymentViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+
         return root
     }
 
