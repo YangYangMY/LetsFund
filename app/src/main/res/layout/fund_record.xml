@@ -17,12 +17,12 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/fundRemain"
-        android:layout_width="50dp"
+        android:id="@+id/fundDate"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginEnd="5dp"
-        tools:text="$? to go" />
+        tools:text="Due Date" />
 
     <TextView
         android:id="@+id/borrowerName"
@@ -36,31 +36,18 @@
         android:textStyle="bold"
         tools:text="Borrower Name" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/fundAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="1dp"
+        android:fontFamily="@font/montserrat"
+        android:textColor="#4CAF50"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        tools:text="Fund Amount" />
 
-        <TextView
-            android:id="@+id/fundAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginStart="1dp"
-            android:fontFamily="@font/montserrat"
-            android:textColor="#4CAF50"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            tools:text="Fund Amount" />
-
-        <TextView
-            android:id="@+id/fundDate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="225dp"
-            android:layout_marginEnd="5dp"
-            android:layout_toEndOf="@+id/fundAmount"
-            tools:text="Due Date" />
-    </RelativeLayout>
 
     <TextView
         android:id="@+id/fundDesc"
@@ -72,27 +59,13 @@
         android:textSize="16sp"
         tools:text="Description" />
 
-    <RelativeLayout
+    <Button
+        android:id="@+id/button"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="48dp"
+        android:layout_toEndOf="@+id/lendAmount"
+        android:text="@string/buttonLend" />
 
-        <Button
-            android:id="@+id/button"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:layout_toEndOf="@+id/lendAmount"
-            android:text="@string/buttonLend" />
-
-        <Spinner
-            android:id="@+id/lendAmount"
-            android:layout_width="wrap_content"
-            android:layout_height="48dp"
-            android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
-            android:entries="@array/fundAmount">
-        </Spinner>
-
-    </RelativeLayout>
 
 
 </LinearLayout>

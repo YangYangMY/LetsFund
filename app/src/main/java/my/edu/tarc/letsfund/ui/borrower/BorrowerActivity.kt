@@ -14,7 +14,7 @@ class BorrowerActivity : AppCompatActivity() {
 
     data class BorrowRequest(
         var loanAmount : Double? = null,
-        var loanPurpose : String? = null,
+        var description : String? = null,
         var loanReqEndDate : String? = null,
         var loanChargeDate : String? = null,
         var status : String? = null, //Borrowed, Repaid
