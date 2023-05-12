@@ -15,7 +15,15 @@ class BorrowerActivity : AppCompatActivity() {
     data class BorrowRequest(
         var loanAmount : Double? = null,
         var loanPurpose : String? = null,
+        var loanReqEndDate : String? = null,
+        var loanChargeDate : String? = null,
         var status : String? = null, //Borrowed, Repaid
+    )
+
+    data class BorrowHistory(
+        var date: String? = null,
+        var status: String? = null,
+        var loanAmount: Double? = null,
     )
 
     private lateinit var binding: ActivityBorrowerBinding

@@ -153,6 +153,8 @@
         <item>RM 175</item>
         <item>RM 200</item>
     </string-array>
+    <string name="letspay">LetsPay</string>
+
 
     <string-array name="fundSort">
         <item>All</item>

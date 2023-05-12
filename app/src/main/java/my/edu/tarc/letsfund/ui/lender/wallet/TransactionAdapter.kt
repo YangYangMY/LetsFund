@@ -5,10 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import my.edu.tarc.letsfund.Contact
-import my.edu.tarc.letsfund.ContactAdapter
 import my.edu.tarc.letsfund.R
-import my.edu.tarc.letsfund.RecordClickListener
 import my.edu.tarc.letsfund.ui.lender.LenderActivity
 
 // Create an adapter class for the recycler view
@@ -17,7 +14,7 @@ class TransactionAdapter(private val transactionList: List<LenderActivity.Paymen
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TransactionViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-            .inflate(R.layout.wallet_record, parent, false)
+            .inflate(R.layout.record_wallet, parent, false)
         return TransactionViewHolder(itemView)
     }
 
