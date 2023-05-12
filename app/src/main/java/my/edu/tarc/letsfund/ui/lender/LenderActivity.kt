@@ -45,10 +45,10 @@ class LenderActivity : AppCompatActivity() {
     )
 
     data class LendHistory(
-        var loanAmount : Double? = null,
-        var date : String? = null,
+        var lendDate : String? = null,
         var borrowerName : String? = null,
-        val repaymentStatus: String = "Unpaid"
+        var loanAmount : Double? = null,
+        var repaymentStatus: String? = null, //Unpaid Paid
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {

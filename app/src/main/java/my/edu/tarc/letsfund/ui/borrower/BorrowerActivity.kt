@@ -14,14 +14,17 @@ class BorrowerActivity : AppCompatActivity() {
 
     data class BorrowRequest(
         var loanAmount : Double? = null,
-        var loanPurpose : String? = null,
-        var loanReqEndDate : String? = null,
-        var loanChargeDate : String? = null,
-        var status : String? = null, //Borrowed, Repaid
+        var borrowerName: String? = null,
+        var loanTitle: String? = null,
+        var loanDesc: String? = null,
+        var loanReqEndDate: String? = null,
+        var status: String? = null, //In Request, Lend
+        var lenderID: String? = null, //Update after lend
     )
 
     data class RepaymentHistory(
         var date: String? = null,
+        var lenderName: String? = null,
         var loanAmount: Double? = null,
     )
 
