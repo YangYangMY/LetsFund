@@ -11,18 +11,7 @@
     <string name="exit">Exit</string>
     <string name="cancel">Cancel</string>
     <string name="ok">OK</string>
-    <string name="contact_saved">Contact Saved</string>
-    <string name="no_record">No record</string>
-    <string name="error_profile">Please enter phone number</string>
-    <string name="upload">Upload</string>
-    <string name="delete">delete</string>
-    <string name="contact_updated">Contact Updated</string>
-    <string name="contact_deleted">Contact Deleted</string>
-    <string name="delete_record">Delete Record?</string>
     <string name="edit">Edit</string>
-    <string name="url_server">https://letsfund.000webhostapp.com/api/</string>
-    <string name="url_read">user/read.php</string>
-    <string name="url_create">user/create.php</string>
     <string name="download">download</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
