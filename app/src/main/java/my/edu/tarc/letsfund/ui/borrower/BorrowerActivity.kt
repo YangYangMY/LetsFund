@@ -20,6 +20,12 @@ class BorrowerActivity : AppCompatActivity() {
         var status : String? = null, //Borrowed, Repaid
     )
 
+    data class BorrowHistory(
+        var date: String? = null,
+        var status: String? = null,
+        var loanAmount: Double? = null,
+    )
+
     private lateinit var binding: ActivityBorrowerBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {

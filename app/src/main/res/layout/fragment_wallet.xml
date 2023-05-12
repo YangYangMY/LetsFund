@@ -139,7 +139,7 @@
                 android:layout_height="match_parent"
                 app:reverseLayout="false"
                 tools:itemCount="7"
-                tools:listitem="@layout/wallet_record" />
+                tools:listitem="@layout/record_wallet" />
         </LinearLayout>
     </ScrollView>
 
