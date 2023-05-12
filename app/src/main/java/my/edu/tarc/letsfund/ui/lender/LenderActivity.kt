@@ -39,11 +39,11 @@ class LenderActivity : AppCompatActivity() {
         var walletAmount : Double? = null,
     )
 
-    data class FundList(
-        var fundAmount : Double? = null,
-        var description : String? = null,
-        var location : String? = null,
-        var borrowerName : String? = null
+    data class LendHistory(
+        var loanAmount : Double? = null,
+        var date : String? = null,
+        var borrowerName : String? = null,
+        val repaymentStatus: String = "Unpaid"
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
