@@ -1,32 +1,37 @@
 package my.edu.tarc.letsfund.ui.lender
 
+import android.net.Uri
 import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.compose.setContent
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import my.edu.tarc.letsfund.R
-import my.edu.tarc.letsfund.databinding.ActivityLenderBinding
-import androidx.appcompat.widget.Toolbar;
-import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import my.edu.tarc.letsfund.ui.authentication.Users
+import com.google.firebase.storage.StorageReference
+import my.edu.tarc.letsfund.R
+import my.edu.tarc.letsfund.databinding.ActivityLenderBinding
+import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
 
 class LenderActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLenderBinding
+
+    //Initialize Firebase
+    private lateinit var auth: FirebaseAuth
+    private lateinit var databaseRef: DatabaseReference
+    private lateinit var database: FirebaseDatabase
+    private lateinit var storageReference: StorageReference
+    private lateinit var uri: Uri
+
+    private lateinit var uid: String
+
+    //recycle view
+    private lateinit var FundListRecyclerView: RecyclerView
+    private lateinit var FundList : ArrayList<BorrowerActivity.BorrowRequest>
 
     // To Store Payment Details
     data class PaymentHistory(
@@ -58,6 +63,20 @@ class LenderActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
 
         navView.setupWithNavController(navController)
+
+        //Initialise Firebase
+        auth = FirebaseAuth.getInstance()
+        uid = auth.currentUser?.uid.toString()
+        databaseRef = FirebaseDatabase.getInstance().getReference("FundList").child(auth.currentUser!!.uid)
+
+        // Application of the Array to the Spinner
+        //val spinner: Spinner = findViewById(R.id.lendAmount)
+
+        //val spinnerArrayAdapter: ArrayAdapter<String> =
+        //    ArrayAdapter<String>(this, android.R.layout.simple_spinner_item)
+        //spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) // The drop down view
+
+        //spinner.adapter = spinnerArrayAdapter
     }
 
     override fun onBackPressed() {
