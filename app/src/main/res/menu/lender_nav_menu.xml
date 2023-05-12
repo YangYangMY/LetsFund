@@ -12,10 +12,6 @@
         android:title="@string/wallet" />
 
     <item
-        android:id="@+id/navigation_applyloan"
-        android:icon="@drawable/baseline_handshake_24"
-        android:title="@string/Lend" />
-    <item
         android:id="@+id/navigation_history"
         android:icon="@drawable/baseline_history_24"
         android:title="@string/History" />
