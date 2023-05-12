@@ -144,6 +144,15 @@
     <string name="almost_funded">Almost Funded</string>
     <string name="ending_soon">Ending Soon</string>
     <string name="buttonLend">Lend Now</string>
+    <string-array name="fundAmount">
+        <item>RM 25</item>
+        <item>RM 50</item>
+        <item>RM 100</item>
+        <item>RM 125</item>
+        <item>RM 150</item>
+        <item>RM 175</item>
+        <item>RM 200</item>
+    </string-array>
 
 
 </resources>

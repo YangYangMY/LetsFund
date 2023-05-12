@@ -16,14 +16,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ProgressBar
-        android:id="@+id/fundProgress"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"/>
-
     <TextView
+        android:id="@+id/fundRemain"
         android:layout_width="50dp"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
@@ -31,16 +25,16 @@
         tools:text="$? to go" />
 
     <TextView
-        android:id="@+id/fundTitle"
+        android:id="@+id/borrowerName"
         android:layout_width="411dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginStart="1dp"
         android:fontFamily="@font/montserrat"
         android:textColor="#4CAF50"
-        android:textSize="20sp"
+        android:textSize="17sp"
         android:textStyle="bold"
-        tools:text="Title" />
+        tools:text="Borrower Name" />
 
     <TextView
         android:id="@+id/fundAmount"
@@ -64,20 +58,29 @@
         android:textSize="16sp"
         tools:text="Description" />
 
-    <TextView
-        android:id="@+id/borrower"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_marginEnd="5dp"
-        android:fontFamily="@font/montserrat"
-        android:textSize="12sp"
-        tools:text="Borrower Name" />
-
-    <Button
-        android:id="@+id/button"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/buttonLend" />
+        android:layout_height="match_parent">
+
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_toEndOf="@+id/lendAmount"
+
+            android:text="@string/buttonLend" />
+
+        <Spinner
+            android:id="@+id/lendAmount"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp">
+        </Spinner>
+
+    </RelativeLayout>
+
+
 
 </LinearLayout>
