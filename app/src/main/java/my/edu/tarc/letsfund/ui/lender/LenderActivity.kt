@@ -69,14 +69,6 @@ class LenderActivity : AppCompatActivity() {
         uid = auth.currentUser?.uid.toString()
         databaseRef = FirebaseDatabase.getInstance().getReference("FundList").child(auth.currentUser!!.uid)
 
-        // Application of the Array to the Spinner
-        //val spinner: Spinner = findViewById(R.id.lendAmount)
-
-        //val spinnerArrayAdapter: ArrayAdapter<String> =
-        //    ArrayAdapter<String>(this, android.R.layout.simple_spinner_item)
-        //spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) // The drop down view
-
-        //spinner.adapter = spinnerArrayAdapter
     }
 
     override fun onBackPressed() {
