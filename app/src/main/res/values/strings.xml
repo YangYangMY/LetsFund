@@ -145,5 +145,11 @@
     <string name="letspay">LetsPay</string>
 
 
+    <string-array name="fundSort">
+        <item>All</item>
+        <item>Almost Funded</item>
+        <item>Ending Soon</item>
+    </string-array>
+
 
 </resources>
