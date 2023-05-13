@@ -12,8 +12,8 @@ import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity.BorrowRequest
 import my.edu.tarc.letsfund.ui.lender.LenderActivity
 import my.edu.tarc.letsfund.ui.lender.lenderhome.RequestAdapter.MyViewHolder
 
-class RequestAdapter(private val requestList: ArrayList<BorrowerActivity.BorrowRequest>) :
-    RecyclerView.Adapter<RequestAdapter.MyViewHolder>() {
+class RequestAdapter(private val requestList: ArrayList<BorrowRequest>) :
+    RecyclerView.Adapter<MyViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.fund_record, parent, false)

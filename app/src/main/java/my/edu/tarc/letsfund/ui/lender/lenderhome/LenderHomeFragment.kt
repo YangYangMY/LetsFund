@@ -16,7 +16,9 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import my.edu.tarc.letsfund.databinding.FragmentLenderhomeBinding
+import my.edu.tarc.letsfund.ui.authentication.Users
 import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
+import my.edu.tarc.letsfund.ui.lender.wallet.TransactionAdapter
 
 class LenderHomeFragment : Fragment() {
     private lateinit var scrollView: ScrollView
@@ -43,11 +45,16 @@ class LenderHomeFragment : Fragment() {
         val root: View = binding.root
 
         scrollView = binding.fundRequest
+
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        auth = FirebaseAuth.getInstance()
+        uid = auth.currentUser?.uid.toString()
+
 
         requestRecyclerView = binding.recyclerViewRequest
         requestRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
@@ -59,12 +66,10 @@ class LenderHomeFragment : Fragment() {
 
 
     private fun getRequestData(){
-        auth = FirebaseAuth.getInstance()
-        uid = auth.currentUser?.uid.toString()
 
         requestRecyclerView.visibility = View.VISIBLE
 
-        databaseRef = FirebaseDatabase.getInstance().getReference("FundList").child(auth.currentUser!!.uid)
+        databaseRef = FirebaseDatabase.getInstance().getReference("FundList")
 
         databaseRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -76,6 +81,7 @@ class LenderHomeFragment : Fragment() {
                         requestList.add(requestData!!)
                     }
 
+                    requestRecyclerView.visibility = View.VISIBLE
                     requestRecyclerView.adapter = RequestAdapter(requestList)
                     binding.fundRequest.fullScroll(View.FOCUS_UP)
                 }
