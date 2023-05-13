@@ -31,7 +31,7 @@ class LenderHomeFragment : Fragment() {
 
     //RecyclerView
     private lateinit var requestRecyclerView: RecyclerView
-    private lateinit var requestList: ArrayList<BorrowerActivity.BorrowRequest>
+    private lateinit var loanList: ArrayList<BorrowerActivity.BorrowRequest>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,10 +49,10 @@ class LenderHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requestRecyclerView = binding.recyclerViewRequest
-        //requestRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+        requestRecyclerView = binding.recyclerViewRequestList
+        requestRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         requestRecyclerView.layoutManager
-        requestList = arrayListOf<BorrowerActivity.BorrowRequest>()
+        loanList = arrayListOf<BorrowerActivity.BorrowRequest>()
 
         getRequestData()
     }
@@ -62,31 +62,55 @@ class LenderHomeFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         uid = auth.currentUser?.uid.toString()
 
-        requestRecyclerView.visibility = View.VISIBLE
+        requestRecyclerView.visibility = View.GONE
 
-        databaseRef = FirebaseDatabase.getInstance().getReference("FundList").child(auth.currentUser!!.uid)
+        getLoanListNumber{totalLoan ->
+            var count = 1
+            while (count < totalLoan) {
+                databaseRef =
+                    FirebaseDatabase.getInstance().getReference("LoanLists").child(count.toString())
 
-        databaseRef.addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                requestList.clear()
-                if (snapshot.exists()) {
-                    for (requestSnapshot in snapshot.children) {
-                        val requestData =
-                            requestSnapshot.getValue(BorrowerActivity.BorrowRequest::class.java)
-                        requestList.add(requestData!!)
+                databaseRef.addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        loanList.clear()
+                        if (snapshot.exists()) {
+                                val requestData =
+                                    snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)
+                                loanList.add(requestData!!)
+                            val requestadapter = RequestAdapter(loanList)
+                            requestRecyclerView.adapter = requestadapter
+
+                            requestRecyclerView.visibility = View.VISIBLE
+                            binding.fundRequest.fullScroll(View.FOCUS_UP)
+                        }
                     }
 
-                    requestRecyclerView.adapter = RequestAdapter(requestList)
-                    binding.fundRequest.fullScroll(View.FOCUS_UP)
-                }
+                    override fun onCancelled(error: DatabaseError) {
+                        Toast.makeText(context, "Failed to access database", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+
+                })
+                count++
+            }
+        }
+    }
+
+    private fun getLoanListNumber(onComplete: (Int) -> Unit) {
+        val databaseRefReadTransaction = FirebaseDatabase.getInstance().getReference("LoanLists")
+        databaseRefReadTransaction.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val numberOfTransactions = snapshot.childrenCount.toInt()
+                val newTransactionNumber = if (numberOfTransactions > 0) numberOfTransactions + 1 else 1
+                onComplete(newTransactionNumber)
             }
 
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(context, "Failed to access database", Toast.LENGTH_SHORT).show()
+                onComplete(-1) // indicates an error occurred
             }
-
         })
     }
+
 
     override fun onDestroyView() {
         super.onDestroyView()
