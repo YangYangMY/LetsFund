@@ -144,29 +144,25 @@ class BorrowerPaymentFragment : Fragment() {
         val today = LocalDate.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val formattedDate = (today.format(formatter)).toString()
-        getRepayNumber{repayNumber ->
+        getRepayNumber { repayNumber ->
             getRepayAmount { repayAmount ->
                 getTransactionNumber { transactionNumber ->
                     if (transactionNumber != -1 && repayNumber != -1) {
                         val transactionID = transactionNumber.toString()
                         val repayID = repayNumber.toString()
 
-
-                        getLenderID{lenderid ->
-                            val databaseRefTransactionHistory =
-                                database.reference.child("TransactionHistory").child(lenderid).child(transactionID)
-                            val walletTransaction: LenderActivity.PaymentHistory =
-                                LenderActivity.PaymentHistory(formattedDate, "Repaid",
-                                    repayAmount
-                                )
-                            databaseRefTransactionHistory.setValue(walletTransaction)
-                        }
-
+                        val databaseRefTransactionHistory =
+                            database.reference.child("TransactionHistory").child(lenderID)
+                                .child(transactionID)
+                        val transactionHistory =
+                            LenderActivity.PaymentHistory(formattedDate, "Repaid", repayAmount!!)
+                        databaseRefTransactionHistory.setValue(transactionHistory)
 
                         //Get Lender Name
                         val databaseRefLenderId = database.reference.child("Loans").child(uid)
-                        getLenderName{lendername ->
-                            val databaseRefRepay = database.reference.child("RepaymentHistory").child(auth.currentUser!!.uid).child(repayID)
+                        getLenderName { lendername ->
+                            val databaseRefRepay = database.reference.child("RepaymentHistory")
+                                .child(auth.currentUser!!.uid).child(repayID)
                             val repay = BorrowerActivity.RepaymentHistory(
                                 date = formattedDate,
                                 lenderName = lendername,
@@ -176,9 +172,9 @@ class BorrowerPaymentFragment : Fragment() {
                         }
 
 
-
-                        databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
-                        val databaseRefDeleteRequest = FirebaseDatabase.getInstance().getReference("Loans").child(auth.currentUser!!.uid).removeValue();
+                        val databaseRefDeleteRequest =
+                            FirebaseDatabase.getInstance().getReference("Loans")
+                                .child(auth.currentUser!!.uid).removeValue();
                         //Output of helperText
                         binding.cardHolderNameContainer.helperText = validCardHolderName()
                         binding.cardNumberContainer.helperText = validCardNumber()
@@ -192,38 +188,49 @@ class BorrowerPaymentFragment : Fragment() {
                         val validCardCVV = binding.cvvContainer.helperText == null
 
                         //Retrieve current wallet amount
+
                         getWalletAmount { currentAmount ->
-                            val amount: Double? = repayAmount?.let { currentAmount?.plus(it) }
-                            val wallet = mapOf<String, Double?>(
-                                "walletAmount" to amount
-                            )
+
+                            val databaseRef
+
+
+                                val amount: Double = currentAmount!!.plus(repayAmount)
+                                val wallet = mapOf<String, Double?>(
+                                    "walletAmount" to amount
+                                )
+                                databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
+                                databaseRef.child(lenderid).setValue(wallet)
+
+
                             if (validCardHolder && validCardNumber && validCardExpDate && validCardCVV) {
                                 databaseRefDeleteRequest.addOnCompleteListener {
-                                                databaseRef.child(uid).updateChildren(wallet)
-                                                    .addOnSuccessListener {
-                                                        builder =
-                                                            AlertDialog.Builder(requireContext())
-                                                        builder.setTitle("Payment Message")
-                                                            .setMessage("Your payment is successful, your wallet amount is updated")
-                                                            .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                                                                findNavController().navigate(R.id.action_borrowerPaymentFragment_to_navigation_repayment)
-                                                            }
-                                                        builder.create().show()
-                                                    }
-                                            }.addOnFailureListener {
-                                            //Toast.makeText(context, "Payment is failed, please try again", Toast.LENGTH_SHORT).show()
-                                            builder = AlertDialog.Builder(requireContext())
-                                            builder.setTitle("Payment Message")
-                                                .setMessage("Your payment has failed, please try again")
-                                                .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                                                    findNavController().navigate(R.id.action_borrowerPaymentFragment_to_navigation_repayment)
-                                                }
-                                            builder.create().show()
+                                    builder =
+                                        AlertDialog.Builder(requireContext())
+                                    builder.setTitle("Payment Message")
+                                        .setMessage("Your payment is successful, your wallet amount is updated")
+                                        .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                                            findNavController().navigate(R.id.action_borrowerPaymentFragment_to_navigation_repayment)
                                         }
-                                } else {
-                                    Toast.makeText(context, "Please enter valid input", Toast.LENGTH_SHORT)
-                                        .show()
+                                    builder.create().show()
                                 }
+                                    .addOnFailureListener {
+                                        //Toast.makeText(context, "Payment is failed, please try again", Toast.LENGTH_SHORT).show()
+                                        builder = AlertDialog.Builder(requireContext())
+                                        builder.setTitle("Payment Message")
+                                            .setMessage("Your payment has failed, please try again")
+                                            .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                                                findNavController().navigate(R.id.action_borrowerPaymentFragment_to_navigation_repayment)
+                                            }
+                                        builder.create().show()
+                                    }
+                            } else {
+                                Toast.makeText(
+                                    context,
+                                    "Please enter valid input",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                            }
                         }
                     } else {
                         Toast.makeText(
@@ -235,8 +242,8 @@ class BorrowerPaymentFragment : Fragment() {
                 }
             }
         }
-
     }
+
 
     private fun getRepayNumber(onComplete: (Int) -> Unit) {
         val databaseRefReadTransaction = FirebaseDatabase.getInstance().getReference("RepaymentHistory").child(auth.currentUser!!.uid)
@@ -271,18 +278,22 @@ class BorrowerPaymentFragment : Fragment() {
     }
 
     private fun getTransactionNumber(onComplete: (Int) -> Unit) {
-        val databaseRefReadTransaction = FirebaseDatabase.getInstance().getReference("TransactionHistory").child(auth.currentUser!!.uid)
-        databaseRefReadTransaction.addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val numberOfTransactions = snapshot.childrenCount.toInt()
-                val newTransactionNumber = if (numberOfTransactions > 0) numberOfTransactions + 1 else 1
-                onComplete(newTransactionNumber)
-            }
+        getLenderID { lenderid ->
+            lenderID = lenderid
+            val databaseRefReadTransaction = FirebaseDatabase.getInstance().getReference("TransactionHistory").child(lenderid)
+            databaseRefReadTransaction.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val numberOfTransactions = snapshot.childrenCount.toInt()
+                    val newTransactionNumber = if (numberOfTransactions > 0) numberOfTransactions + 1 else 1
+                    onComplete(newTransactionNumber)
+                }
 
-            override fun onCancelled(error: DatabaseError) {
-                onComplete(-1) // indicates an error occurred
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                    onComplete(-1) // indicates an error occurred
+                }
+            })
+        }
+
     }
 
     private fun getRepayAmount(callback: (Double?) -> Unit){
@@ -308,23 +319,27 @@ class BorrowerPaymentFragment : Fragment() {
 
     private fun getWalletAmount(callback: (Double?) -> Unit) {
 
-        //initialise database
-        auth = FirebaseAuth.getInstance()
-        uid = auth.currentUser?.uid.toString()
-        databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
 
-        databaseRef.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val wallet = snapshot.getValue(LenderActivity.Wallet::class.java)
-                val amount = wallet?.walletAmount
-                callback(amount)
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(context, "Failed to get Wallet data", Toast.LENGTH_SHORT).show()
-                callback(null)
-            }
-        })
+        getLenderID {lenderid ->
+            lenderID = lenderid
+            //initialise database
+            auth = FirebaseAuth.getInstance()
+            databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
+            databaseRef.child(lenderid).addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val wallet = snapshot.getValue(LenderActivity.Wallet::class.java)
+                    val amount = wallet?.walletAmount
+                    callback(amount)
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(context, "Failed to get Wallet data", Toast.LENGTH_SHORT).show()
+                    callback(null)
+                }
+            })
+        }
+
     }
 
     private fun getLenderID(callback: (String) -> Unit){

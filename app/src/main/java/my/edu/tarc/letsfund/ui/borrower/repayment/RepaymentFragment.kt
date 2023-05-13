@@ -38,6 +38,7 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.getValue
 import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.databinding.FragmentRepaymentBinding
 import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
@@ -282,10 +283,13 @@ class RepaymentFragment : Fragment() {
 
         databaseRef.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-
-                val loan = snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)
-                val amount = (loan?.loanAmount)?.toDouble()
-                callback(amount)
+                if(uid.isNotEmpty() && snapshot.exists()){
+                    val loan = snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)!!.loanAmount
+                    val amount = loan?.toDouble()
+                    callback(amount)
+                }else{
+                    callback(null)
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {

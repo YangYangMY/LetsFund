@@ -29,9 +29,11 @@ class TransactionAdapter(private val transactionList: List<LenderActivity.Paymen
 
         if(transaction.method == "Top Up"){
             holder.methodView.setTextColor(Color.parseColor("#1fc600"))
+        }else if(transaction.method == "Repaid"){
+            holder.methodView.setTextColor(Color.parseColor("#1fc600"))
         }else if(transaction.method == "Withdraw"){
             holder.methodView.setTextColor(Color.parseColor("#ef3427"))
-        }else if(transaction.method == "Lent"){
+        }else if(transaction.method == "Lent") {
             holder.methodView.setTextColor(Color.parseColor("#ef3427"))
         }
     }
