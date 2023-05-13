@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import my.edu.tarc.letsfund.databinding.FragmentApplyloanBinding
 import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -21,13 +20,10 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.storage.StorageReference
 import com.google.firebase.database.ValueEventListener
 import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.ui.authentication.Users
 import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
-import java.time.LocalDate
-import java.time.format.DateTimeFormatter
 import java.util.*
 
 class ApplyLoanFragment : Fragment() {
@@ -36,6 +32,8 @@ class ApplyLoanFragment : Fragment() {
     private lateinit var auth: FirebaseAuth
     private lateinit var databaseRef: DatabaseReference
     private lateinit var databaseRefPublicList: DatabaseReference
+    private lateinit var databaseRefCheck: DatabaseReference
+    private lateinit var databaseRefUpdate:DatabaseReference
     private lateinit var database: FirebaseDatabase
 
 
@@ -74,7 +72,9 @@ class ApplyLoanFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         uid = auth.currentUser?.uid.toString()
         databaseRef = FirebaseDatabase.getInstance().getReference("Loans")
-        getLoanListNumber { LoanNumber ->
+
+
+        getCurrentLoanNumber { LoanNumber ->
             if (LoanNumber != -1) {
                 val transactionID = LoanNumber.toString()
                 databaseRefPublicList = FirebaseDatabase.getInstance().getReference("LoanLists").child(transactionID)
@@ -142,6 +142,7 @@ class ApplyLoanFragment : Fragment() {
                                         status = borrowStatus
                                     )
 
+                                    
                                     // save loan data
                                     databaseRefPublicList.setValue(loan)
                                     databaseRef.child(uid).setValue(loan)
@@ -190,6 +191,45 @@ class ApplyLoanFragment : Fragment() {
                 val numberOfTransactions = snapshot.childrenCount.toInt()
                 val newTransactionNumber = if (numberOfTransactions > 0) numberOfTransactions + 1 else 1
                 onComplete(newTransactionNumber)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                onComplete(-1) // indicates an error occurred
+            }
+        })
+    }
+
+    private fun getCurrentLoanNumber(onComplete: (Int) -> Unit) {
+        val databaseRefReadTransaction = FirebaseDatabase.getInstance().getReference("LoanLists")
+        databaseRefReadTransaction.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                var borrowerIDMatch: String? = null
+                var count = 1
+                var pass = false
+
+                while (snapshot.hasChild(count.toString())) {
+                    val childSnapshot = snapshot.child(count.toString())
+                    val borrowerId = childSnapshot.child("borrowerID").getValue(String::class.java)
+
+                    // Check borrower ID
+                    if (borrowerId == auth.currentUser?.uid) {
+                        borrowerIDMatch = borrowerId
+                        pass = true
+                        break // Stop iterating once a match is found
+                    }else{
+                        pass = false
+                    }
+
+                    count++
+                }
+                if(pass){
+                    onComplete(count)
+                }else{
+                    getLoanListNumber { loanListNumber ->
+                        onComplete(loanListNumber)
+                    }
+                }
+
             }
 
             override fun onCancelled(error: DatabaseError) {
