@@ -120,16 +120,10 @@ class ApplyLoanFragment : Fragment() {
                 override fun afterTextChanged(s: Editable?) {}
             })
 
-
-
-
-
             //Select photo from gallery
             binding.imageFund.setOnClickListener {
                 galleryImages.launch("image/*")
             }
-
-
 
             val cal = Calendar.getInstance()  // create a calendar instance
             cal.add(Calendar.MONTH, 1)  // add 1 month to current date
@@ -222,27 +216,6 @@ class ApplyLoanFragment : Fragment() {
 
         storageReference.putFile(uri).addOnSuccessListener { task ->
             task.metadata!!.reference!!.downloadUrl
-
-        /*
-        .addOnSuccessListener {uri ->
-
-            val imageMap = mapOf (
-                "url" to uri.toString()
-            )
-
-            val databaseReference = FirebaseDatabase.getInstance().getReference("userImages")
-            databaseReference.child(uid).setValue(imageMap)
-                .addOnSuccessListener {
-                    Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show()
-                }
-                .addOnFailureListener {
-                    Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
-                }
-        }
-        */
-
-
-            Toast.makeText(context, "The funding photo is uploaded.", Toast.LENGTH_SHORT).show()
         }
 
     }

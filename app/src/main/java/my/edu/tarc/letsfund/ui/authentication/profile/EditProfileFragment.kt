@@ -48,7 +48,7 @@ class EditProfileFragment : Fragment() {
     private lateinit var uid: String
 
     private lateinit var uri: Uri
-
+    private var imageExist: Boolean = false
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -83,6 +83,20 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val galleryImage = registerForActivityResult(
+            ActivityResultContracts.GetContent(),
+            ActivityResultCallback { it ->
+                if(it != null) {
+                    binding.imageProfile.setImageURI(it)
+                    uri = it
+                    imageExist = true
+                }else{
+                    imageExist = false
+                }
+
+            }
+        )
+
         //Display User Existing Profile
         getUserData()
 
@@ -100,15 +114,6 @@ class EditProfileFragment : Fragment() {
             getUserData()
         }
 
-        val galleryImage = registerForActivityResult(
-            ActivityResultContracts.GetContent(),
-            ActivityResultCallback { it ->
-
-                binding.imageProfile.setImageURI(it)
-                uri = it!!
-
-            }
-        )
 
         //Select photo from gallery
         binding.imageProfile.setOnClickListener {
@@ -119,7 +124,6 @@ class EditProfileFragment : Fragment() {
         //Click to edit the data
         binding.btnSave.setOnClickListener {
             submitForm()
-            uploadImage()
         }
 
 
@@ -156,14 +160,18 @@ class EditProfileFragment : Fragment() {
             "phone" to phone
         )
 
+
         //Edit Profile Authentication
         if (validFirstName && validLastName && validPhone) {
+
+            if (imageExist) {
+                uploadImage()
+            }
 
             databaseRef.child(uid).updateChildren(user).addOnSuccessListener {
 
                 binding.loadingProfile.visibility = View.GONE
                 Toast.makeText(context, "Your profile is updated", Toast.LENGTH_SHORT).show()
-                uploadImage()
 
                 getRole { role ->
                     if (role.equals("Lender")) {
@@ -178,22 +186,25 @@ class EditProfileFragment : Fragment() {
             }.addOnFailureListener{
 
                 binding.loadingProfile.visibility = View.GONE
-                Toast.makeText(context, "Database is failed. Please try again" + auth.currentUser, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Database is failed. Please try again", Toast.LENGTH_SHORT).show()
 
             }
 
         } else {
             binding.loadingProfile.visibility = View.GONE
-            Toast.makeText(context, "Please enter valid input" + auth.currentUser, Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Please enter valid input", Toast.LENGTH_SHORT).show()
         }
 
     }
 
+    private fun isPhotoUriEmpty(uri: Uri?): Boolean {
+        return uri?.toString()?.isEmpty() ?: true
+    }
+
     private fun uploadImage() {
 
-        storageReference.putFile(uri).addOnSuccessListener { task ->
+        storageReference.putFile(uri).addOnSuccessListener {task ->
             task.metadata!!.reference!!.downloadUrl
-
         }
 
     }
@@ -217,7 +228,8 @@ class EditProfileFragment : Fragment() {
         })
     }
 
-    private fun readProfilePhoto() {
+
+    private fun readProfilePhoto(): Boolean {
 
         storageReference = FirebaseStorage.getInstance().reference.child("Profile/$uid")
 
@@ -231,6 +243,7 @@ class EditProfileFragment : Fragment() {
         }.addOnFailureListener {
             binding.imageProfile.setImageResource(R.drawable.baseline_account_circle_24)
         }
+        return true
 
     }
 

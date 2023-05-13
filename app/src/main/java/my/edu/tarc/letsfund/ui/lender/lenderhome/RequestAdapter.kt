@@ -20,7 +20,6 @@ import com.google.firebase.database.ValueEventListener
 import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
 import com.bumptech.glide.Glide
-import android.content.Context
 import my.edu.tarc.letsfund.ui.lender.LenderActivity
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
