@@ -142,7 +142,7 @@ class ApplyLoanFragment : Fragment() {
                                         status = borrowStatus
                                     )
 
-                                    
+
                                     // save loan data
                                     databaseRefPublicList.setValue(loan)
                                     databaseRef.child(uid).setValue(loan)
@@ -179,9 +179,7 @@ class ApplyLoanFragment : Fragment() {
                     ).show()
                 }
             }
-
         }
-
     }
 
     private fun getLoanListNumber(onComplete: (Int) -> Unit) {
