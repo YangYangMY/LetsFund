@@ -20,18 +20,14 @@ import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
 class LenderActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLenderBinding
 
-    //Initialize Firebase
-    private lateinit var auth: FirebaseAuth
-    private lateinit var databaseRef: DatabaseReference
-    private lateinit var database: FirebaseDatabase
-    private lateinit var storageReference: StorageReference
-    private lateinit var uri: Uri
-
+    //Database Initialise
     private lateinit var uid: String
+    private lateinit var databaseRef : DatabaseReference
+    private lateinit var auth: FirebaseAuth
 
-    //recycle view
-    private lateinit var FundListRecyclerView: RecyclerView
-    private lateinit var FundList : ArrayList<BorrowerActivity.BorrowRequest>
+    //RecyclerView
+    private lateinit var requestRecyclerView: RecyclerView
+    private lateinit var requestArrayList: ArrayList<BorrowerActivity.BorrowRequest>
 
     // To Store Payment Details
     data class PaymentHistory(

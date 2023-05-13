@@ -4,18 +4,34 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
+import android.widget.ScrollView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 import my.edu.tarc.letsfund.databinding.FragmentLenderhomeBinding
+import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
 
 class LenderHomeFragment : Fragment() {
-
+    private lateinit var scrollView: ScrollView
     private var _binding: FragmentLenderhomeBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
     private val binding get() = _binding!!
+
+    //Database Initialise
+    private lateinit var uid: String
+    private lateinit var databaseRef : DatabaseReference
+    private lateinit var auth: FirebaseAuth
+
+    //RecyclerView
+    private lateinit var requestRecyclerView: RecyclerView
+    private lateinit var requestList: ArrayList<BorrowerActivity.BorrowRequest>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,11 +42,51 @@ class LenderHomeFragment : Fragment() {
         _binding = FragmentLenderhomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textHome
-
+        scrollView = binding.fundRequest
         return root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        requestRecyclerView = binding.recyclerViewRequest
+        requestRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+        requestRecyclerView.layoutManager
+        requestList = arrayListOf<BorrowerActivity.BorrowRequest>()
+
+        getRequestData()
+    }
+
+
+    private fun getRequestData(){
+        auth = FirebaseAuth.getInstance()
+        uid = auth.currentUser?.uid.toString()
+
+        requestRecyclerView.visibility = View.VISIBLE
+
+        databaseRef = FirebaseDatabase.getInstance().getReference("FundList").child(auth.currentUser!!.uid)
+
+        databaseRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                requestList.clear()
+                if (snapshot.exists()) {
+                    for (requestSnapshot in snapshot.children) {
+                        val requestData =
+                            requestSnapshot.getValue(BorrowerActivity.BorrowRequest::class.java)
+                        requestList.add(requestData!!)
+                    }
+
+                    requestRecyclerView.adapter = RequestAdapter(requestList)
+                    binding.fundRequest.fullScroll(View.FOCUS_UP)
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "Failed to access database", Toast.LENGTH_SHORT).show()
+            }
+
+        })
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
