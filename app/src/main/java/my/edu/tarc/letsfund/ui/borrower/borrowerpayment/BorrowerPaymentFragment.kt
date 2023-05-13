@@ -7,7 +7,6 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.navigation.fragment.findNavController
@@ -19,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.databinding.FragmentCardPaymentBinding
+import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
 import my.edu.tarc.letsfund.ui.lender.LenderActivity
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -141,73 +141,71 @@ class BorrowerPaymentFragment : Fragment() {
         val today = LocalDate.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val formattedDate = (today.format(formatter)).toString()
+        getRepayAmount { repayAmount ->
+            getTransactionNumber { transactionNumber ->
+                if (transactionNumber != -1) {
+                    val historyID = transactionNumber.toString()
+                    val databaseRefTopUp =
+                        database.reference.child("TransactionHistory").child(auth.currentUser!!.uid)
+                            .child(historyID)
+                    val repayTransaction: BorrowerActivity.RepaymentHistory =
+                        BorrowerActivity.RepaymentHistory(formattedDate, "name", repayAmount)
 
-        getTransactionNumber { transactionNumber ->
-            if (transactionNumber != -1) {
-                val historyid = transactionNumber.toString()
-                val databaseRefTopUp = database.reference.child("TransactionHistory").child(auth.currentUser!!.uid).child(historyid)
-                val topupTransaction: LenderActivity.PaymentHistory = LenderActivity.PaymentHistory(formattedDate,"Top Up", finaltopupAmount)
+                    databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
 
-                databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
+                    //Output of helperText
+                    binding.cardHolderNameContainer.helperText = validCardHolderName()
+                    binding.cardNumberContainer.helperText = validCardNumber()
+                    binding.cardExpDateContainer.helperText = validCardExpDate()
+                    binding.cvvContainer.helperText = validCVV()
 
-                //Output of helperText
-                binding.cardHolderNameContainer.helperText = validCardHolderName()
-                binding.cardNumberContainer.helperText = validCardNumber()
-                binding.cardExpDateContainer.helperText = validCardExpDate()
-                binding.cvvContainer.helperText = validCVV()
+                    //Check if the helperText is null
+                    val validCardHolder = binding.cardHolderNameContainer.helperText == null
+                    val validCardNumber = binding.cardNumberContainer.helperText == null
+                    val validCardExpDate = binding.cardExpDateContainer.helperText == null
+                    val validCardCVV = binding.cvvContainer.helperText == null
 
-                //Check if the helperText is null
-                val validCardHolder = binding.cardHolderNameContainer.helperText == null
-                val validCardNumber = binding.cardNumberContainer.helperText == null
-                val validCardExpDate = binding.cardExpDateContainer.helperText == null
-                val validCardCVV = binding.cvvContainer.helperText == null
-
-                //Retrieve current wallet amount
-                getWalletAmount { currentamount ->
-
-                    var amount: Double? = currentamount?.plus(finaltopupAmount)
-                    val wallet = mapOf<String, Double?>(
-                        "walletAmount" to amount)
-
-                    if (validCardHolder && validCardNumber && validCardExpDate && validCardCVV) {
-                        databaseRefTopUp.setValue(topupTransaction).addOnCompleteListener{
-                            databaseRef.child(uid).updateChildren(wallet).addOnSuccessListener {
-
+                    //Retrieve current wallet amount
+                    getWalletAmount { currentAmount ->
+                        val amount: Double? = repayAmount?.let { currentAmount?.plus(it) }
+                        val wallet = mapOf<String, Double?>(
+                            "walletAmount" to amount
+                        )
+                        if (validCardHolder && validCardNumber && validCardExpDate && validCardCVV) {
+                            databaseRefTopUp.setValue(repayTransaction).addOnCompleteListener {
+                                databaseRef.child(uid).updateChildren(wallet).addOnSuccessListener {
+                                    builder = AlertDialog.Builder(requireContext())
+                                    builder.setTitle("Payment Message")
+                                        .setMessage("Your payment is successful, your wallet amount is updated")
+                                        .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                                            findNavController().navigate(R.id.action_navigation_cardpayment_to_navigation_wallet)
+                                        }
+                                    builder.create().show()
+                                }
+                            }.addOnFailureListener {
+                                //Toast.makeText(context, "Payment is failed, please try again", Toast.LENGTH_SHORT).show()
                                 builder = AlertDialog.Builder(requireContext())
-
                                 builder.setTitle("Payment Message")
-                                    .setMessage("Your payment is successful, your wallet amount is updated")
+                                    .setMessage("Your payment is failed, please try again")
                                     .setPositiveButton(getString(R.string.ok)) { _, _ ->
                                         findNavController().navigate(R.id.action_navigation_cardpayment_to_navigation_wallet)
                                     }
                                 builder.create().show()
                             }
-                        }.addOnFailureListener{
-
-                            //Toast.makeText(context, "Payment is failed, please try again", Toast.LENGTH_SHORT).show()
-                            builder = AlertDialog.Builder(requireContext())
-
-                            builder.setTitle("Payment Message")
-                                .setMessage("Your payment is failed, please try again")
-                                .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                                    findNavController().navigate(R.id.action_navigation_cardpayment_to_navigation_wallet)
-                                }
-
-                            builder.create().show()
-
+                        } else {
+                            Toast.makeText(context, "Please enter valid input", Toast.LENGTH_SHORT)
+                                .show()
                         }
-
-                    }else {
-                        Toast.makeText(context, "Please enter valid input", Toast.LENGTH_SHORT).show()
                     }
+                } else {
+                    Toast.makeText(
+                        context,
+                        "Failed to access database, please try again",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
-
-            }else{
-                Toast.makeText(context, "Failed to access database, please try again", Toast.LENGTH_SHORT).show()
             }
-
         }
-
     }
 
     private fun getTransactionNumber(onComplete: (Int) -> Unit) {
@@ -221,6 +219,26 @@ class BorrowerPaymentFragment : Fragment() {
 
             override fun onCancelled(error: DatabaseError) {
                 onComplete(-1) // indicates an error occurred
+            }
+        })
+    }
+
+    private fun getRepayAmount(callback: (Double?) -> Unit){
+        //initialise database
+        auth = FirebaseAuth.getInstance()
+        uid = auth.currentUser?.uid.toString()
+        databaseRef = FirebaseDatabase.getInstance().getReference("Loans")
+
+        databaseRef.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val loan = snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)
+                val amount = (loan?.loanAmount)?.toDouble()
+                callback(amount)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "Failed to get Wallet data", Toast.LENGTH_SHORT).show()
+                callback(null)
             }
         })
     }
