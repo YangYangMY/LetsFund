@@ -128,7 +128,7 @@
     </array>
 
 
-     <!-- LEND  -->
+    <!-- LEND  -->
     <string name="funding">Funding</string>
     <string name="almost_funded">Almost Funded</string>
     <string name="ending_soon">Ending Soon</string>
@@ -143,13 +143,14 @@
         <item>RM 200</item>
     </string-array>
     <string name="letspay">LetsPay</string>
-
-
-    <string-array name="fundSort">
-        <item>All</item>
-        <item>Almost Funded</item>
-        <item>Ending Soon</item>
-    </string-array>
-
+    <string name="apply">Apply</string>
+    <string name="_100">100</string>
+    <string name="RM">RM</string>
+    <string name="describe_the_item">Describe the item</string>
+    <string name="description">Description:</string>
+    <string name="pay_by">Pay By:</string>
+    <string name="amount1">Amount:</string>
+    <string name="title">Title</string>
+    <string name="title_of_the_product">Title of the product</string>
 
 </resources>

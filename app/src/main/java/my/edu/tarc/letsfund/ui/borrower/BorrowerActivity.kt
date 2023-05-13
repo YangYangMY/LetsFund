@@ -4,21 +4,21 @@ import android.os.Bundle
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.material.textfield.TextInputEditText
 import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.databinding.ActivityBorrowerBinding
 
 class BorrowerActivity : AppCompatActivity() {
 
     data class BorrowRequest(
-        var loanAmount : Double? = null,
-        var borrowerName: String? = null,
-        var loanTitle: String? = null,
-        var loanDesc: String? = null,
-        var loanReqEndDate: String? = null,
-        var status: String? = null, //In Request, Lend
+        var loanAmount: String? = "",
+        var borrowerName: String? = "",
+        var loanTitle: String? = "",
+        var loanDesc: String? = "",
+        var loanReqEndDate: String? = "",
+        var borrowerID: String? = null,
+        var status: String? = "", //In Request, Lend
         var lenderID: String? = null, //Update after lend
     )
 
