@@ -60,7 +60,7 @@
         tools:text="Description" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btnLend"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:layout_toEndOf="@+id/lendAmount"

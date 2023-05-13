@@ -43,6 +43,11 @@ class LenderHomeFragment : Fragment() {
         val root: View = binding.root
 
         scrollView = binding.fundRequest
+
+
+
+
+
         return root
     }
 
@@ -97,7 +102,11 @@ class LenderHomeFragment : Fragment() {
                 count++
             }
         }
+
     }
+
+
+
 
     private fun getLoanListNumber(onComplete: (Int) -> Unit) {
         val databaseRefReadTransaction = FirebaseDatabase.getInstance().getReference("LoanLists")
