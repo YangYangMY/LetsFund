@@ -63,16 +63,17 @@ class LenderHomeFragment : Fragment() {
         uid = auth.currentUser?.uid.toString()
 
         requestRecyclerView.visibility = View.GONE
-
+        loanList.clear()
         getLoanListNumber{totalLoan ->
             var count = 1
+
             while (count < totalLoan) {
                 databaseRef =
                     FirebaseDatabase.getInstance().getReference("LoanLists").child(count.toString())
 
                 databaseRef.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        loanList.clear()
+
                         if (snapshot.exists()) {
                             val requestData =
                                 snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)
