@@ -26,7 +26,7 @@
         android:id="@+id/navigation_history"
         android:name="my.edu.tarc.letsfund.ui.lender.history.HistoryFragment"
         android:label="@string/History"
-        tools:layout="@layout/fragment_history" />
+        tools:layout="@layout/fragment_lenderhistory" />
     <fragment
         android:id="@+id/navigation_applyloan"
         android:name="my.edu.tarc.letsfund.ui.lender.lend.LendFragment"

@@ -50,7 +50,7 @@ class LenderHomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         requestRecyclerView = binding.recyclerViewRequest
-        requestRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
+        //requestRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         requestRecyclerView.layoutManager
         requestList = arrayListOf<BorrowerActivity.BorrowRequest>()
 
