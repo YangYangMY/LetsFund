@@ -1,5 +1,6 @@
 package my.edu.tarc.letsfund.ui.lender.lenderhome
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
@@ -11,6 +12,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -18,8 +20,12 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import my.edu.tarc.letsfund.R
+import my.edu.tarc.letsfund.ui.authentication.Users
 import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
+<<<<<<< HEAD
 import com.bumptech.glide.Glide
+=======
+>>>>>>> 3be647dc8bae7b303d8767ea5c906b3bbf6aed56
 import my.edu.tarc.letsfund.ui.lender.LenderActivity
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -41,12 +47,15 @@ class RequestAdapter(private val requestList: ArrayList<BorrowerActivity.BorrowR
         return MyViewHolder(itemView)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         val context = holder.itemView.context
         val request = requestList[position]
+
+        holder.loanTitleView.text = request.loanTitle;
         holder.borrowerNameView.text = request.borrowerName;
-        holder.loanAmountView.text = request.loanAmount.toString();
+        holder.loanAmountView.text = "RM ${request.loanAmount.toString()}";
         holder.descriptionView.text = request.loanDesc;
         holder.loanReqEndDateView.text = request.loanReqEndDate;
 
@@ -115,28 +124,45 @@ class RequestAdapter(private val requestList: ArrayList<BorrowerActivity.BorrowR
             // Initialize Value
             val lenderID = uid
             val borrowerID = request.borrowerID.toString()
+            val databaseRefLenderName = database.reference.child("users").child(lenderID)
+            databaseRefLenderName.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        val lenderName = snapshot.getValue(Users::class.java)?.firstname.toString()
+                        val databaseRefNameLoan =
+                            database.reference.child("Loans").child(borrowerID)
+                        databaseRefNameLoan.child("lenderName").setValue(lenderName)
+
+                        getLoanListNumber { totalLoan ->
+                            val databaseRef = FirebaseDatabase.getInstance().getReference("LoanLists")
+
+                            findLoanLocation(databaseRef, totalLoan, borrowerID) { location ->
+                                if (location != null) {
+                                    // Loan found, update the status and lenderID in the database
+                                    val databaseRefStatusLoanLists = databaseRef.child(location.toString())
+                                    databaseRefStatusLoanLists.child("status").setValue("Borrowed")
+                                    databaseRefStatusLoanLists.child("lenderID").setValue(lenderID)
+                                    databaseRefStatusLoanLists.child("lenderName").setValue(lenderName)
+                                } else {
+                                    // Loan not found
+                                }
+                            }
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Handle the error if the retrieval is canceled or fails
+                    Toast.makeText(context, "Failed to access database", Toast.LENGTH_SHORT).show()
+                }
+            })
 
             // Update Status and lenderID for Loan
             val databaseRefStatusLoan =
                 database.reference.child("Loans").child(borrowerID)
             databaseRefStatusLoan.child("status").setValue("Borrowed")
             databaseRefStatusLoan.child("lenderID").setValue(lenderID)
-            //Update Status for LoanLists
 
-            getLoanListNumber { totalLoan ->
-                val databaseRef = FirebaseDatabase.getInstance().getReference("LoanLists")
-
-                findLoanLocation(databaseRef, totalLoan, borrowerID) { location ->
-                    if (location != null) {
-                        // Loan found, update the status and lenderID in the database
-                        val databaseRefStatusLoanLists = databaseRef.child(location.toString())
-                        databaseRefStatusLoanLists.child("status").setValue("Borrowed")
-                        databaseRefStatusLoanLists.child("lenderID").setValue(lenderID)
-                    } else {
-                        // Loan not found
-                    }
-                }
-            }
 
 
 
@@ -293,6 +319,7 @@ class RequestAdapter(private val requestList: ArrayList<BorrowerActivity.BorrowR
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var fundImage: ImageView = itemView.findViewById(R.id.fundImage)
+        var loanTitleView : TextView = itemView.findViewById(R.id.fundTitle)
         var borrowerNameView: TextView = itemView.findViewById(R.id.borrowerName)
         var loanAmountView: TextView = itemView.findViewById(R.id.fundAmount)
         var descriptionView: TextView = itemView.findViewById(R.id.fundDesc)

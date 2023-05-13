@@ -47,6 +47,9 @@
             app:destination="@id/navigation_editprofile"
             app:popUpTo="@id/navigation_lenderprofile"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_navigation_lenderprofile_to_lenderFAQFragment"
+            app:destination="@id/lenderFAQFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_editprofile"
@@ -74,6 +77,15 @@
         <action
             android:id="@+id/action_navigation_withdraw_to_navigation_wallet"
             app:destination="@id/navigation_wallet" />
+    </fragment>
+    <fragment
+        android:id="@+id/lenderFAQFragment"
+        android:name="my.edu.tarc.letsfund.ui.lender.faq.LenderFAQFragment"
+        android:label="fragment_lender_f_a_q"
+        tools:layout="@layout/fragment_lender_f_a_q" >
+        <action
+            android:id="@+id/action_lenderFAQFragment_to_navigation_lenderprofile"
+            app:destination="@id/navigation_lenderprofile" />
     </fragment>
 
 </navigation>

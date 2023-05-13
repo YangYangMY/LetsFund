@@ -88,7 +88,6 @@ class LenderHomeFragment : Fragment() {
                             requestRecyclerView.adapter = requestadapter
 
                             requestRecyclerView.visibility = View.VISIBLE
-                            binding.fundRequest.fullScroll(View.FOCUS_UP)
                         }
                     }
 

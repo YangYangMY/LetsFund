@@ -1,5 +1,7 @@
 package my.edu.tarc.letsfund.ui.lender.wallet
 
+import android.annotation.SuppressLint
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,11 +20,22 @@ class TransactionAdapter(private val transactionList: List<LenderActivity.Paymen
         return TransactionViewHolder(itemView)
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(holder: TransactionViewHolder, position: Int) {
         val transaction = transactionList[position]
         holder.dateView.text = transaction.date
         holder.methodView.text = transaction.method
         holder.amountView.text = transaction.amount.toString()
+
+        if(transaction.method == "Top Up"){
+            holder.methodView.setTextColor(Color.parseColor("#1fc600"))
+        }else if(transaction.method == "Repaid"){
+            holder.methodView.setTextColor(Color.parseColor("#1fc600"))
+        }else if(transaction.method == "Withdraw"){
+            holder.methodView.setTextColor(Color.parseColor("#ef3427"))
+        }else if(transaction.method == "Lent") {
+            holder.methodView.setTextColor(Color.parseColor("#ef3427"))
+        }
     }
 
     override fun getItemCount(): Int {

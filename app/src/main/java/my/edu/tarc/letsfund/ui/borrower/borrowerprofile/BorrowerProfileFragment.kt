@@ -45,6 +45,9 @@ class BorrowerProfileFragment : Fragment() {
     private lateinit var emailContainer: TextInputLayout
     private lateinit var email: TextInputEditText
 
+    private lateinit var customerServiceButton: Button
+
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -72,6 +75,12 @@ class BorrowerProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        customerServiceButton = view.findViewById(R.id.btn_customerService)
+        customerServiceButton.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_borrowerprofile_to_customerServiceFragment)
+        }
+
 
         //Initialise Firebase
         auth = FirebaseAuth.getInstance()

@@ -6,17 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".ui.lender.lenderhome.LenderHomeFragment">
 
+
     <ImageView
         android:id="@+id/header"
         android:layout_width="396dp"
         android:layout_height="238dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="-4dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="-95dp"
         android:importantForAccessibility="no"
         android:src="@drawable/greenbackground"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.666"
+        app:layout_constraintHorizontal_bias="0.533"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="VisualLintBounds" />
@@ -26,7 +25,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/montserrat"
         android:text="@string/letsfund"
@@ -39,11 +38,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <TextView
         android:id="@+id/textView10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="5dp"
         android:fontFamily="@font/montserrat_medium_italic"
         android:text="@string/lender"
         android:textColor="#FFFFFF"
@@ -56,7 +56,7 @@
         android:id="@+id/textView11"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="4dp"
         android:fontFamily="@font/montserrat"
         android:text="@string/lender_slogan"
         android:textColor="#FFFFFF"
@@ -66,13 +66,12 @@
         app:layout_constraintTop_toBottomOf="@+id/textView10"
         tools:ignore="TextContrastCheck" />
 
-
     <ScrollView
         android:id="@+id/fundRequest"
         android:layout_width="0dp"
         android:layout_height="582dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="5dp"
         android:layout_marginEnd="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
