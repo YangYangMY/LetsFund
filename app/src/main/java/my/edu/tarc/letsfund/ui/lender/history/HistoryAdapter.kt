@@ -28,7 +28,6 @@ class HistoryAdapter(private val lendHistory: ArrayList<LenderActivity.LendHisto
         holder.borrowerNameView.text = history.borrowerName;
         holder.loanAmountView.text = history.loanAmount.toString();
         holder.loanDateView.text = history.lendDate;
-        holder.repaymentStatusView.text = history.repaymentStatus;
     }
 
     class HistoryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -36,7 +35,6 @@ class HistoryAdapter(private val lendHistory: ArrayList<LenderActivity.LendHisto
         var borrowerNameView : TextView = itemView.findViewById(R.id.textViewBorrowerName)
         var loanAmountView : TextView = itemView.findViewById(R.id.textViewLoanAmount)
         var loanDateView : TextView = itemView.findViewById(R.id.textViewLoanDate)
-        var repaymentStatusView : TextView = itemView.findViewById(R.id.textViewRepayStatus)
     }
 
 

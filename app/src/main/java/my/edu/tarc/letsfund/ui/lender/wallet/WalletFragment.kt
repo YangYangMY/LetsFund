@@ -183,7 +183,7 @@ class WalletFragment : Fragment() {
                     transactionRecyclerView.adapter = tAdapter
 
                     transactionRecyclerView.visibility = View.VISIBLE
-                    binding.scrollViewTransaction.fullScroll(View.FOCUS_UP)
+                    binding.scrollViewTransaction.fullScroll(View.FOCUS_DOWN)
                     loadingWallet.visibility = View.GONE
                 }else{
                     transactionRecyclerView.visibility = View.GONE
