@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import my.edu.tarc.letsfund.databinding.FragmentLenderhistoryBinding
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
@@ -33,6 +34,7 @@ class HistoryFragment : Fragment() {
     //RecyclerView
     private lateinit var historyRecyclerView: RecyclerView
     private lateinit var lendHistory: ArrayList<LenderActivity.LendHistory>
+
     private val binding get() = _binding!!
 
     override fun onCreateView(
@@ -77,7 +79,6 @@ class HistoryFragment : Fragment() {
                         val historyData = historySnapshot.getValue(LenderActivity.LendHistory::class.java)
                         lendHistory.add(historyData!!)
                     }
-
 
                     val historyAdapter = HistoryAdapter(lendHistory)
                     historyRecyclerView.adapter = historyAdapter

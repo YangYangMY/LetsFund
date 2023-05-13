@@ -55,6 +55,9 @@ class LenderHomeFragment : Fragment() {
         requestRecyclerView.layoutManager
         loanList = arrayListOf<BorrowerActivity.BorrowRequest>()
 
+
+
+
         getRequestData()
     }
 
