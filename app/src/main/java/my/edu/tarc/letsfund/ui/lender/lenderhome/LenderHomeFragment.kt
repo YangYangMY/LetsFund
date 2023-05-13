@@ -43,6 +43,7 @@ class LenderHomeFragment : Fragment() {
         val root: View = binding.root
 
         scrollView = binding.fundRequest
+
         return root
     }
 
@@ -78,16 +79,16 @@ class LenderHomeFragment : Fragment() {
                     override fun onDataChange(snapshot: DataSnapshot) {
 
                         if (snapshot.exists()) {
-                            val requestData =
-                                snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)
-                            loanList.add(requestData!!)
+                            if(snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)?.status == "Pending"){
+                                val requestData =
+                                    snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)
+                                loanList.add(requestData!!)
+                            }
                             val requestadapter = RequestAdapter(loanList)
                             requestRecyclerView.adapter = requestadapter
 
                             requestRecyclerView.visibility = View.VISIBLE
                             binding.fundRequest.fullScroll(View.FOCUS_UP)
-
-
                         }
                     }
 
@@ -100,7 +101,9 @@ class LenderHomeFragment : Fragment() {
                 count++
             }
         }
+
     }
+
 
     private fun getLoanListNumber(onComplete: (Int) -> Unit) {
         val databaseRefReadTransaction = FirebaseDatabase.getInstance().getReference("LoanLists")
