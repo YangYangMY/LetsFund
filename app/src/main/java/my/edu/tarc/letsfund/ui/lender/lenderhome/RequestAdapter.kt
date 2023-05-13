@@ -42,6 +42,8 @@ class RequestAdapter(private val requestList: ArrayList<BorrowerActivity.BorrowR
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val request = requestList[position]
+
+        holder.loanTitleView.text = request.loanTitle;
         holder.borrowerNameView.text = request.borrowerName;
         holder.loanAmountView.text = request.loanAmount.toString();
         holder.descriptionView.text = request.loanDesc;
@@ -287,6 +289,7 @@ class RequestAdapter(private val requestList: ArrayList<BorrowerActivity.BorrowR
 
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
+        var loanTitleView : TextView = itemView.findViewById(R.id.fundTitle)
         var borrowerNameView: TextView = itemView.findViewById(R.id.borrowerName)
         var loanAmountView: TextView = itemView.findViewById(R.id.fundAmount)
         var descriptionView: TextView = itemView.findViewById(R.id.fundDesc)
