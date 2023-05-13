@@ -44,6 +44,8 @@ class LenderProfileFragment : Fragment() {
     private lateinit var emailContainer: TextInputLayout
     private lateinit var email: TextInputEditText
 
+    private lateinit var faqButton: Button
+
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -71,6 +73,11 @@ class LenderProfileFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        faqButton = view.findViewById(R.id.btn_faq)
+        faqButton.setOnClickListener {
+            findNavController().navigate(R.id.action_navigation_lenderprofile_to_lenderFAQFragment)
+        }
 
         //Initialise Firebase
         auth = FirebaseAuth.getInstance()

@@ -109,7 +109,7 @@
         android:height="60dp"
         android:backgroundTint="#FFFFFF"
         android:fontFamily="@font/montserrat_medium"
-        android:text="@string/customer_service"
+        android:text="@string/faq"
         android:textAlignment="textStart"
         android:textColor="#599D42"
         app:cornerRadius="10dp"
