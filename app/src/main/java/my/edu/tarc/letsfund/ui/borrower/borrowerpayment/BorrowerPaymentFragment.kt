@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.databinding.FragmentCardPaymentBinding
+import my.edu.tarc.letsfund.ui.authentication.Users
 import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
 import my.edu.tarc.letsfund.ui.lender.LenderActivity
 import java.time.LocalDate
@@ -42,6 +43,9 @@ class BorrowerPaymentFragment : Fragment() {
 
     //Initialise Builder Dialog
     private lateinit var builder : AlertDialog.Builder
+
+    private lateinit var lenderID : String
+    private lateinit var lenderName : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -154,8 +158,39 @@ class BorrowerPaymentFragment : Fragment() {
                         val databaseRefRepayHistory =
                             database.reference.child("RepaymentHistory").child(auth.currentUser!!.uid)
                                 .child(repayID)
+
+                        //Get Lender Name
+                        val databaseRefLenderId = database.reference.child("Loans").child(uid)
+
+                        databaseRefLenderId.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                if (snapshot.exists()) {
+                                    lenderID =
+                                        snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)?.lenderID.toString()
+
+                                    val databaseRefLenderName = database.reference.child("users").child(lenderID)
+                                    databaseRefLenderId.addListenerForSingleValueEvent(object : ValueEventListener {
+                                        override fun onDataChange(snapshot: DataSnapshot) {
+                                            if (snapshot.exists()) {
+                                                lenderName =
+                                                    snapshot.getValue(Users::class.java)?.firstname.toString()
+                                            }
+                                        }
+
+                                        override fun onCancelled(error: DatabaseError) {
+                                            Toast.makeText(context, "Failed to access database", Toast.LENGTH_SHORT).show()
+                                        }
+                                    })
+                                }
+                            }
+                            override fun onCancelled(error: DatabaseError) {
+                                Toast.makeText(context, "Failed to access database", Toast.LENGTH_SHORT).show()
+                            }
+                        })
                         val repayTransaction: BorrowerActivity.RepaymentHistory =
-                            BorrowerActivity.RepaymentHistory(formattedDate, "name", repayAmount)
+                            BorrowerActivity.RepaymentHistory(formattedDate, lenderName, repayAmount)
+
+
 
                         databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
                         val databaseRefDeleteRequest = FirebaseDatabase.getInstance().getReference("Loans").child(auth.currentUser!!.uid).removeValue();

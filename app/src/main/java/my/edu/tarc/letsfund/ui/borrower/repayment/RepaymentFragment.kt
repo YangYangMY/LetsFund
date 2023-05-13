@@ -56,14 +56,16 @@ class RepaymentFragment : Fragment() {
 
     //Initialise Database
     private lateinit var uid: String
-    private lateinit var databaseRef : DatabaseReference
+    private lateinit var databaseRef: DatabaseReference
     private lateinit var database: FirebaseDatabase
     private lateinit var auth: FirebaseAuth
 
     //recycle view
     private lateinit var repaymentRecyclerView: RecyclerView
-    private lateinit var loadingRepayment : ProgressBar
-    private lateinit var repaymentList : ArrayList<BorrowerActivity.RepaymentHistory>
+    private lateinit var loadingRepayment: ProgressBar
+    private lateinit var repaymentList: ArrayList<BorrowerActivity.RepaymentHistory>
+
+    private lateinit var loanStatus: String
 
 
     override fun onCreateView(
@@ -75,83 +77,149 @@ class RepaymentFragment : Fragment() {
         _binding = FragmentRepaymentBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        //initialise database
+        auth = FirebaseAuth.getInstance()
+        uid = auth.currentUser?.uid.toString()
+        database = FirebaseDatabase.getInstance()
 
-        composeView = binding.repaymentbox
-        composeView.setContent {
-            val repayAmount = remember { mutableStateOf<Double?>(null) }
-            getRepayAmount { amount ->
-                repayAmount.value = amount
-            }
-            Card() {
-                Box(
-                    Modifier
-                        .fillMaxSize()
-                        .background(light_orange)) {
-                    Text(
-                        "Repayment Amount",Modifier.padding(all = 20.dp),
-                        color = Color.White, fontSize = 17.sp, fontFamily = FontFamily.SansSerif
-                    )
-                    Text(
-                        "RM ${repayAmount.value?: 0.0}",
-                        Modifier
-                            .padding(top = 50.dp)
-                            .padding(horizontal = 19.dp),
-                        fontWeight = FontWeight.Bold, color = Color.White,
-                        fontSize = 22.sp, fontFamily = FontFamily.SansSerif
-                    )
-                }
-            }
-        }
-        getRepayAmount { amount ->
-            if (amount != null) {
-                if(amount.equals(0.0)){
-                    composeView = binding.btnRepay
-                    composeView.setContent {
-                        Button(
-                            enabled = false,
-                            onClick = {
-                                findNavController().navigate(R.id.action_navigation_repayment_to_borrowerPaymentFragment)
-                            },
-                            contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
-                            colors = ButtonDefaults.outlinedButtonColors(light_green)
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.baseline_attach_money_24),
-                                contentDescription = "Localized description",
-                                modifier = Modifier.size(ButtonDefaults.IconSize),
-                                tint = Color.White
-                            )
-                            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                            Text("Repay",  color = Color.White)
+        val databaseRefLoan = database.reference.child("Loans").child(uid)
+
+        databaseRefLoan.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    loanStatus =
+                        snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)?.status.toString()
+
+                    if (loanStatus == "Borrowed") {
+                        composeView = binding.repaymentbox
+                        composeView.setContent {
+                            val repayAmount = remember { mutableStateOf<Double?>(null) }
+                            getRepayAmount { amount ->
+                                repayAmount.value = amount
+                            }
+                            Card() {
+                                Box(
+                                    Modifier
+                                        .fillMaxSize()
+                                        .background(light_orange)
+                                ) {
+                                    Text(
+                                        "Repayment Amount", Modifier.padding(all = 20.dp),
+                                        color = Color.White, fontSize = 17.sp, fontFamily = FontFamily.SansSerif
+                                    )
+                                    Text(
+                                        "RM ${repayAmount.value ?: 0.00}",
+                                        Modifier
+                                            .padding(top = 50.dp)
+                                            .padding(horizontal = 19.dp),
+                                        fontWeight = FontWeight.Bold, color = Color.White,
+                                        fontSize = 22.sp, fontFamily = FontFamily.SansSerif
+                                    )
+                                }
+                            }
+                        }
+                        getRepayAmount { amount ->
+                            if (amount != null) {
+                                if (amount.equals(0.0)) {
+                                    composeView = binding.btnRepay
+                                    composeView.setContent {
+                                        Button(
+                                            enabled = false,
+                                            onClick = {
+                                                findNavController().navigate(R.id.action_navigation_repayment_to_borrowerPaymentFragment)
+                                            },
+                                            contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                                            colors = ButtonDefaults.outlinedButtonColors(light_green)
+                                        ) {
+                                            Icon(
+                                                painter = painterResource(R.drawable.baseline_attach_money_24),
+                                                contentDescription = "Localized description",
+                                                modifier = Modifier.size(ButtonDefaults.IconSize),
+                                                tint = Color.White
+                                            )
+                                            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                                            Text("Repay", color = Color.White)
+                                        }
+                                    }
+                                } else {
+                                    composeView = binding.btnRepay
+                                    composeView.setContent {
+                                        Button(
+                                            enabled = true,
+                                            onClick = {
+                                                findNavController().navigate(R.id.action_navigation_repayment_to_borrowerPaymentFragment)
+                                            },
+                                            contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                                            colors = ButtonDefaults.outlinedButtonColors(light_green)
+                                        ) {
+                                            Icon(
+                                                painter = painterResource(R.drawable.baseline_attach_money_24),
+                                                contentDescription = "Localized description",
+                                                modifier = Modifier.size(ButtonDefaults.IconSize),
+                                                tint = Color.White
+                                            )
+                                            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                                            Text("Repay", color = Color.White)
+                                        }
+                                    }
+                                }
+                            }
                         }
                     }
-                }else{
-                    composeView = binding.btnRepay
-                    composeView.setContent {
-                        Button(
-                            enabled = true,
-                            onClick = {
-                                findNavController().navigate(R.id.action_navigation_repayment_to_borrowerPaymentFragment)
-                            },
-                            contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
-                            colors = ButtonDefaults.outlinedButtonColors(light_green)
-                        ) {
-                            Icon(
-                                painter = painterResource(R.drawable.baseline_attach_money_24),
-                                contentDescription = "Localized description",
-                                modifier = Modifier.size(ButtonDefaults.IconSize),
-                                tint = Color.White
-                            )
-                            Spacer(Modifier.size(ButtonDefaults.IconSpacing))
-                            Text("Repay",  color = Color.White)
+                    else{
+                        //Status is Not borrowed
+                        composeView = binding.repaymentbox
+                        composeView.setContent {
+                            Card() {
+                                Box(
+                                    Modifier
+                                        .fillMaxSize()
+                                        .background(light_orange)
+                                ) {
+                                    Text(
+                                        "Repayment Amount", Modifier.padding(all = 20.dp),
+                                        color = Color.White, fontSize = 17.sp, fontFamily = FontFamily.SansSerif
+                                    )
+                                    Text(
+                                        "RM 0.0",
+                                        Modifier
+                                            .padding(top = 50.dp)
+                                            .padding(horizontal = 19.dp),
+                                        fontWeight = FontWeight.Bold, color = Color.White,
+                                        fontSize = 22.sp, fontFamily = FontFamily.SansSerif
+                                    )
+                                }
+                            }
+                        }
+                        getRepayAmount { amount ->
+
+                            composeView = binding.btnRepay
+                            composeView.setContent {
+                                Button(
+                                    enabled = false,
+                                    onClick = {
+                                    },
+                                    contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
+                                    colors = ButtonDefaults.outlinedButtonColors(light_green)
+                                ) {
+                                    Icon(
+                                        painter = painterResource(R.drawable.baseline_attach_money_24),
+                                        contentDescription = "Localized description",
+                                        modifier = Modifier.size(ButtonDefaults.IconSize),
+                                        tint = Color.White
+                                    )
+                                    Spacer(Modifier.size(ButtonDefaults.IconSpacing))
+                                    Text("Repay", color = Color.White)
+                                }
+                            }
                         }
                     }
                 }
             }
-        }
-
-
-
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "Failed to access database", Toast.LENGTH_SHORT).show()
+            }
+        })
         return root
     }
 

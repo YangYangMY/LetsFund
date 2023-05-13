@@ -171,8 +171,7 @@ class RequestAdapter(private val requestList: ArrayList<BorrowerActivity.BorrowR
                     val lendList = LenderActivity.LendHistory(
                         lendDate = formattedDate,
                         borrowerName = request.borrowerName,
-                        loanAmount = request.loanAmount?.toDouble(),
-                        repaymentStatus = "Unpaid"
+                        loanAmount = request.loanAmount?.toDouble()
                     )
                     databaseRefLendHistory.setValue(lendList)
                 }
