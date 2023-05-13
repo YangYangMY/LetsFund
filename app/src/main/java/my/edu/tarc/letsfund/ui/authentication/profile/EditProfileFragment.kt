@@ -54,14 +54,6 @@ class EditProfileFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
 
-    /*
-    private val getPhoto = registerForActivityResult(ActivityResultContracts.GetContent()){ uri ->
-        if(uri != null){
-            binding.imageProfile.setImageURI(uri)
-        }
-    }
-    */
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -164,9 +156,7 @@ class EditProfileFragment : Fragment() {
         //Edit Profile Authentication
         if (validFirstName && validLastName && validPhone) {
 
-            if (imageExist) {
-                uploadImage()
-            }
+            uploadImage()
 
             databaseRef.child(uid).updateChildren(user).addOnSuccessListener {
 
@@ -203,8 +193,10 @@ class EditProfileFragment : Fragment() {
 
     private fun uploadImage() {
 
-        storageReference.putFile(uri).addOnSuccessListener {task ->
-            task.metadata!!.reference!!.downloadUrl
+        if (imageExist) {
+            storageReference.putFile(uri).addOnSuccessListener {task ->
+                task.metadata!!.reference!!.downloadUrl
+            }
         }
 
     }

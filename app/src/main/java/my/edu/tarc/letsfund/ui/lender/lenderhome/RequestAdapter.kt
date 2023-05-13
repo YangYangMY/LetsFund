@@ -22,10 +22,6 @@ import com.google.firebase.database.ValueEventListener
 import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.ui.authentication.Users
 import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
-<<<<<<< HEAD
-import com.bumptech.glide.Glide
-=======
->>>>>>> 3be647dc8bae7b303d8767ea5c906b3bbf6aed56
 import my.edu.tarc.letsfund.ui.lender.LenderActivity
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

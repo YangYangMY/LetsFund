@@ -44,6 +44,7 @@ class ApplyLoanFragment : Fragment() {
     private lateinit var uri: Uri
 
     private lateinit var uid: String
+    private var imageExist: Boolean = false
 
     //Email Details for reset Password
     private lateinit var emailContainer: TextInputLayout
@@ -71,12 +72,15 @@ class ApplyLoanFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val galleryImages = registerForActivityResult(
+        val galleryImage = registerForActivityResult(
             ActivityResultContracts.GetContent(),
             ActivityResultCallback { it ->
-                binding.imageFund.setImageURI(it)
-                if (it != null) {
+                if(it != null) {
+                    binding.imageFund.setImageURI(it)
                     uri = it
+                    imageExist = true
+                }else{
+                    imageExist = false
                 }
 
             }
@@ -122,7 +126,7 @@ class ApplyLoanFragment : Fragment() {
 
             //Select photo from gallery
             binding.imageFund.setOnClickListener {
-                galleryImages.launch("image/*")
+                galleryImage.launch("image/*")
             }
 
             val cal = Calendar.getInstance()  // create a calendar instance
@@ -136,71 +140,68 @@ class ApplyLoanFragment : Fragment() {
             paymentDate.text = nextMonthStr
 
             submit.setOnClickListener {
-//                uploadImage()
 
                 val title:String = titleInput.text.toString()
                 val amount:String = amountInput.text.toString()
                 val desc:String = descInput.text.toString()
 
                 if (amount.isNotEmpty() && desc.isNotEmpty()) {
-                    // retrieve user data
-                    val userRef = FirebaseDatabase.getInstance().getReference("users").child(uid)
-                    userRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            if (snapshot.exists()) {
-                                val user = snapshot.getValue(Users::class.java)
-                                if (user != null) {
-                                    val borrowerName = user.firstname
 
-                            //        storageReference.putFile(uri).addOnSuccessListener { task ->
-                                   //     task.metadata!!.reference!!.downloadUrl
-                                //            .addOnSuccessListener { uri ->
-                                 //               val imgUrl = uri.toString()
+                    uploadImage { imageUrl ->
+                        if (imageUrl != null) {
+                            // Retrieve user data and save loan data
+                            val userRef = FirebaseDatabase.getInstance().getReference("users").child(uid)
+                            userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                                override fun onDataChange(snapshot: DataSnapshot) {
+                                    if (snapshot.exists()) {
+                                        val user = snapshot.getValue(Users::class.java)
+                                        if (user != null) {
+                                            val borrowerName = user.firstname
 
-                                                val loan : BorrowerActivity.BorrowRequest = BorrowerActivity.BorrowRequest(
-                                                    loanTitle = title,
-                                                    loanAmount = amount,
-                                                    loanDesc = desc,
-                                                    loanReqEndDate = nextMonthStr,
-                                                    borrowerName = borrowerName,
-                                                    borrowerID = borrowerId,
-                                                    status = borrowStatus,
-                                                    lenderID = lenderid,
-                                 //                   uri = imgUrl
-                                                )
+                                            val loan: BorrowerActivity.BorrowRequest = BorrowerActivity.BorrowRequest(
+                                                loanTitle = title,
+                                                loanAmount = amount,
+                                                loanDesc = desc,
+                                                loanReqEndDate = nextMonthStr,
+                                                borrowerName = borrowerName,
+                                                borrowerID = borrowerId,
+                                                status = borrowStatus,
+                                                lenderID = lenderid,
+                                                uri = imageUrl
+                                            )
 
-                                                // save loan data
-                                                databaseRefPublicList.setValue(loan)
-                                                databaseRef.child(uid).setValue(loan)
-                                                Toast.makeText(
-                                                    context,
-                                                    "Loan application submitted",
-                                                    Toast.LENGTH_SHORT
-                                                ).show()
-                                  //          }
+                                            // save loan data
+                                            databaseRefPublicList.setValue(loan)
+                                            databaseRef.child(uid).setValue(loan)
+                                            Toast.makeText(
+                                                context,
+                                                "Loan application submitted",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        } else {
+                                            Toast.makeText(
+                                                context,
+                                                "Failed to retrieve user data",
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    } else {
+                                        Toast.makeText(context, "User not found", Toast.LENGTH_SHORT).show()
+                                    }
+                                }
 
-                                  //  }
-
-                                } else {
+                                override fun onCancelled(error: DatabaseError) {
                                     Toast.makeText(
                                         context,
-                                        "Failed to retrieve user data",
+                                        "Error retrieving user data",
                                         Toast.LENGTH_SHORT
                                     ).show()
                                 }
-                            } else {
-                                Toast.makeText(context, "User not found", Toast.LENGTH_SHORT).show()
-                            }
+                            })
+                        } else {
+                            Toast.makeText(context, "Failed to upload the image", Toast.LENGTH_SHORT).show()
                         }
-
-                        override fun onCancelled(error: DatabaseError) {
-                            Toast.makeText(
-                                context,
-                                "Error retrieving user data",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    })
+                    }
                 } else {
                     Toast.makeText(
                         context,
@@ -208,40 +209,27 @@ class ApplyLoanFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
+
             }
         }
     }
 
-    private fun uploadImage() {
-
-        storageReference.putFile(uri).addOnSuccessListener { task ->
-            task.metadata!!.reference!!.downloadUrl
-<<<<<<< HEAD
-=======
-
-
-        .addOnSuccessListener {uri ->
-
-            val imageMap = mapOf (
-                "url" to uri.toString()
-            )
-
-            val databaseReference = FirebaseDatabase.getInstance().getReference("userImages")
-            databaseReference.child(uid).setValue(imageMap)
-                .addOnSuccessListener {
-                    Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show()
-                }
-                .addOnFailureListener {
-                    Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
-                }
+    private fun uploadImage(completion: (String?) -> Unit) {
+        if (imageExist) {
+            storageReference.putFile(uri).addOnSuccessListener { task ->
+                task.metadata!!.reference!!.downloadUrl
+                    .addOnSuccessListener { uri ->
+                        val imgUrl = uri.toString()
+                        completion(imgUrl)
+                        Toast.makeText(context, imgUrl, Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener {
+                        completion(null)
+                    }
+            }
+        } else {
+            completion(null)
         }
-
-
-
-            Toast.makeText(context, "The funding photo is uploaded.", Toast.LENGTH_SHORT).show()
->>>>>>> 3be647dc8bae7b303d8767ea5c906b3bbf6aed56
-        }
-
     }
 
     private fun getLoanListNumber(onComplete: (Int) -> Unit) {
