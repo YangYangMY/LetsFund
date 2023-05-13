@@ -75,9 +75,11 @@ class LenderHomeFragment : Fragment() {
                     override fun onDataChange(snapshot: DataSnapshot) {
 
                         if (snapshot.exists()) {
+                            if(snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)?.status == "Pending"){
                                 val requestData =
                                     snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)
                                 loanList.add(requestData!!)
+                            }
                             val requestadapter = RequestAdapter(loanList)
                             requestRecyclerView.adapter = requestadapter
 
