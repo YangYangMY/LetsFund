@@ -60,7 +60,7 @@
                 android:layout_height="match_parent"
                 android:fontFamily="@font/montserrat"
                 android:hint="@string/RM"
-                android:inputType="text"
+                android:inputType="number"
                 android:lines="1"
                 android:maxLength="5" />
 

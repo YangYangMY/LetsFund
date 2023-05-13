@@ -35,6 +35,20 @@
         android:id="@+id/navigation_repayment"
         android:name="my.edu.tarc.letsfund.ui.borrower.repayment.RepaymentFragment"
         android:label="fragment_repayment"
-        tools:layout="@layout/fragment_repayment" />
+        tools:layout="@layout/fragment_repayment" >
+        <action
+            android:id="@+id/action_navigation_repayment_to_borrowerPaymentFragment"
+            app:destination="@id/borrowerPaymentFragment"
+            app:popUpTo="@id/navigation_repayment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/borrowerPaymentFragment"
+        android:name="my.edu.tarc.letsfund.ui.borrower.borrowerpayment.BorrowerPaymentFragment"
+        android:label="BorrowerPaymentFragment" >
+        <action
+            android:id="@+id/action_borrowerPaymentFragment_to_navigation_repayment"
+            app:destination="@id/navigation_repayment" />
+    </fragment>
 
 </navigation>

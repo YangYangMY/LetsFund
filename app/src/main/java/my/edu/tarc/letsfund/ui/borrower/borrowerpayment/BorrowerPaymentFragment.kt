@@ -51,8 +51,7 @@ class BorrowerPaymentFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-
+    ): View {
         _binding = FragmentCardPaymentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -81,7 +80,7 @@ class BorrowerPaymentFragment : Fragment() {
 
     private val textWatcher: TextWatcher = object : TextWatcher {
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-            if (!s.toString().equals(current)) {
+            if (s.toString() != current) {
                 var clean = s.toString().replace("[^\\d.]".toRegex(), "")
                 val cleanC = current.replace("[^\\d.]".toRegex(), "")
 
@@ -99,7 +98,7 @@ class BorrowerPaymentFragment : Fragment() {
                     //This part makes sure that when we finish entering numbers
                     //the date is correct, fixing it otherwise
                     val mon = clean.substring(0, 2).toInt()
-                    var year = clean.substring(2, 6).toInt()
+                    val year = clean.substring(2, 6).toInt()
 
                     cal.set(Calendar.MONTH, mon - 1)
                     cal.set(Calendar.YEAR, year)
@@ -141,71 +140,101 @@ class BorrowerPaymentFragment : Fragment() {
         val today = LocalDate.now()
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
         val formattedDate = (today.format(formatter)).toString()
-        getRepayAmount { repayAmount ->
-            getTransactionNumber { transactionNumber ->
-                if (transactionNumber != -1) {
-                    val historyID = transactionNumber.toString()
-                    val databaseRefTopUp =
-                        database.reference.child("TransactionHistory").child(auth.currentUser!!.uid)
-                            .child(historyID)
-                    val repayTransaction: BorrowerActivity.RepaymentHistory =
-                        BorrowerActivity.RepaymentHistory(formattedDate, "name", repayAmount)
+        getRepayNumber{repayNumber ->
+            getRepayAmount { repayAmount ->
+                getTransactionNumber { transactionNumber ->
+                    if (transactionNumber != -1 && repayNumber != -1) {
+                        val transactionID = transactionNumber.toString()
+                        val repayID = repayNumber.toString()
+                        val databaseRefTransactionHistory =
+                            database.reference.child("TransactionHistory").child(auth.currentUser!!.uid)
+                                .child(transactionID)
+                        val walletTransaction: LenderActivity.PaymentHistory =
+                            LenderActivity.PaymentHistory(formattedDate, "Repaid", repayAmount)
+                        val databaseRefRepayHistory =
+                            database.reference.child("RepaymentHistory").child(auth.currentUser!!.uid)
+                                .child(repayID)
+                        val repayTransaction: BorrowerActivity.RepaymentHistory =
+                            BorrowerActivity.RepaymentHistory(formattedDate, "name", repayAmount)
 
-                    databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
+                        databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
+                        val databaseRefDeleteRequest = FirebaseDatabase.getInstance().getReference("Loans").child(auth.currentUser!!.uid).removeValue();
+                        //Output of helperText
+                        binding.cardHolderNameContainer.helperText = validCardHolderName()
+                        binding.cardNumberContainer.helperText = validCardNumber()
+                        binding.cardExpDateContainer.helperText = validCardExpDate()
+                        binding.cvvContainer.helperText = validCVV()
 
-                    //Output of helperText
-                    binding.cardHolderNameContainer.helperText = validCardHolderName()
-                    binding.cardNumberContainer.helperText = validCardNumber()
-                    binding.cardExpDateContainer.helperText = validCardExpDate()
-                    binding.cvvContainer.helperText = validCVV()
+                        //Check if the helperText is null
+                        val validCardHolder = binding.cardHolderNameContainer.helperText == null
+                        val validCardNumber = binding.cardNumberContainer.helperText == null
+                        val validCardExpDate = binding.cardExpDateContainer.helperText == null
+                        val validCardCVV = binding.cvvContainer.helperText == null
 
-                    //Check if the helperText is null
-                    val validCardHolder = binding.cardHolderNameContainer.helperText == null
-                    val validCardNumber = binding.cardNumberContainer.helperText == null
-                    val validCardExpDate = binding.cardExpDateContainer.helperText == null
-                    val validCardCVV = binding.cvvContainer.helperText == null
-
-                    //Retrieve current wallet amount
-                    getWalletAmount { currentAmount ->
-                        val amount: Double? = repayAmount?.let { currentAmount?.plus(it) }
-                        val wallet = mapOf<String, Double?>(
-                            "walletAmount" to amount
-                        )
-                        if (validCardHolder && validCardNumber && validCardExpDate && validCardCVV) {
-                            databaseRefTopUp.setValue(repayTransaction).addOnCompleteListener {
-                                databaseRef.child(uid).updateChildren(wallet).addOnSuccessListener {
-                                    builder = AlertDialog.Builder(requireContext())
-                                    builder.setTitle("Payment Message")
-                                        .setMessage("Your payment is successful, your wallet amount is updated")
-                                        .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                                            findNavController().navigate(R.id.action_navigation_cardpayment_to_navigation_wallet)
+                        //Retrieve current wallet amount
+                        getWalletAmount { currentAmount ->
+                            val amount: Double? = repayAmount?.let { currentAmount?.plus(it) }
+                            val wallet = mapOf<String, Double?>(
+                                "walletAmount" to amount
+                            )
+                            if (validCardHolder && validCardNumber && validCardExpDate && validCardCVV) {
+                                databaseRefDeleteRequest.addOnCompleteListener {
+                                    databaseRefTransactionHistory.setValue(walletTransaction).addOnCompleteListener {
+                                        databaseRefRepayHistory.setValue(repayTransaction)
+                                            .addOnCompleteListener {
+                                                databaseRef.child(uid).updateChildren(wallet)
+                                                    .addOnSuccessListener {
+                                                        builder =
+                                                            AlertDialog.Builder(requireContext())
+                                                        builder.setTitle("Payment Message")
+                                                            .setMessage("Your payment is successful, your wallet amount is updated")
+                                                            .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                                                                findNavController().navigate(R.id.action_borrowerPaymentFragment_to_navigation_repayment)
+                                                            }
+                                                        builder.create().show()
+                                                    }
+                                            }.addOnFailureListener {
+                                            //Toast.makeText(context, "Payment is failed, please try again", Toast.LENGTH_SHORT).show()
+                                            builder = AlertDialog.Builder(requireContext())
+                                            builder.setTitle("Payment Message")
+                                                .setMessage("Your payment has failed, please try again")
+                                                .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                                                    findNavController().navigate(R.id.action_borrowerPaymentFragment_to_navigation_repayment)
+                                                }
+                                            builder.create().show()
                                         }
-                                    builder.create().show()
-                                }
-                            }.addOnFailureListener {
-                                //Toast.makeText(context, "Payment is failed, please try again", Toast.LENGTH_SHORT).show()
-                                builder = AlertDialog.Builder(requireContext())
-                                builder.setTitle("Payment Message")
-                                    .setMessage("Your payment is failed, please try again")
-                                    .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                                        findNavController().navigate(R.id.action_navigation_cardpayment_to_navigation_wallet)
                                     }
-                                builder.create().show()
-                            }
-                        } else {
-                            Toast.makeText(context, "Please enter valid input", Toast.LENGTH_SHORT)
-                                .show()
+                                }
+                                } else {
+                                    Toast.makeText(context, "Please enter valid input", Toast.LENGTH_SHORT)
+                                        .show()
+                                }
                         }
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "Failed to access database, please try again",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
-                } else {
-                    Toast.makeText(
-                        context,
-                        "Failed to access database, please try again",
-                        Toast.LENGTH_SHORT
-                    ).show()
                 }
             }
         }
+
+    }
+
+    private fun getRepayNumber(onComplete: (Int) -> Unit) {
+        val databaseRefReadTransaction = FirebaseDatabase.getInstance().getReference("RepaymentHistory").child(auth.currentUser!!.uid)
+        databaseRefReadTransaction.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val numberOfTransactions = snapshot.childrenCount.toInt()
+                val newTransactionNumber = if (numberOfTransactions > 0) numberOfTransactions + 1 else 1
+                onComplete(newTransactionNumber)
+            }
+            override fun onCancelled(error: DatabaseError) {
+                onComplete(-1) // indicates an error occurred
+            }
+        })
     }
 
     private fun getTransactionNumber(onComplete: (Int) -> Unit) {
@@ -268,30 +297,30 @@ class BorrowerPaymentFragment : Fragment() {
     private fun focusListener() {
 
         //Card Holder Name
-        binding.editTextCardHolderName?.setOnFocusChangeListener { _, focused ->
+        binding.editTextCardHolderName.setOnFocusChangeListener { _, focused ->
             if(!focused) {
-                binding.cardHolderNameContainer?.helperText = validCardHolderName()
+                binding.cardHolderNameContainer.helperText = validCardHolderName()
             }
         }
 
         //Card Number
-        binding.editTextCardNumber?.setOnFocusChangeListener { _, focused ->
+        binding.editTextCardNumber.setOnFocusChangeListener { _, focused ->
             if(!focused) {
-                binding.cardNumberContainer?.helperText = validCardNumber()
+                binding.cardNumberContainer.helperText = validCardNumber()
             }
         }
 
         //Card Expire Date
-        binding.editTextCardExpDate?.setOnFocusChangeListener { _, focused ->
+        binding.editTextCardExpDate.setOnFocusChangeListener { _, focused ->
             if(!focused) {
-                binding.cardExpDateContainer?.helperText = validCardExpDate()
+                binding.cardExpDateContainer.helperText = validCardExpDate()
             }
         }
 
         //Card CVV
-        binding.editTextCVV?.setOnFocusChangeListener { _, focused ->
+        binding.editTextCVV.setOnFocusChangeListener { _, focused ->
             if(!focused) {
-                binding.cvvContainer?.helperText = validCVV()
+                binding.cvvContainer.helperText = validCVV()
             }
         }
 
@@ -299,7 +328,7 @@ class BorrowerPaymentFragment : Fragment() {
     }
 
     private fun validCardHolderName(): String? {
-        val cardHolderNameText = binding.editTextCardHolderName?.text.toString()
+        val cardHolderNameText = binding.editTextCardHolderName.text.toString()
         if (cardHolderNameText.isEmpty()) {
             return "Required"
         }
@@ -307,7 +336,7 @@ class BorrowerPaymentFragment : Fragment() {
     }
 
     private fun validCardNumber(): String? {
-        val cardNumberText = binding.editTextCardNumber?.text.toString()
+        val cardNumberText = binding.editTextCardNumber.text.toString()
         if (cardNumberText.isEmpty()) {
             return "Required"
         }
@@ -324,7 +353,7 @@ class BorrowerPaymentFragment : Fragment() {
     }
 
     private fun validCardExpDate(): String? {
-        val expDateText = binding.editTextCardExpDate?.text.toString()
+        val expDateText = binding.editTextCardExpDate.text.toString()
         if (expDateText.isEmpty()) {
             return "Required"
         }
@@ -338,7 +367,7 @@ class BorrowerPaymentFragment : Fragment() {
     }
 
     private fun validCVV(): String? {
-        val cvvText = binding.editTextCVV?.text.toString()
+        val cvvText = binding.editTextCVV.text.toString()
         if (cvvText.isEmpty()) {
             return "Required"
         }

@@ -185,6 +185,9 @@ class WalletFragment : Fragment() {
                     transactionRecyclerView.visibility = View.VISIBLE
                     binding.scrollViewTransaction.fullScroll(View.FOCUS_UP)
                     loadingWallet.visibility = View.GONE
+                }else{
+                    transactionRecyclerView.visibility = View.GONE
+                    loadingWallet.visibility = View.GONE
                 }
             }
 
