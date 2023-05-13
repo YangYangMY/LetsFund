@@ -2,6 +2,8 @@ package my.edu.tarc.letsfund.ui.borrower.applyloan
 
 import android.icu.text.SimpleDateFormat
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +12,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import my.edu.tarc.letsfund.databinding.FragmentApplyloanBinding
 import android.widget.Button
+import android.widget.EditText
 import android.widget.Toast
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.StorageReference
@@ -33,7 +37,7 @@ class ApplyLoanFragment : Fragment() {
     private lateinit var databaseRef: DatabaseReference
     private lateinit var database: FirebaseDatabase
 
-    private lateinit var user: Users
+
     private lateinit var uid: String
 
     //Email Details for reset Password
@@ -75,6 +79,22 @@ class ApplyLoanFragment : Fragment() {
         val amountInput = view.findViewById<TextInputEditText>(R.id.editTextBorrowerAmount)
         val descInput = view.findViewById<TextInputEditText>(R.id.editTextBorrowerDesc)
         val submit = view.findViewById<Button>(R.id.borrowerSubmitButton)
+        val borrowStatus = "Pending"
+
+        val editText = view.findViewById<TextInputEditText>(R.id.editTextBorrowerDesc)
+        val charCount = view.findViewById<TextView>(R.id.charCount)
+
+        editText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                charCount.text = "${s?.length ?: 0}/300"
+            }
+
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+
 
         val cal = Calendar.getInstance()  // create a calendar instance
         cal.add(Calendar.MONTH, 1)  // add 1 month to current date
@@ -90,19 +110,40 @@ class ApplyLoanFragment : Fragment() {
             val desc = descInput.text.toString()
 
             if (amount.isNotEmpty() && desc.isNotEmpty()) {
-                val loan = BorrowerActivity.BorrowRequest(
-                    loanTitle = title,
-                    loanAmount = amount,
-                    loanDesc = desc,
-                    loanReqEndDate = nextMonthStr
-                )
-                uid = auth.currentUser?.uid ?: ""
-                if (uid.isNotEmpty()) {
-                    databaseRef.child(uid).setValue(loan)
-                    Toast.makeText(context, "Loan application submitted", Toast.LENGTH_SHORT).show()
-                } else {
-                    Toast.makeText(context, "User not authenticated", Toast.LENGTH_SHORT).show()
-                }
+                // retrieve user data
+                val userRef = FirebaseDatabase.getInstance().getReference("users").child(uid)
+                userRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                    override fun onDataChange(snapshot: DataSnapshot) {
+                        if (snapshot.exists()) {
+                            val user = snapshot.getValue(Users::class.java)
+                            if (user != null) {
+                                val borrowerName = user.firstname
+
+
+                                val loan = BorrowerActivity.BorrowRequest(
+                                    loanTitle = title,
+                                    loanAmount = amount,
+                                    loanDesc = desc,
+                                    loanReqEndDate = nextMonthStr,
+                                    borrowerName = borrowerName,
+                                    status = borrowStatus
+                                )
+
+                                // save loan data
+                                databaseRef.child(uid).setValue(loan)
+                                Toast.makeText(context, "Loan application submitted", Toast.LENGTH_SHORT).show()
+                            } else {
+                                Toast.makeText(context, "Failed to retrieve user data", Toast.LENGTH_SHORT).show()
+                            }
+                        } else {
+                            Toast.makeText(context, "User not found", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        Toast.makeText(context, "Error retrieving user data", Toast.LENGTH_SHORT).show()
+                    }
+                })
             } else {
                 Toast.makeText(
                     context,
@@ -111,7 +152,12 @@ class ApplyLoanFragment : Fragment() {
                 ).show()
             }
         }
+
     }
+
+
+
+
 
 
     override fun onDestroyView() {

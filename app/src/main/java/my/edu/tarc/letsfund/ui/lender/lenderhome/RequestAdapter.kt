@@ -8,9 +8,9 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
-import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity.BorrowRequest
 import my.edu.tarc.letsfund.ui.lender.LenderActivity
 import my.edu.tarc.letsfund.ui.lender.lenderhome.RequestAdapter.MyViewHolder
+
 
 class RequestAdapter(private val requestList: ArrayList<BorrowerActivity.BorrowRequest>) :
     RecyclerView.Adapter<RequestAdapter.MyViewHolder>() {

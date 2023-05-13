@@ -13,11 +13,11 @@ class BorrowerActivity : AppCompatActivity() {
 
     data class BorrowRequest(
         var loanAmount: String? = "",
-        var borrowerName: String? = null,
+        var borrowerName: String? = "",
         var loanTitle: String? = "",
         var loanDesc: String? = "",
-        var loanReqEndDate: String? = null,
-        var status: String? = null, //In Request, Lend
+        var loanReqEndDate: String? = "",
+        var status: String? = "", //In Request, Lend
         var lenderID: String? = null, //Update after lend
     )
 
