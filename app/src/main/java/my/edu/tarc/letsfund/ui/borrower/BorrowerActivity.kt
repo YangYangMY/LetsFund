@@ -17,6 +17,7 @@ class BorrowerActivity : AppCompatActivity() {
         var loanTitle: String? = "",
         var loanDesc: String? = "",
         var loanReqEndDate: String? = "",
+        var borrowerID: String? = null,
         var status: String? = "", //In Request, Lend
         var lenderID: String? = null, //Update after lend
     )
