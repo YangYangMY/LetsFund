@@ -33,6 +33,8 @@ class LenderHomeFragment : Fragment() {
     private lateinit var requestRecyclerView: RecyclerView
     private lateinit var loanList: ArrayList<BorrowerActivity.BorrowRequest>
 
+    private var imageExist: Boolean = false
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,8 +56,6 @@ class LenderHomeFragment : Fragment() {
         requestRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         requestRecyclerView.layoutManager
         loanList = arrayListOf<BorrowerActivity.BorrowRequest>()
-
-
 
 
         getRequestData()
