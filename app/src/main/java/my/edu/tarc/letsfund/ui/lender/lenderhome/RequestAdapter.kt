@@ -37,7 +37,7 @@ class RequestAdapter(private val requestList: ArrayList<BorrowerActivity.BorrowR
     class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var borrowerNameView: TextView = itemView.findViewById(R.id.borrowerName)
-        var loanAmountView: TextView = itemView.findViewById(R.id.lendAmount)
+        var loanAmountView: TextView = itemView.findViewById(R.id.fundAmount)
         var descriptionView: TextView = itemView.findViewById(R.id.fundDesc)
         var loanReqEndDateView: TextView = itemView.findViewById(R.id.fundDate)
 
