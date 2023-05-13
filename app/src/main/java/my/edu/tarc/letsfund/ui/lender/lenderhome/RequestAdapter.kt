@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import my.edu.tarc.letsfund.R
+import my.edu.tarc.letsfund.ui.authentication.Users
 import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
 import my.edu.tarc.letsfund.ui.lender.LenderActivity
 import java.time.LocalDate
@@ -110,28 +111,45 @@ class RequestAdapter(private val requestList: ArrayList<BorrowerActivity.BorrowR
             // Initialize Value
             val lenderID = uid
             val borrowerID = request.borrowerID.toString()
+            val databaseRefLenderName = database.reference.child("users").child(lenderID)
+            databaseRefLenderName.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        val lenderName = snapshot.getValue(Users::class.java)?.firstname.toString()
+                        val databaseRefNameLoan =
+                            database.reference.child("Loans").child(borrowerID)
+                        databaseRefNameLoan.child("lenderName").setValue(lenderName)
+
+                        getLoanListNumber { totalLoan ->
+                            val databaseRef = FirebaseDatabase.getInstance().getReference("LoanLists")
+
+                            findLoanLocation(databaseRef, totalLoan, borrowerID) { location ->
+                                if (location != null) {
+                                    // Loan found, update the status and lenderID in the database
+                                    val databaseRefStatusLoanLists = databaseRef.child(location.toString())
+                                    databaseRefStatusLoanLists.child("status").setValue("Borrowed")
+                                    databaseRefStatusLoanLists.child("lenderID").setValue(lenderID)
+                                    databaseRefStatusLoanLists.child("lenderName").setValue(lenderName)
+                                } else {
+                                    // Loan not found
+                                }
+                            }
+                        }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    // Handle the error if the retrieval is canceled or fails
+                    Toast.makeText(context, "Failed to access database", Toast.LENGTH_SHORT).show()
+                }
+            })
 
             // Update Status and lenderID for Loan
             val databaseRefStatusLoan =
                 database.reference.child("Loans").child(borrowerID)
             databaseRefStatusLoan.child("status").setValue("Borrowed")
             databaseRefStatusLoan.child("lenderID").setValue(lenderID)
-            //Update Status for LoanLists
 
-            getLoanListNumber { totalLoan ->
-                val databaseRef = FirebaseDatabase.getInstance().getReference("LoanLists")
-
-                findLoanLocation(databaseRef, totalLoan, borrowerID) { location ->
-                    if (location != null) {
-                        // Loan found, update the status and lenderID in the database
-                        val databaseRefStatusLoanLists = databaseRef.child(location.toString())
-                        databaseRefStatusLoanLists.child("status").setValue("Borrowed")
-                        databaseRefStatusLoanLists.child("lenderID").setValue(lenderID)
-                    } else {
-                        // Loan not found
-                    }
-                }
-            }
 
 
 
