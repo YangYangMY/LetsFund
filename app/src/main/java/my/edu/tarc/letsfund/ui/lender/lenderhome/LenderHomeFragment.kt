@@ -31,7 +31,7 @@ class LenderHomeFragment : Fragment() {
 
     //RecyclerView
     private lateinit var requestRecyclerView: RecyclerView
-    private lateinit var requestList: ArrayList<BorrowerActivity.BorrowRequest>
+    private lateinit var loanList: ArrayList<BorrowerActivity.BorrowRequest>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,10 +49,10 @@ class LenderHomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        requestRecyclerView = binding.recyclerViewRequest
+        requestRecyclerView = binding.recyclerViewRequestList
         requestRecyclerView.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, true)
         requestRecyclerView.layoutManager
-        requestList = arrayListOf<BorrowerActivity.BorrowRequest>()
+        loanList = arrayListOf<BorrowerActivity.BorrowRequest>()
 
         getRequestData()
     }
@@ -62,30 +62,32 @@ class LenderHomeFragment : Fragment() {
         auth = FirebaseAuth.getInstance()
         uid = auth.currentUser?.uid.toString()
 
-        requestRecyclerView.visibility = View.VISIBLE
-        var count = 1
+        requestRecyclerView.visibility = View.GONE
+
         getLoanListNumber{totalLoan ->
-            while (count < totalLoan){
-                databaseRef = FirebaseDatabase.getInstance().getReference("LoanLists").child(auth.currentUser!!.uid).child(count.toString())
+            var count = 1
+            while (count < totalLoan) {
+                databaseRef =
+                    FirebaseDatabase.getInstance().getReference("LoanLists").child(count.toString())
 
                 databaseRef.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
-                        requestList.clear()
+                        loanList.clear()
                         if (snapshot.exists()) {
-                            for (requestSnapshot in snapshot.children) {
                                 val requestData =
-                                    requestSnapshot.getValue(BorrowerActivity.BorrowRequest::class.java)
-                                requestList.add(requestData!!)
-                                requestRecyclerView.visibility = View.VISIBLE
-                            }
+                                    snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)
+                                loanList.add(requestData!!)
+                            val requestadapter = RequestAdapter(loanList)
+                            requestRecyclerView.adapter = requestadapter
 
-                            requestRecyclerView.adapter = RequestAdapter(requestList)
+                            requestRecyclerView.visibility = View.VISIBLE
                             binding.fundRequest.fullScroll(View.FOCUS_UP)
                         }
                     }
 
                     override fun onCancelled(error: DatabaseError) {
-                        Toast.makeText(context, "Failed to access database", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(context, "Failed to access database", Toast.LENGTH_SHORT)
+                            .show()
                     }
 
                 })

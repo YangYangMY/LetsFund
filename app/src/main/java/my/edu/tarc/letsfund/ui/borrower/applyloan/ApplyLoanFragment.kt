@@ -83,8 +83,9 @@ class ApplyLoanFragment : Fragment() {
             val amountInput = view.findViewById<TextInputEditText>(R.id.editTextBorrowerAmount)
             val descInput = view.findViewById<TextInputEditText>(R.id.editTextBorrowerDesc)
             val submit = view.findViewById<Button>(R.id.borrowerSubmitButton)
-            val borrowerId = auth.currentUser!!.uid
-            val borrowStatus = "Pending"
+            val borrowerId:String = auth.currentUser!!.uid
+            val borrowStatus:String = "Pending"
+            var lenderid:String = "empty"
 
             val editText = view.findViewById<TextInputEditText>(R.id.editTextBorrowerDesc)
             val charCount = view.findViewById<TextView>(R.id.charCount)
@@ -117,9 +118,9 @@ class ApplyLoanFragment : Fragment() {
             paymentDate.text = nextMonthStr
 
             submit.setOnClickListener {
-                val title = titleInput.text.toString()
-                val amount = amountInput.text.toString()
-                val desc = descInput.text.toString()
+                val title:String = titleInput.text.toString()
+                val amount:String = amountInput.text.toString()
+                val desc:String = descInput.text.toString()
 
                 if (amount.isNotEmpty() && desc.isNotEmpty()) {
                     // retrieve user data
@@ -132,14 +133,15 @@ class ApplyLoanFragment : Fragment() {
                                     val borrowerName = user.firstname
 
 
-                                    val loan = BorrowerActivity.BorrowRequest(
+                                    val loan : BorrowerActivity.BorrowRequest = BorrowerActivity.BorrowRequest(
                                         loanTitle = title,
                                         loanAmount = amount,
                                         loanDesc = desc,
                                         loanReqEndDate = nextMonthStr,
                                         borrowerName = borrowerName,
                                         borrowerID = borrowerId,
-                                        status = borrowStatus
+                                        status = borrowStatus,
+                                        lenderID = lenderid
                                     )
 
 
