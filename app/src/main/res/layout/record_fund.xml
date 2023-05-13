@@ -25,7 +25,7 @@
         tools:text="Due Date" />
 
     <TextView
-        android:id="@+id/borrowerName"
+        android:id="@+id/fundTitle"
         android:layout_width="411dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
@@ -34,7 +34,7 @@
         android:textColor="#4CAF50"
         android:textSize="17sp"
         android:textStyle="bold"
-        tools:text="Borrower Name" />
+        tools:text="Fund Title" />
 
     <TextView
         android:id="@+id/fundAmount"
@@ -48,6 +48,16 @@
         android:textStyle="bold"
         tools:text="Fund Amount" />
 
+    <TextView
+        android:id="@+id/borrowerName"
+        android:layout_width="411dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginStart="1dp"
+        android:fontFamily="@font/montserrat"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        tools:text="Borrower Name" />
 
     <TextView
         android:id="@+id/fundDesc"
