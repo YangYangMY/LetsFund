@@ -158,6 +158,28 @@ class BorrowerPaymentFragment : Fragment() {
                             LenderActivity.PaymentHistory(formattedDate, "Repaid", repayAmount!!)
                         databaseRefTransactionHistory.setValue(transactionHistory)
 
+                        val databaseRefWalletAmount = database.reference.child("Wallet").child(lenderID)
+                        databaseRefWalletAmount.addListenerForSingleValueEvent(object : ValueEventListener {
+                            override fun onDataChange(snapshot: DataSnapshot) {
+                                    val currentAmount : Double? = snapshot.getValue(LenderActivity.Wallet::class.java)?.walletAmount
+
+                                    val databaseRefUpdate = FirebaseDatabase.getInstance().getReference("Wallet").child(lenderID)
+                                    val amount: Double = currentAmount!!.plus(repayAmount)
+                                    val wallet = mapOf<String, Double?>(
+                                        "walletAmount" to amount)
+                                    databaseRefUpdate.setValue(wallet)
+                                
+                            }
+
+                            override fun onCancelled(error: DatabaseError) {
+                                TODO("Not yet implemented")
+                            }
+
+                        })
+
+
+
+
                         //Get Lender Name
                         val databaseRefLenderId = database.reference.child("Loans").child(uid)
                         getLenderName { lendername ->
@@ -187,19 +209,9 @@ class BorrowerPaymentFragment : Fragment() {
                         val validCardExpDate = binding.cardExpDateContainer.helperText == null
                         val validCardCVV = binding.cvvContainer.helperText == null
 
-                        //Retrieve current wallet amount
-
-                        getWalletAmount { currentAmount ->
-
-                            val databaseRef
 
 
-                                val amount: Double = currentAmount!!.plus(repayAmount)
-                                val wallet = mapOf<String, Double?>(
-                                    "walletAmount" to amount
-                                )
-                                databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
-                                databaseRef.child(lenderid).setValue(wallet)
+
 
 
                             if (validCardHolder && validCardNumber && validCardExpDate && validCardCVV) {
@@ -231,7 +243,6 @@ class BorrowerPaymentFragment : Fragment() {
                                 )
                                     .show()
                             }
-                        }
                     } else {
                         Toast.makeText(
                             context,
@@ -318,15 +329,10 @@ class BorrowerPaymentFragment : Fragment() {
 
 
     private fun getWalletAmount(callback: (Double?) -> Unit) {
-
-
-
-        getLenderID {lenderid ->
-            lenderID = lenderid
             //initialise database
             auth = FirebaseAuth.getInstance()
             databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
-            databaseRef.child(lenderid).addListenerForSingleValueEvent(object : ValueEventListener {
+            databaseRef.child(lenderID).addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     val wallet = snapshot.getValue(LenderActivity.Wallet::class.java)
                     val amount = wallet?.walletAmount
@@ -338,7 +344,6 @@ class BorrowerPaymentFragment : Fragment() {
                     callback(null)
                 }
             })
-        }
 
     }
 
