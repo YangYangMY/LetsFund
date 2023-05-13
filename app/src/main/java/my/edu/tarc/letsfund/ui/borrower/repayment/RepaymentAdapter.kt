@@ -20,7 +20,6 @@ class RepaymentAdapter(private val repaymentList: List<BorrowerActivity.Repaymen
     override fun onBindViewHolder(holder: RepaymentViewHolder, position: Int) {
         val transaction = repaymentList[position]
         holder.dateView.text = transaction.date
-        holder.nameView.text = transaction.lenderName
         holder.amountView.text = transaction.loanAmount.toString()
     }
 
@@ -31,6 +30,5 @@ class RepaymentAdapter(private val repaymentList: List<BorrowerActivity.Repaymen
 
 class RepaymentViewHolder (itemView: View) : RecyclerView.ViewHolder(itemView) {
     val dateView: TextView = itemView.findViewById(R.id.textViewRepayDate)
-    val nameView: TextView = itemView.findViewById(R.id.textViewRepayName)
     val amountView: TextView = itemView.findViewById(R.id.textViewRepayAmount)
 }

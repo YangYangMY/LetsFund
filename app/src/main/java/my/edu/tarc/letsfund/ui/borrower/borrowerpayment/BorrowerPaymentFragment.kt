@@ -160,7 +160,7 @@ class BorrowerPaymentFragment : Fragment() {
                         //Get Lender Name
                         val databaseRefLenderId = database.reference.child("Loans").child(uid)
                         getLenderName{lendername ->
-                            val databaseRefRepay = database.reference.child("RepaymentHistory").child(auth.currentUser!!.uid)
+                            val databaseRefRepay = database.reference.child("RepaymentHistory").child(auth.currentUser!!.uid).child(repayID)
                             val repay = BorrowerActivity.RepaymentHistory(
                                 date = formattedDate,
                                 lenderName = lendername,
@@ -249,14 +249,14 @@ class BorrowerPaymentFragment : Fragment() {
         })
     }
 
-    private fun getLenderName(onComplete: (String) -> Unit){
+    private fun getLenderName(onComplete: (String) -> Unit) {
         val databaseRef = FirebaseDatabase.getInstance().getReference("Loans").child(auth.currentUser!!.uid)
-        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener{
+        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val lenderName = snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)?.lenderName
                 if (lenderName != null) {
                     onComplete(lenderName)
-                }else{
+                } else {
                     onComplete("")
                 }
             }
@@ -264,7 +264,6 @@ class BorrowerPaymentFragment : Fragment() {
             override fun onCancelled(error: DatabaseError) {
                 onComplete("")
             }
-
         })
     }
 
