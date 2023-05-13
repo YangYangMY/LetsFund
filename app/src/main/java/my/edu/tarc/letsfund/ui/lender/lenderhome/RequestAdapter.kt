@@ -31,6 +31,10 @@ class RequestAdapter(private val requestList: ArrayList<BorrowerActivity.BorrowR
     private lateinit var databaseRef : DatabaseReference
     private lateinit var database: FirebaseDatabase
     private lateinit var auth: FirebaseAuth
+
+    private var count = 1
+    private var foundLocation: Int? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.record_fund, parent, false)
         return MyViewHolder(itemView)
@@ -107,41 +111,31 @@ class RequestAdapter(private val requestList: ArrayList<BorrowerActivity.BorrowR
             val lenderID = uid
             val borrowerID = request.borrowerID.toString()
 
-            // Update Status for Loan
+            // Update Status and lenderID for Loan
             val databaseRefStatusLoan =
                 database.reference.child("Loans").child(borrowerID)
             databaseRefStatusLoan.child("status").setValue("Borrowed")
-
+            databaseRefStatusLoan.child("lenderID").setValue(lenderID)
             //Update Status for LoanLists
-            var count = 1
-            var FoundLocation = 1
-            getLoanListNumber{totalLoan ->
 
-                while (count < totalLoan) {
-                    databaseRef =
-                        FirebaseDatabase.getInstance().getReference("LoanLists").child(count.toString())
-                    databaseRef.addValueEventListener(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            if (snapshot.exists()) {
-                                if(snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)?.borrowerID == borrowerID){
-                                    FoundLocation = count
-                                }
-                            }
-                        }
-                        override fun onCancelled(error: DatabaseError) {
-                            //No Function dk how to display Toast
-                        }
-                    })
-                    count++
+            getLoanListNumber { totalLoan ->
+                val databaseRef = FirebaseDatabase.getInstance().getReference("LoanLists")
+
+                findLoanLocation(databaseRef, totalLoan, borrowerID) { location ->
+                    if (location != null) {
+                        // Loan found, update the status and lenderID in the database
+                        val databaseRefStatusLoanLists = databaseRef.child(location.toString())
+                        databaseRefStatusLoanLists.child("status").setValue("Borrowed")
+                        databaseRefStatusLoanLists.child("lenderID").setValue(lenderID)
+                    } else {
+                        // Loan not found
+                    }
                 }
             }
-            val databaseRefStatusLoanLists =
-                database.reference.child("LoanLists").child(FoundLocation.toString())
-            databaseRefStatusLoanLists.child("status").setValue("Borrowed")
 
-            //Insert LenderID to Loan and LoanList
-            databaseRefStatusLoan.child("lenderID").setValue(lenderID)
-            databaseRefStatusLoanLists.child("lenderID").setValue(lenderID)
+
+
+
 
             //Update Transaction History
             getTransactionNumber { transactionNumber ->
@@ -190,7 +184,7 @@ class RequestAdapter(private val requestList: ArrayList<BorrowerActivity.BorrowR
         }
 
         builder.setNegativeButton("No"){ dialog, which ->
-            Toast.makeText(context, "An Error Occurred", Toast.LENGTH_SHORT).show()
+
         }
 
         builder.create().show()
@@ -257,6 +251,37 @@ class RequestAdapter(private val requestList: ArrayList<BorrowerActivity.BorrowR
 
             override fun onCancelled(error: DatabaseError) {
                 onComplete(-1) // indicates an error occurred
+            }
+        })
+    }
+
+    private fun findLoanLocation(databaseRef: DatabaseReference, totalLoan: Int, borrowerID: String, callback: (Int?) -> Unit) {
+        if (count >= totalLoan) {
+            // Loan not found
+            callback(null)
+            return
+        }
+
+        val loanRef = databaseRef.child(count.toString())
+        loanRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.exists()) {
+                    val borrowRequest = snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)
+                    if (borrowRequest?.borrowerID == borrowerID) {
+                        // Loan found
+                        callback(count)
+                        return
+                    }
+                }
+
+                // Continue searching for the loan in the next iteration
+                count++
+                findLoanLocation(databaseRef, totalLoan, borrowerID, callback)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                // Handle onCancelled event if needed
+                callback(null)
             }
         })
     }
