@@ -142,7 +142,7 @@ class ApplyLoanFragment : Fragment() {
             paymentDate.text = nextMonthStr
 
             submit.setOnClickListener {
-                uploadImage()
+//                uploadImage()
 
                 val title:String = titleInput.text.toString()
                 val amount:String = amountInput.text.toString()
@@ -158,10 +158,10 @@ class ApplyLoanFragment : Fragment() {
                                 if (user != null) {
                                     val borrowerName = user.firstname
 
-                                    storageReference.putFile(uri).addOnSuccessListener { task ->
-                                        task.metadata!!.reference!!.downloadUrl
-                                            .addOnSuccessListener { uri ->
-                                                val imgUrl = uri.toString()
+                            //        storageReference.putFile(uri).addOnSuccessListener { task ->
+                                   //     task.metadata!!.reference!!.downloadUrl
+                                //            .addOnSuccessListener { uri ->
+                                 //               val imgUrl = uri.toString()
 
                                                 val loan : BorrowerActivity.BorrowRequest = BorrowerActivity.BorrowRequest(
                                                     loanTitle = title,
@@ -172,7 +172,7 @@ class ApplyLoanFragment : Fragment() {
                                                     borrowerID = borrowerId,
                                                     status = borrowStatus,
                                                     lenderID = lenderid,
-                                                    uri = imgUrl
+                                 //                   uri = imgUrl
                                                 )
 
                                                 // save loan data
@@ -183,9 +183,9 @@ class ApplyLoanFragment : Fragment() {
                                                     "Loan application submitted",
                                                     Toast.LENGTH_SHORT
                                                 ).show()
-                                            }
+                                  //          }
 
-                                    }
+                                  //  }
 
                                 } else {
                                     Toast.makeText(
@@ -223,7 +223,7 @@ class ApplyLoanFragment : Fragment() {
         storageReference.putFile(uri).addOnSuccessListener { task ->
             task.metadata!!.reference!!.downloadUrl
 
-        /*
+
         .addOnSuccessListener {uri ->
 
             val imageMap = mapOf (
@@ -239,7 +239,7 @@ class ApplyLoanFragment : Fragment() {
                     Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
                 }
         }
-        */
+
 
 
             Toast.makeText(context, "The funding photo is uploaded.", Toast.LENGTH_SHORT).show()

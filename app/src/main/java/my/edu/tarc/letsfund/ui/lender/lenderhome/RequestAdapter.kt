@@ -11,6 +11,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -20,7 +21,6 @@ import com.google.firebase.database.ValueEventListener
 import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.ui.authentication.Users
 import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
-import com.bumptech.glide.Glide
 import my.edu.tarc.letsfund.ui.lender.LenderActivity
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

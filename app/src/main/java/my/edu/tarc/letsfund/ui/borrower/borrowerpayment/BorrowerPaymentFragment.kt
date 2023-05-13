@@ -159,39 +159,16 @@ class BorrowerPaymentFragment : Fragment() {
 
                         //Get Lender Name
                         val databaseRefLenderId = database.reference.child("Loans").child(uid)
+                        getLenderName{lendername ->
+                            val databaseRefRepay = database.reference.child("RepaymentHistory").child(auth.currentUser!!.uid)
+                            val repay = BorrowerActivity.RepaymentHistory(
+                                date = formattedDate,
+                                lenderName = lendername,
+                                loanAmount = repayAmount
+                            )
+                            databaseRefRepay.setValue(repay)
+                        }
 
-                        databaseRefLenderId.addListenerForSingleValueEvent(object : ValueEventListener {
-                            override fun onDataChange(snapshot: DataSnapshot) {
-                                if (snapshot.exists()) {
-                                    lenderID =
-                                        snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)?.lenderID.toString()
-
-                                    val databaseRefLenderName = database.reference.child("users").child(lenderID)
-                                    databaseRefLenderId.addListenerForSingleValueEvent(object : ValueEventListener {
-                                        override fun onDataChange(snapshot: DataSnapshot) {
-                                            if (snapshot.exists()) {
-                                                lenderName = snapshot.getValue(Users::class.java)?.firstname.toString()
-                                                val databaseRefRepayHistory =
-                                                    database.reference.child("RepaymentHistory").child(auth.currentUser!!.uid)
-                                                        .child(repayID)
-                                                val repayTransaction: BorrowerActivity.RepaymentHistory =
-                                                    BorrowerActivity.RepaymentHistory(formattedDate, lenderName, repayAmount)
-                                                databaseRefRepayHistory.setValue(repayTransaction).addOnCompleteListener {
-
-                                                }
-                                            }
-                                        }
-
-                                        override fun onCancelled(error: DatabaseError) {
-                                            Toast.makeText(context, "Failed to access database", Toast.LENGTH_SHORT).show()
-                                        }
-                                    })
-                                }
-                            }
-                            override fun onCancelled(error: DatabaseError) {
-                                Toast.makeText(context, "Failed to access database", Toast.LENGTH_SHORT).show()
-                            }
-                        })
 
 
                         databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
@@ -269,6 +246,25 @@ class BorrowerPaymentFragment : Fragment() {
             override fun onCancelled(error: DatabaseError) {
                 onComplete(-1) // indicates an error occurred
             }
+        })
+    }
+
+    private fun getLenderName(onComplete: (String) -> Unit){
+        val databaseRef = FirebaseDatabase.getInstance().getReference("Loans").child(auth.currentUser!!.uid)
+        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val lenderName = snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)?.lenderName
+                if (lenderName != null) {
+                    onComplete(lenderName)
+                }else{
+                    onComplete("")
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                onComplete("")
+            }
+
         })
     }
 
