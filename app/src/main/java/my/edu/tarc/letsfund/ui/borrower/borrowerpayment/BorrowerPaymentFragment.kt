@@ -150,11 +150,17 @@ class BorrowerPaymentFragment : Fragment() {
                     if (transactionNumber != -1 && repayNumber != -1) {
                         val transactionID = transactionNumber.toString()
                         val repayID = repayNumber.toString()
-                        val databaseRefTransactionHistory =
-                            database.reference.child("TransactionHistory").child(auth.currentUser!!.uid)
-                                .child(transactionID)
-                        val walletTransaction: LenderActivity.PaymentHistory =
-                            LenderActivity.PaymentHistory(formattedDate, "Repaid", repayAmount)
+
+
+                        getLenderID{lenderid ->
+                            val databaseRefTransactionHistory =
+                                database.reference.child("TransactionHistory").child(lenderid).child(transactionID)
+                            val walletTransaction: LenderActivity.PaymentHistory =
+                                LenderActivity.PaymentHistory(formattedDate, "Repaid",
+                                    repayAmount
+                                )
+                            databaseRefTransactionHistory.setValue(walletTransaction)
+                        }
 
 
                         //Get Lender Name
@@ -193,7 +199,6 @@ class BorrowerPaymentFragment : Fragment() {
                             )
                             if (validCardHolder && validCardNumber && validCardExpDate && validCardCVV) {
                                 databaseRefDeleteRequest.addOnCompleteListener {
-                                    databaseRefTransactionHistory.setValue(walletTransaction).addOnCompleteListener {
                                                 databaseRef.child(uid).updateChildren(wallet)
                                                     .addOnSuccessListener {
                                                         builder =
@@ -215,8 +220,6 @@ class BorrowerPaymentFragment : Fragment() {
                                                 }
                                             builder.create().show()
                                         }
-                                    }
-
                                 } else {
                                     Toast.makeText(context, "Please enter valid input", Toast.LENGTH_SHORT)
                                         .show()
@@ -320,6 +323,26 @@ class BorrowerPaymentFragment : Fragment() {
             override fun onCancelled(error: DatabaseError) {
                 Toast.makeText(context, "Failed to get Wallet data", Toast.LENGTH_SHORT).show()
                 callback(null)
+            }
+        })
+    }
+
+    private fun getLenderID(callback: (String) -> Unit){
+        //initialise database
+        auth = FirebaseAuth.getInstance()
+        uid = auth.currentUser?.uid.toString()
+        databaseRef = FirebaseDatabase.getInstance().getReference("Loans").child(uid)
+
+        databaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val lenderId = snapshot.getValue(BorrowerActivity.BorrowRequest::class.java)?.lenderID
+                val id = lenderId.toString()
+                callback(id)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "Failed to get Wallet data", Toast.LENGTH_SHORT).show()
+                callback("")
             }
         })
     }
