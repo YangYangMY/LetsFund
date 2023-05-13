@@ -21,6 +21,7 @@ class BorrowerActivity : AppCompatActivity() {
         var status: String? = "", //In Request, Lend
         var lenderID: String? = null, //Update after lend
         var lenderName: String? = null,
+        var uri: String? = null
     )
 
     data class RepaymentHistory(
