@@ -176,7 +176,9 @@ class BorrowerPaymentFragment : Fragment() {
                                                         .child(repayID)
                                                 val repayTransaction: BorrowerActivity.RepaymentHistory =
                                                     BorrowerActivity.RepaymentHistory(formattedDate, lenderName, repayAmount)
-                                                databaseRefRepayHistory.setValue(repayTransaction)
+                                                databaseRefRepayHistory.setValue(repayTransaction).addOnCompleteListener {
+
+                                                }
                                             }
                                         }
 

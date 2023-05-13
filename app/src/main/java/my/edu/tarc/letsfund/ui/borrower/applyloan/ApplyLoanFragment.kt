@@ -1,6 +1,7 @@
 package my.edu.tarc.letsfund.ui.borrower.applyloan
 
 import android.icu.text.SimpleDateFormat
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -13,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import my.edu.tarc.letsfund.databinding.FragmentApplyloanBinding
 import android.widget.Button
 import android.widget.Toast
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
@@ -21,6 +24,8 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import my.edu.tarc.letsfund.R
 import my.edu.tarc.letsfund.ui.authentication.Users
 import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
@@ -35,7 +40,8 @@ class ApplyLoanFragment : Fragment() {
     private lateinit var databaseRefCheck: DatabaseReference
     private lateinit var databaseRefUpdate:DatabaseReference
     private lateinit var database: FirebaseDatabase
-
+    private lateinit var storageReference: StorageReference
+    private lateinit var uri: Uri
 
     private lateinit var uid: String
 
@@ -58,21 +64,29 @@ class ApplyLoanFragment : Fragment() {
         _binding = FragmentApplyloanBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.applyDashboard
-        applyLoanViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
-        }
+
         return root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val galleryImages = registerForActivityResult(
+            ActivityResultContracts.GetContent(),
+            ActivityResultCallback { it ->
+                binding.imageFund.setImageURI(it)
+                if (it != null) {
+                    uri = it
+                }
+
+            }
+        )
+
         //Initialise database
         auth = FirebaseAuth.getInstance()
         uid = auth.currentUser?.uid.toString()
         databaseRef = FirebaseDatabase.getInstance().getReference("Loans")
-
+        storageReference = FirebaseStorage.getInstance().getReference("Loan/"+auth.currentUser?.uid)
 
         getCurrentLoanNumber { LoanNumber ->
             if (LoanNumber != -1) {
@@ -107,6 +121,16 @@ class ApplyLoanFragment : Fragment() {
             })
 
 
+
+
+
+            //Select photo from gallery
+            binding.imageFund.setOnClickListener {
+                galleryImages.launch("image/*")
+            }
+
+
+
             val cal = Calendar.getInstance()  // create a calendar instance
             cal.add(Calendar.MONTH, 1)  // add 1 month to current date
             val nextMonth = cal.time  // get the next month date
@@ -118,6 +142,8 @@ class ApplyLoanFragment : Fragment() {
             paymentDate.text = nextMonthStr
 
             submit.setOnClickListener {
+                uploadImage()
+
                 val title:String = titleInput.text.toString()
                 val amount:String = amountInput.text.toString()
                 val desc:String = descInput.text.toString()
@@ -132,27 +158,35 @@ class ApplyLoanFragment : Fragment() {
                                 if (user != null) {
                                     val borrowerName = user.firstname
 
+                                    storageReference.putFile(uri).addOnSuccessListener { task ->
+                                        task.metadata!!.reference!!.downloadUrl
+                                            .addOnSuccessListener { uri ->
+                                                val imgUrl = uri.toString()
 
-                                    val loan : BorrowerActivity.BorrowRequest = BorrowerActivity.BorrowRequest(
-                                        loanTitle = title,
-                                        loanAmount = amount,
-                                        loanDesc = desc,
-                                        loanReqEndDate = nextMonthStr,
-                                        borrowerName = borrowerName,
-                                        borrowerID = borrowerId,
-                                        status = borrowStatus,
-                                        lenderID = lenderid
-                                    )
+                                                val loan : BorrowerActivity.BorrowRequest = BorrowerActivity.BorrowRequest(
+                                                    loanTitle = title,
+                                                    loanAmount = amount,
+                                                    loanDesc = desc,
+                                                    loanReqEndDate = nextMonthStr,
+                                                    borrowerName = borrowerName,
+                                                    borrowerID = borrowerId,
+                                                    status = borrowStatus,
+                                                    lenderID = lenderid,
+                                                    uri = imgUrl
+                                                )
 
+                                                // save loan data
+                                                databaseRefPublicList.setValue(loan)
+                                                databaseRef.child(uid).setValue(loan)
+                                                Toast.makeText(
+                                                    context,
+                                                    "Loan application submitted",
+                                                    Toast.LENGTH_SHORT
+                                                ).show()
+                                            }
 
-                                    // save loan data
-                                    databaseRefPublicList.setValue(loan)
-                                    databaseRef.child(uid).setValue(loan)
-                                    Toast.makeText(
-                                        context,
-                                        "Loan application submitted",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
+                                    }
+
                                 } else {
                                     Toast.makeText(
                                         context,
@@ -182,6 +216,35 @@ class ApplyLoanFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun uploadImage() {
+
+        storageReference.putFile(uri).addOnSuccessListener { task ->
+            task.metadata!!.reference!!.downloadUrl
+
+        /*
+        .addOnSuccessListener {uri ->
+
+            val imageMap = mapOf (
+                "url" to uri.toString()
+            )
+
+            val databaseReference = FirebaseDatabase.getInstance().getReference("userImages")
+            databaseReference.child(uid).setValue(imageMap)
+                .addOnSuccessListener {
+                    Toast.makeText(context, "Successful", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+                }
+        }
+        */
+
+
+            Toast.makeText(context, "The funding photo is uploaded.", Toast.LENGTH_SHORT).show()
+        }
+
     }
 
     private fun getLoanListNumber(onComplete: (Int) -> Unit) {
