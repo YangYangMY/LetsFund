@@ -44,10 +44,6 @@ class LenderHomeFragment : Fragment() {
 
         scrollView = binding.fundRequest
 
-
-
-
-
         return root
     }
 
@@ -104,8 +100,6 @@ class LenderHomeFragment : Fragment() {
         }
 
     }
-
-
 
 
     private fun getLoanListNumber(onComplete: (Int) -> Unit) {
