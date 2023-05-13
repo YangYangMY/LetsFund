@@ -25,6 +25,9 @@
             app:destination="@id/navigation_editprofile"
             app:popUpTo="@id/navigation_borrowerprofile"
             app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_navigation_borrowerprofile_to_customerServiceFragment"
+            app:destination="@id/customerServiceFragment" />
     </fragment>
     <fragment
         android:id="@+id/navigation_editprofile"
@@ -49,6 +52,15 @@
         <action
             android:id="@+id/action_borrowerPaymentFragment_to_navigation_repayment"
             app:destination="@id/navigation_repayment" />
+    </fragment>
+    <fragment
+        android:id="@+id/customerServiceFragment"
+        android:name="my.edu.tarc.letsfund.ui.borrower.customerservice.CustomerServiceFragment"
+        android:label="fragment_customer_service"
+        tools:layout="@layout/fragment_customer_service" >
+        <action
+            android:id="@+id/action_customerServiceFragment_to_navigation_borrowerprofile"
+            app:destination="@id/navigation_borrowerprofile" />
     </fragment>
 
 </navigation>

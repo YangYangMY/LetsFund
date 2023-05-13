@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/LenderFAQFragmentContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.lender.faq.LenderFAQFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textViewFAQLender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:fontFamily="@font/montserrat_bold"
+                android:padding="16dp"
+                android:text="@string/frequently_asked_questions"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/black" />
+
+            <ExpandableListView
+                android:id="@+id/expandableListViewFAQLender"
+                android:layout_width="match_parent"
+                android:layout_height="622dp"
+                android:groupIndicator="@null"
+                android:minHeight="200dp">
+
+            </ExpandableListView>
+
+            <Button
+                android:id="@+id/LenderFAQBackButton"
+                android:layout_width="243dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="@string/back" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</FrameLayout>
