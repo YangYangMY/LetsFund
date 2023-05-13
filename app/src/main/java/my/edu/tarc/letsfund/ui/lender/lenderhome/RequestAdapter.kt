@@ -1,5 +1,6 @@
 package my.edu.tarc.letsfund.ui.lender.lenderhome
 
+import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
@@ -42,6 +43,7 @@ class RequestAdapter(private val requestList: ArrayList<BorrowerActivity.BorrowR
         return MyViewHolder(itemView)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
 
         val context = holder.itemView.context
@@ -49,7 +51,7 @@ class RequestAdapter(private val requestList: ArrayList<BorrowerActivity.BorrowR
 
         holder.loanTitleView.text = request.loanTitle;
         holder.borrowerNameView.text = request.borrowerName;
-        holder.loanAmountView.text = request.loanAmount.toString();
+        holder.loanAmountView.text = "RM ${request.loanAmount.toString()}";
         holder.descriptionView.text = request.loanDesc;
         holder.loanReqEndDateView.text = request.loanReqEndDate;
 
