@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:outlineProvider="background"
+tools:context=".ui.borrower.borrowerprofile.BorrowerProfileFragment">
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/profile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="@string/profile"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:contentDescription="@string/profile_photo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile"
+        app:srcCompat="@drawable/baseline_account_circle_24"
+        tools:ignore="ImageContrastCheck" />
+
+    <TextView
+        android:id="@+id/textViewEmail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="@string/email"
+        android:textColor="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageProfile" />
+
+    <TextView
+        android:id="@+id/textViewRole"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/montserrat"
+        android:text="@string/borrower"
+        android:textColor="#599D42"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewEmail"
+        tools:ignore="TextContrastCheck" />
+
+    <Button
+        android:id="@+id/btn_editProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:width="320dp"
+        android:height="60dp"
+        android:backgroundTint="#FFFFFF"
+        android:drawableStart="@drawable/baseline_mode_edit_outline_24"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="@string/edit_profile"
+        android:textAlignment="textStart"
+        android:textColor="#599D42"
+        app:cornerRadius="10dp"
+        app:icon="@drawable/baseline_mode_edit_outline_24"
+        app:iconPadding="24dp"
+        app:iconTint="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewRole"
+        tools:ignore="TextContrastCheck" />
+
+    <Button
+        android:id="@+id/btn_changePassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:width="320dp"
+        android:height="60dp"
+        android:backgroundTint="#FFFFFF"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="@string/change_password"
+        android:textAlignment="textStart"
+        android:textColor="#599D42"
+        app:cornerRadius="10dp"
+        app:icon="@drawable/baseline_lock_24"
+        app:iconPadding="24dp"
+        app:iconTint="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_editProfile"
+        tools:ignore="TextContrastCheck" />
+
+    <Button
+        android:id="@+id/btn_customerService"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:width="320dp"
+        android:height="60dp"
+        android:backgroundTint="#FFFFFF"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="@string/faq"
+        android:textAlignment="textStart"
+        android:textColor="#599D42"
+        app:cornerRadius="10dp"
+        app:icon="@drawable/baseline_question_answer_24"
+        app:iconPadding="24dp"
+        app:iconTint="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_changePassword"
+        tools:ignore="TextContrastCheck" />
+
+    <Button
+        android:id="@+id/btn_logout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:width="320dp"
+        android:height="60dp"
+        android:backgroundTint="#FFFFFF"
+        android:fontFamily="@font/montserrat_medium"
+        android:text="@string/logout"
+        android:textAlignment="textStart"
+        android:textColor="#599D42"
+        app:cornerRadius="10dp"
+        app:icon="@drawable/baseline_logout_24"
+        app:iconPadding="24dp"
+        app:iconTint="#000000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_customerService" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
