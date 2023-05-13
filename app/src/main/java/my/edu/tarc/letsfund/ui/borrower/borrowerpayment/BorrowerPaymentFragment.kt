@@ -1,12 +1,16 @@
-package my.edu.tarc.letsfund.ui.payment
+package my.edu.tarc.letsfund.ui.borrower.borrowerpayment
 
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -14,16 +18,16 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import my.edu.tarc.letsfund.R
-import my.edu.tarc.letsfund.databinding.ActivityCardPaymentBinding
-import my.edu.tarc.letsfund.ui.authentication.Users
-import my.edu.tarc.letsfund.ui.borrower.BorrowerActivity
+import my.edu.tarc.letsfund.databinding.FragmentCardPaymentBinding
 import my.edu.tarc.letsfund.ui.lender.LenderActivity
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
-class CardPaymentActivity : AppCompatActivity() {
-
+class BorrowerPaymentFragment : Fragment() {
     //Initialize Binding
-    private lateinit var binding: ActivityCardPaymentBinding
+    private var _binding: FragmentCardPaymentBinding? = null
+    private val binding get() = _binding!!
 
     //Initialize Calendar
     private var current = ""
@@ -33,6 +37,7 @@ class CardPaymentActivity : AppCompatActivity() {
     //Initialise Database
     private lateinit var uid: String
     private lateinit var databaseRef : DatabaseReference
+    private lateinit var database: FirebaseDatabase
     private lateinit var auth: FirebaseAuth
 
     //Initialise Builder Dialog
@@ -40,10 +45,20 @@ class CardPaymentActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_card_payment)
 
-        binding = ActivityCardPaymentBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+
+        _binding = FragmentCardPaymentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         //Check the textField changes status
         focusListener()
@@ -61,23 +76,8 @@ class CardPaymentActivity : AppCompatActivity() {
         binding.btnReset.setOnClickListener {
             resetCardInput()
         }
-
-        //Click to previous page
-        binding.btnPrevious.setOnClickListener {
-
-            getRole { role ->
-                if (role.equals("Lender")) {
-                    val intent = Intent(this, LenderActivity::class.java)
-                    startActivity(intent)
-                } else if (role.equals("Borrower")) {
-                    val intent = Intent(this, BorrowerActivity::class.java)
-                    startActivity(intent)
-                }
-            }
-
-        }
-
     }
+
 
     private val textWatcher: TextWatcher = object : TextWatcher {
         override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -111,6 +111,7 @@ class CardPaymentActivity : AppCompatActivity() {
                     } else {
                         String.format("%02d%02d", mon, year)
                     }
+
                 }
 
                 clean = String.format("%s/%s", clean.substring(0, 2),
@@ -128,56 +129,122 @@ class CardPaymentActivity : AppCompatActivity() {
         override fun afterTextChanged(s: Editable) {}
     }
 
+
+
     private fun submitForm() {
 
         //initialise database
         auth = FirebaseAuth.getInstance()
         uid = auth.currentUser?.uid.toString()
+        database = FirebaseDatabase.getInstance()
 
-        databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
+        val today = LocalDate.now()
+        val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
+        val formattedDate = (today.format(formatter)).toString()
 
-        //Output of helperText
-        binding.cardHolderNameContainer.helperText = validCardHolderName()
-        binding.cardNumberContainer.helperText = validCardNumber()
-        binding.cardExpDateContainer.helperText = validCardExpDate()
-        binding.cvvContainer.helperText = validCVV()
+        getTransactionNumber { transactionNumber ->
+            if (transactionNumber != -1) {
+                val historyid = transactionNumber.toString()
+                val databaseRefTopUp = database.reference.child("TransactionHistory").child(auth.currentUser!!.uid).child(historyid)
+                val topupTransaction: LenderActivity.PaymentHistory = LenderActivity.PaymentHistory(formattedDate,"Top Up", finaltopupAmount)
 
-        //Check if the helperText is null
-        val validCardHolder = binding.cardHolderNameContainer.helperText == null
-        val validCardNumber = binding.cardNumberContainer.helperText == null
-        val validCardExpDate = binding.cardExpDateContainer.helperText == null
-        val validCardCVV = binding.cvvContainer.helperText == null
+                databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
 
-        var amount : Double? = 100.00
-        val wallet = mapOf<String, Double?>(
-            "walletAmount" to amount
-        )
+                //Output of helperText
+                binding.cardHolderNameContainer.helperText = validCardHolderName()
+                binding.cardNumberContainer.helperText = validCardNumber()
+                binding.cardExpDateContainer.helperText = validCardExpDate()
+                binding.cvvContainer.helperText = validCVV()
 
-        if (validCardHolder && validCardNumber && validCardExpDate && validCardCVV) {
+                //Check if the helperText is null
+                val validCardHolder = binding.cardHolderNameContainer.helperText == null
+                val validCardNumber = binding.cardNumberContainer.helperText == null
+                val validCardExpDate = binding.cardExpDateContainer.helperText == null
+                val validCardCVV = binding.cvvContainer.helperText == null
 
-            databaseRef.child(uid).updateChildren(wallet).addOnSuccessListener {
+                //Retrieve current wallet amount
+                getWalletAmount { currentamount ->
 
-                builder = AlertDialog.Builder(this)
+                    var amount: Double? = currentamount?.plus(finaltopupAmount)
+                    val wallet = mapOf<String, Double?>(
+                        "walletAmount" to amount)
 
-                builder.setTitle("Payment Message")
-                    .setMessage("Your payment is successful, your wallet amount is updated")
-                    .setPositiveButton(getString(R.string.ok)) { _, _ ->
-                        finish()
-                        val intent = Intent(this, LenderActivity::class.java)
-                        startActivity(intent)
+                    if (validCardHolder && validCardNumber && validCardExpDate && validCardCVV) {
+                        databaseRefTopUp.setValue(topupTransaction).addOnCompleteListener{
+                            databaseRef.child(uid).updateChildren(wallet).addOnSuccessListener {
+
+                                builder = AlertDialog.Builder(requireContext())
+
+                                builder.setTitle("Payment Message")
+                                    .setMessage("Your payment is successful, your wallet amount is updated")
+                                    .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                                        findNavController().navigate(R.id.action_navigation_cardpayment_to_navigation_wallet)
+                                    }
+                                builder.create().show()
+                            }
+                        }.addOnFailureListener{
+
+                            //Toast.makeText(context, "Payment is failed, please try again", Toast.LENGTH_SHORT).show()
+                            builder = AlertDialog.Builder(requireContext())
+
+                            builder.setTitle("Payment Message")
+                                .setMessage("Your payment is failed, please try again")
+                                .setPositiveButton(getString(R.string.ok)) { _, _ ->
+                                    findNavController().navigate(R.id.action_navigation_cardpayment_to_navigation_wallet)
+                                }
+
+                            builder.create().show()
+
+                        }
+
+                    }else {
+                        Toast.makeText(context, "Please enter valid input", Toast.LENGTH_SHORT).show()
                     }
+                }
 
-                builder.create().show()
-
-            }.addOnFailureListener{
-                Toast.makeText(this, "Your payment is failed, please try again", Toast.LENGTH_SHORT).show()
+            }else{
+                Toast.makeText(context, "Failed to access database, please try again", Toast.LENGTH_SHORT).show()
             }
 
-
-        }else {
-            Toast.makeText(this, "Please enter valid input", Toast.LENGTH_SHORT).show()
         }
 
+    }
+
+    private fun getTransactionNumber(onComplete: (Int) -> Unit) {
+        val databaseRefReadTransaction = FirebaseDatabase.getInstance().getReference("TransactionHistory").child(auth.currentUser!!.uid)
+        databaseRefReadTransaction.addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val numberOfTransactions = snapshot.childrenCount.toInt()
+                val newTransactionNumber = if (numberOfTransactions > 0) numberOfTransactions + 1 else 1
+                onComplete(newTransactionNumber)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                onComplete(-1) // indicates an error occurred
+            }
+        })
+    }
+
+
+    private fun getWalletAmount(callback: (Double?) -> Unit) {
+
+        //initialise database
+        auth = FirebaseAuth.getInstance()
+        uid = auth.currentUser?.uid.toString()
+        databaseRef = FirebaseDatabase.getInstance().getReference("Wallet")
+
+        databaseRef.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val wallet = snapshot.getValue(LenderActivity.Wallet::class.java)
+                val amount = wallet?.walletAmount
+                callback(amount)
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(context, "Failed to get Wallet data", Toast.LENGTH_SHORT).show()
+                callback(null)
+            }
+        })
     }
 
     private fun focusListener() {
@@ -279,41 +346,6 @@ class CardPaymentActivity : AppCompatActivity() {
         binding.cardNumberContainer.helperText = ""
         binding.cardExpDateContainer.helperText = ""
         binding.cvvContainer.helperText = ""
-
-    }
-
-    private fun getRole(callback: (String?) -> Unit) {
-
-        //initialise database
-        auth = FirebaseAuth.getInstance()
-        uid = auth.currentUser?.uid.toString()
-        databaseRef = FirebaseDatabase.getInstance().getReference("users")
-
-        databaseRef.child(uid).addListenerForSingleValueEvent(object : ValueEventListener {
-            override fun onDataChange(snapshot: DataSnapshot) {
-                val user = snapshot.getValue(Users::class.java)
-                val currentUserRole = user?.role
-                callback(currentUserRole)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(this@CardPaymentActivity, "Failed to get User Profile data", Toast.LENGTH_SHORT).show()
-                callback(null)
-            }
-        })
-    }
-
-    override fun onBackPressed() {
-
-        getRole { role ->
-            if (role.equals("Lender")) {
-                val intent = Intent(this, LenderActivity::class.java)
-                startActivity(intent)
-            } else if (role.equals("Borrower")) {
-                val intent = Intent(this, BorrowerActivity::class.java)
-                startActivity(intent)
-            }
-        }
 
     }
 }

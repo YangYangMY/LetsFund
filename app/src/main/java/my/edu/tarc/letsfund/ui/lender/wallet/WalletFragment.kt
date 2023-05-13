@@ -108,11 +108,7 @@ class WalletFragment : Fragment() {
         composeView.setContent {
             Button(
                 onClick = {
-
                     findNavController().navigate(R.id.action_navigation_wallet_to_navigation_cardpayment)
-                    //val intent = Intent(context, CardPaymentActivity::class.java)
-                    //startActivity(intent)
-
                 },
                 contentPadding = ButtonDefaults.ButtonWithIconContentPadding,
                 colors = ButtonDefaults.outlinedButtonColors(light_green)
@@ -127,7 +123,6 @@ class WalletFragment : Fragment() {
                 Text("Top Up",  color = Color.White)
             }
         }
-
 
         composeView = binding.Withdraw
         composeView.setContent {
