@@ -54,6 +54,9 @@ class LenderHomeFragment : Fragment() {
         requestRecyclerView.layoutManager
         loanList = arrayListOf<BorrowerActivity.BorrowRequest>()
 
+
+
+
         getRequestData()
     }
 
@@ -83,6 +86,8 @@ class LenderHomeFragment : Fragment() {
 
                             requestRecyclerView.visibility = View.VISIBLE
                             binding.fundRequest.fullScroll(View.FOCUS_UP)
+
+
                         }
                     }
 

@@ -2,6 +2,7 @@ package my.edu.tarc.letsfund.ui.authentication.profile
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -10,6 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResultCallback
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -43,16 +46,21 @@ class EditProfileFragment : Fragment() {
     //Initialize Authentication User
     private lateinit var user: Users
     private lateinit var uid: String
+
+    private lateinit var uri: Uri
+
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
 
-
+    /*
     private val getPhoto = registerForActivityResult(ActivityResultContracts.GetContent()){ uri ->
         if(uri != null){
             binding.imageProfile.setImageURI(uri)
         }
     }
+    */
 
 
     override fun onCreateView(
@@ -65,7 +73,9 @@ class EditProfileFragment : Fragment() {
         //Initialise Firebase
         auth = FirebaseAuth.getInstance()
         uid = auth.currentUser?.uid.toString()
+        storageReference = FirebaseStorage.getInstance().getReference("Profile/"+auth.currentUser?.uid)
         databaseRef = FirebaseDatabase.getInstance().getReference("users")
+
 
         return binding.root
     }
@@ -73,17 +83,11 @@ class EditProfileFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-
         //Display User Existing Profile
         getUserData()
 
         //Display Profile Photo
         readProfilePhoto()
-
-        //Select photo from gallery
-        binding.imageProfile.setOnClickListener {
-            getPhoto.launch("image/*")
-        }
 
         //Setting up DatePicker for Date Of Birth
         dobSelected()
@@ -96,10 +100,28 @@ class EditProfileFragment : Fragment() {
             getUserData()
         }
 
+        val galleryImage = registerForActivityResult(
+            ActivityResultContracts.GetContent(),
+            ActivityResultCallback { it ->
+
+                binding.imageProfile.setImageURI(it)
+                uri = it!!
+
+            }
+        )
+
+        //Select photo from gallery
+        binding.imageProfile.setOnClickListener {
+            galleryImage.launch("image/*")
+        }
+
+
         //Click to edit the data
         binding.btnSave.setOnClickListener {
             submitForm()
+            uploadImage()
         }
+
 
     }
 
@@ -141,7 +163,7 @@ class EditProfileFragment : Fragment() {
 
                 binding.loadingProfile.visibility = View.GONE
                 Toast.makeText(context, "Your profile is updated", Toast.LENGTH_SHORT).show()
-                uploadProfilePicture()
+                uploadImage()
 
                 getRole { role ->
                     if (role.equals("Lender")) {
@@ -167,6 +189,15 @@ class EditProfileFragment : Fragment() {
 
     }
 
+    private fun uploadImage() {
+
+        storageReference.putFile(uri).addOnSuccessListener { task ->
+            task.metadata!!.reference!!.downloadUrl
+
+        }
+
+    }
+
     private fun getUserData() {
         databaseRef.child(uid).addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -184,24 +215,6 @@ class EditProfileFragment : Fragment() {
             }
 
         })
-    }
-
-
-    @SuppressLint("UseCompatLoadingForDrawables")
-    private fun uploadProfilePicture() {
-
-        val filename = "profile.png"
-        val file = Uri.fromFile(File(context?.filesDir, filename))
-
-        if (binding.imageProfile.drawable?.constantState != resources.getDrawable(R.drawable.baseline_account_circle_24)?.constantState) {
-            storageReference = FirebaseStorage.getInstance().getReference("Profile/"+auth.currentUser?.uid)
-
-            storageReference.putFile(file).addOnFailureListener {
-                Toast.makeText(context, "The photo file is invalid", Toast.LENGTH_SHORT).show()
-            }
-
-        }
-
     }
 
     private fun readProfilePhoto() {
