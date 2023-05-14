@@ -158,10 +158,10 @@ class ApplyLoanFragment : Fragment() {
                                 if (user != null) {
                                     val borrowerName = user.firstname
 
-                            //        storageReference.putFile(uri).addOnSuccessListener { task ->
-                                   //     task.metadata!!.reference!!.downloadUrl
-                                //            .addOnSuccessListener { uri ->
-                                 //               val imgUrl = uri.toString()
+                                    storageReference.putFile(uri).addOnSuccessListener { task ->
+                                        task.metadata!!.reference!!.downloadUrl
+                                            .addOnSuccessListener { uri ->
+                                                val imgUrl = uri.toString()
 
                                                 val loan : BorrowerActivity.BorrowRequest = BorrowerActivity.BorrowRequest(
                                                     loanTitle = title,
@@ -172,7 +172,7 @@ class ApplyLoanFragment : Fragment() {
                                                     borrowerID = borrowerId,
                                                     status = borrowStatus,
                                                     lenderID = lenderid,
-                                 //                   uri = imgUrl
+                                                    uri = imgUrl
                                                 )
 
                                                 // save loan data
@@ -183,9 +183,9 @@ class ApplyLoanFragment : Fragment() {
                                                     "Loan application submitted",
                                                     Toast.LENGTH_SHORT
                                                 ).show()
-                                  //          }
+                                            }
 
-                                  //  }
+                                    }
 
                                 } else {
                                     Toast.makeText(
