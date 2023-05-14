@@ -209,11 +209,6 @@ class BorrowerPaymentFragment : Fragment() {
                         val validCardExpDate = binding.cardExpDateContainer.helperText == null
                         val validCardCVV = binding.cvvContainer.helperText == null
 
-
-
-
-
-
                             if (validCardHolder && validCardNumber && validCardExpDate && validCardCVV) {
                                 databaseRefDeleteRequest.addOnCompleteListener {
                                     builder =

@@ -166,13 +166,13 @@ class WithdrawFragment : Fragment() {
                     binding.textViewMobileNo.visibility = View.INVISIBLE
                     binding.textViewBank.visibility = View.VISIBLE
                     binding.spinnerBank.visibility = View.VISIBLE
-                    binding.btnWithdraw1.visibility = View.GONE
-                    binding.btnWithdraw2.visibility = View.VISIBLE
                     binding.editTextMobileNum.setText("")
                     binding.textViewErrorBank.visibility = View.VISIBLE
                     binding.textViewErrorBankAcc.visibility = View.VISIBLE
                     binding.textViewErrorMobile.visibility = View.INVISIBLE
                     binding.textViewErrorMobile.setText("")
+                    binding.btnWithdraw1.visibility = View.VISIBLE
+                    binding.btnWithdraw2.visibility = View.GONE
                 }
             }
 
@@ -194,6 +194,8 @@ class WithdrawFragment : Fragment() {
                     binding.editTextBankAcc.visibility = View.INVISIBLE
                     binding.textViewErrorBank.setText("")
                     binding.textViewErrorBankAcc.setText("")
+                    binding.btnWithdraw1.visibility = View.VISIBLE
+                    binding.btnWithdraw2.visibility = View.GONE
                 }
                 else if(position == 1){
                     binding.editTextBankAcc.filters = arrayOf(InputFilter.LengthFilter(10))
@@ -201,6 +203,8 @@ class WithdrawFragment : Fragment() {
                     binding.textViewAccNo.visibility = View.VISIBLE
                     binding.editTextBankAcc.visibility = View.VISIBLE
                     binding.textViewErrorBankAcc.setText("")
+                    binding.btnWithdraw1.visibility = View.GONE
+                    binding.btnWithdraw2.visibility = View.VISIBLE
                 }
                 else if (position == 2){
                     binding.editTextBankAcc.filters = arrayOf(InputFilter.LengthFilter(12))
@@ -208,6 +212,8 @@ class WithdrawFragment : Fragment() {
                     binding.textViewAccNo.visibility = View.VISIBLE
                     binding.editTextBankAcc.visibility = View.VISIBLE
                     binding.textViewErrorBankAcc.setText("")
+                    binding.btnWithdraw1.visibility = View.GONE
+                    binding.btnWithdraw2.visibility = View.VISIBLE
                 }
             }
 
@@ -291,17 +297,22 @@ class WithdrawFragment : Fragment() {
         val bankAccNum = binding.editTextBankAcc.text.toString()
         val selectOption = binding.spinnerBank.selectedItemPosition
         if(bankAccNum.isEmpty()){
+            WithdrawPass = false
             return "Required"
+
         }
         if(selectOption == 1){
             if(bankAccNum.length != 10){
+                WithdrawPass = false
                 return "Must be 10 Digits"
             }
         }else if(selectOption == 2){
             if(bankAccNum.length != 12){
+                WithdrawPass = false
                 return "Must be 12 Digits"
             }
         }
+        WithdrawPass = true
         return null
     }
 
@@ -330,7 +341,6 @@ class WithdrawFragment : Fragment() {
             WithdrawPass = false
             return "Please select a bank"
         }
-        WithdrawPass = true
         return null
     }
 
