@@ -44,8 +44,8 @@ class LenderFAQFragment : Fragment() {
         faqList.add(Faq("How long does it take for a loan to be funded?", "It typically depends on the number of lenders who support the loan request. The time it takes can vary, from a few minutes to a few weeks."))
         faqAdapter.notifyDataSetChanged()
 
-        val launchFragmentButton = view.findViewById<Button>(R.id.LenderFAQBackButton)
-        launchFragmentButton.setOnClickListener {
+        val previousButton = view.findViewById<Button>(R.id.btnPrevious)
+        previousButton.setOnClickListener {
             findNavController().navigate(R.id.action_lenderFAQFragment_to_navigation_lenderprofile)
         }
     }

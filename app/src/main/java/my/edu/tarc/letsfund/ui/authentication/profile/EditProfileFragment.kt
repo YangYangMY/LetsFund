@@ -89,6 +89,21 @@ class EditProfileFragment : Fragment() {
             }
         )
 
+        binding.btnPrevious?.setOnClickListener {
+
+            getRole { role ->
+                if (role.equals("Lender")) {
+                    //val intent = Intent(context, LenderActivity::class.java)
+                    //startActivity(intent)
+                    findNavController().navigate(R.id.action_navigation_editprofile_to_navigation_lenderprofile)
+                } else if (role.equals("Borrower")) {
+                    //val intent = Intent(context, BorrowerActivity::class.java)
+                    //startActivity(intent)
+                    findNavController().navigate(R.id.action_navigation_editprofile_to_navigation_borrowerprofile)
+                }
+            }
+        }
+
         //Display User Existing Profile
         getUserData()
 

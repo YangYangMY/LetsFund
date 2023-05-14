@@ -98,8 +98,6 @@ class BorrowerProfileFragment : Fragment() {
         // Click to edit the profile
         binding.btnEditProfile.setOnClickListener{
 
-            //val intent = Intent(context, EditProfileActivity::class.java)
-            //startActivity(intent)
             findNavController().navigate(R.id.action_navigation_borrowerprofile_to_navigation_editprofile)
 
         }
@@ -142,11 +140,12 @@ class BorrowerProfileFragment : Fragment() {
             //Output of helperText
             emailContainer.helperText = validEmail()
 
-            //Check if the email helperText is null
-            if (emailContainer.helperText == null) {
+            val validEmail = emailContainer.helperText == null
+
+            if (validEmail) {
 
                 auth.sendPasswordResetEmail(emailInput).addOnSuccessListener {
-                    Toast.makeText(context, "Please check your email", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, "Please check your email to reset password", Toast.LENGTH_SHORT).show()
                     dialog.dismiss()
                 }.addOnFailureListener {
                     Toast.makeText(context, "This email is invalid, please try again", Toast.LENGTH_SHORT).show()

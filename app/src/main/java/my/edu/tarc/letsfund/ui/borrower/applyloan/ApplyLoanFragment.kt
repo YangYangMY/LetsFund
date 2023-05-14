@@ -79,6 +79,7 @@ class ApplyLoanFragment : Fragment() {
                     binding.imageFund.setImageURI(it)
                     uri = it
                     imageExist = true
+                    binding.imageViewMoney.visibility = View.GONE
                 }else{
                     imageExist = false
                 }

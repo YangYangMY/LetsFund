@@ -44,9 +44,11 @@ class CustomerServiceFragment : Fragment() {
         faqList.add(Faq("How long does it take for a loan to be funded?", "It typically depends on the lenders to loan. The time it takes depends on many factors, including the amount requested, and the generosity of our lenders."))
         faqAdapter.notifyDataSetChanged()
 
-        val launchFragmentButton = view.findViewById<Button>(R.id.customerServiceBackButton)
-        launchFragmentButton.setOnClickListener {
+
+        val previousButton = view.findViewById<Button>(R.id.btnPrevious)
+        previousButton.setOnClickListener {
             findNavController().navigate(R.id.action_customerServiceFragment_to_navigation_borrowerprofile)
         }
+
     }
 }

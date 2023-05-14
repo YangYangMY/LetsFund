@@ -27,13 +27,18 @@
             app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_navigation_borrowerprofile_to_customerServiceFragment"
-            app:destination="@id/customerServiceFragment" />
+            app:destination="@id/customerServiceFragment"
+            app:popUpTo="@id/navigation_borrowerprofile" />
     </fragment>
     <fragment
         android:id="@+id/navigation_editprofile"
         android:name="my.edu.tarc.letsfund.ui.authentication.profile.EditProfileFragment"
         android:label="@string/title_edit_profile"
-        tools:layout="@layout/fragment_edit_profile" />
+        tools:layout="@layout/fragment_edit_profile" >
+        <action
+            android:id="@+id/action_navigation_editprofile_to_navigation_borrowerprofile"
+            app:destination="@id/navigation_borrowerprofile" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_repayment"
         android:name="my.edu.tarc.letsfund.ui.borrower.repayment.RepaymentFragment"
