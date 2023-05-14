@@ -29,15 +29,41 @@
             android:orientation="vertical"
             app:layout_constraintGuide_percent="0.5" />
 
+        <Button
+            android:id="@+id/btnPrevious"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="25dp"
+            app:cornerRadius="30dp"
+            app:icon="@drawable/baseline_arrow_back_24"
+            app:iconGravity="textTop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textViewEditProfileTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="32dp"
+            android:fontFamily="@font/montserrat_medium"
+            android:text="@string/edit_profile"
+            android:textColor="@color/black"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <ImageView
             android:id="@+id/imageProfile"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:layout_marginTop="40dp"
+            android:layout_marginTop="20dp"
             android:src="@drawable/baseline_account_circle_24"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.499"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/textViewEditProfileTitle" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/firstNameContainer"
@@ -164,10 +190,11 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnReset"
-            android:layout_width="170dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginBottom="80dp"
             android:width="340dp"
             android:backgroundTint="@color/dark_grey"
@@ -180,10 +207,11 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnSave"
-            android:layout_width="170dp"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="60dp"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="40dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginBottom="80dp"
             android:width="340dp"
             android:backgroundTint="@color/dark_green"
