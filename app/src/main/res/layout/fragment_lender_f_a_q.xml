@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/LenderFAQFragmentContainer"
     android:layout_width="match_parent"
@@ -25,8 +26,20 @@
                 android:text="@string/frequently_asked_questions"
                 android:textAlignment="center"
                 android:textColor="#000000"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/btnPrevious"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginTop="-55dp"
+                app:cornerRadius="30dp"
+                app:icon="@drawable/baseline_arrow_back_24"
+                app:iconGravity="textTop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <View
                 android:layout_width="match_parent"
@@ -36,18 +49,11 @@
             <ExpandableListView
                 android:id="@+id/expandableListViewFAQLender"
                 android:layout_width="match_parent"
-                android:layout_height="622dp"
+                android:layout_height="699dp"
                 android:groupIndicator="@null"
                 android:minHeight="200dp">
 
             </ExpandableListView>
-
-            <Button
-                android:id="@+id/LenderFAQBackButton"
-                android:layout_width="243dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="@string/back" />
 
         </LinearLayout>
     </ScrollView>
